@@ -1,0 +1,149 @@
+@import "tailwindcss";
+
+/* 🎨 Variables Globales */
+:root {
+  --color-background-light: #ffffff;
+  --color-background-dark: #232323;
+  --color-foreground-light: #000000;
+  --color-foreground-dark: #f4f4f5;
+  --color-card-light: #ffffff;
+  --color-card-dark: #1f1f23;
+  --color-border-light: #e5e7eb;
+  --color-border-dark: #3f3f46;
+  --color-primary: #ef7b83; 
+}
+
+/* 🌞 Modo Claro */
+body {
+  background-color: var(--color-background-light);
+  color: var(--color-foreground-light);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 🌙 Modo Oscuro */
+.dark body {
+  background-color: var(--color-background-dark);
+  color: var(--color-foreground-dark);
+}
+
+/* 🏦 Tarjetas */
+.card {
+  background-color: var(--color-card-light);
+  border: 1px solid var(--color-border-light);
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dark .card {
+  background-color: var(--color-card-dark);
+  border-color: var(--color-border-dark);
+  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* 🔘 Botones */
+.button {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: bold;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background-color: #d8344e;
+}
+
+/* 🔲 Botón Secundario */
+.button-outline {
+  border: 2px solid var(--color-primary);
+  background-color: transparent;
+  color: var(--color-primary);
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: bold;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.button-outline:hover {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+/* ⏳ Botón de Cancelar */
+.button-cancel {
+  border: 2px solid var(--color-border-dark);
+  background-color: transparent;
+  color: var(--color-foreground-light);
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: bold;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.dark .button-cancel {
+  color: var(--color-foreground-dark);
+}
+
+.button-cancel:hover {
+  background-color: var(--color-border-dark);
+  color: #ffffff;
+}
+
+/* 📌 Navbar */
+.navbar {
+  background-color: var(--color-background-light);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.dark .navbar {
+  background-color: var(--color-background-dark);
+  border-bottom: 1px solid var(--color-border-dark);
+}
+
+/* 📜 Formularios */
+input, textarea {
+  background-color: var(--color-card-light);
+  border: 1px solid var(--color-border-light);
+  padding: 0.75rem;
+  border-radius: 6px;
+  color: var(--color-foreground-light);
+}
+
+.dark input, .dark textarea {
+  background-color: var(--color-card-dark);
+  border-color: var(--color-border-dark);
+  color: var(--color-foreground-dark);
+}
+
+/* 🏆 Sección CTA */
+.highlight-section {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.dark .highlight-section {
+  background-color: #d8344e;
+}
+
+/* 🎯 Footer */
+.footer {
+  background-color: var(--color-background-light);
+  color: var(--color-foreground-light);
+  border-top: 1px solid var(--color-border-light);
+  padding: 2rem 0;
+}
+
+.dark .footer {
+  background-color: var(--color-background-dark);
+  color: var(--color-foreground-dark);
+  border-top: 1px solid var(--color-border-dark);
+}
+
