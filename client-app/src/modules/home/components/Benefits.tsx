@@ -26,7 +26,7 @@ const benefits = [
 
 const Benefits = () => {
   return (
-    <section className="py-20">
+    <section className="py-20 border-t border-border">
       <div className="container mx-auto">
         <h2 className="mb-12 text-center text-3xl font-bold">
           Beneficios Destacados
@@ -46,7 +46,9 @@ const Benefits = () => {
               <h3 className="mb-3 text-xl font-semibold text-center">
                 {feature.title}
               </h3>
-              <p className="text-muted-foreground text-center">{feature.text}</p>
+              <p className="text-muted-foreground text-center">
+                {feature.text}
+              </p>
             </motion.div>
           ))}
         </div>

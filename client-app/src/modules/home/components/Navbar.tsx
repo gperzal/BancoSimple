@@ -10,7 +10,7 @@ const Navbar = () => {
   const { theme, setTheme } = useTheme();
 
   return (
-    <nav className="border-b bg-background py-4 text-foreground">
+    <nav className="navbar py-4 text-foreground">
       <div className="container flex items-center justify-between mx-auto">
         {/* Logo */}
         <Link
@@ -38,7 +38,7 @@ const Navbar = () => {
             </Link>
           ))}
 
-          {/* Botón para cambiar el tema con indicador visual correcto */}
+          {/* Botón para cambiar el tema */}
           <Button
             variant="ghost"
             size="icon"
@@ -52,10 +52,11 @@ const Navbar = () => {
             {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
           </Button>
 
-          <Button variant="outline" asChild>
+          {/* Botones de sesión */}
+          <Button asChild className="button-outline hidden md:inline-flex">
             <Link to="/login">Iniciar Sesión</Link>
           </Button>
-          <Button asChild>
+          <Button asChild className="button hidden md:inline-flex">
             <Link to="/register">Registrarse</Link>
           </Button>
         </div>
@@ -69,37 +70,95 @@ const Navbar = () => {
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
-        {/* Mobile Menu (podría implementarse como un drawer o dropdown) */}
         {isMenuOpen && (
-          <div className="absolute left-0 top-16 z-50 w-full bg-background p-4 shadow-lg md:hidden">
+          <div
+            className="absolute left-0 top-16 z-50 w-full p-4 shadow-lg md:hidden"
+            style={{
+              backgroundColor:
+                theme === "dark"
+                  ? "var(--color-background-dark)"
+                  : "var(--color-background-light)",
+            }}
+          >
+            {/* Encabezado del menú con botón de cambio de tema alineado a la derecha */}
+            <div
+              className="flex justify-between items-center border-b pb-2 mb-4"
+              style={{
+                borderColor:
+                  theme === "dark"
+                    ? "var(--color-border-dark)"
+                    : "var(--color-border-light)",
+              }}
+            >
+              <span
+                className="text-sm font-medium"
+                style={{
+                  color:
+                    theme === "dark"
+                      ? "var(--color-foreground-dark)"
+                      : "var(--color-foreground-light)",
+                }}
+              >
+                Menú
+              </span>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                aria-label={
+                  theme === "dark"
+                    ? "Cambiar a modo claro"
+                    : "Cambiar a modo oscuro"
+                }
+                style={{
+                  color:
+                    theme === "dark"
+                      ? "var(--color-foreground-dark)"
+                      : "var(--color-foreground-light)",
+                }}
+              >
+                {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+              </Button>
+            </div>
+
+            {/* Enlaces del menú */}
             <div className="flex flex-col space-y-4">
               {[
                 { to: "/", text: "Inicio" },
+                { to: "/#cuentas", text: "Cuentas" },
+                { to: "/#inversiones", text: "Inversiones" },
+                { to: "/#seguridad", text: "Seguros" },
                 { to: "/#beneficios", text: "Beneficios" },
-                { to: "/#seguridad", text: "Seguridad" },
-                { to: "/#contacto", text: "Contacto" },
               ].map((link, index) => (
                 <Link
                   key={index}
                   to={link.to}
                   className="text-sm font-medium hover:text-primary"
+                  style={{
+                    color:
+                      theme === "dark"
+                        ? "var(--color-foreground-dark)"
+                        : "var(--color-foreground-light)",
+                  }}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.text}
                 </Link>
               ))}
-              <Button variant="outline" asChild className="w-full">
+
+              {/* Botones de sesión */}
+              <Button
+                asChild
+                className="button-outline w-full"
+                style={{
+                  borderColor: "var(--color-primary)",
+                  color: "var(--color-primary)",
+                }}
+              >
                 <Link to="/login">Iniciar Sesión</Link>
               </Button>
-              <Button asChild className="w-full">
+              <Button asChild className="button w-full">
                 <Link to="/register">Registrarse</Link>
-              </Button>
-              <Button
-                variant="ghost"
-                className="w-full"
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              >
-                {theme === "dark" ? "Modo Claro" : "Modo Oscuro"}
               </Button>
             </div>
           </div>

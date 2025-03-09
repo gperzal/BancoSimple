@@ -182,7 +182,7 @@ const LoginForm = ({ theme }: { theme: string }) => {
           </div>
 
           {/* Botón Google */}
-          <Button className="w-full py-3 px-6 flex items-center justify-center border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+          <Button className="w-full py-3 px-6 flex items-center justify-center border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-500 transition">
             <FaGoogle className="mr-2 text-red-500" />
             Iniciar sesión con Google
           </Button>

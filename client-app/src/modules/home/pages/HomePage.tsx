@@ -7,18 +7,16 @@ import Hero from "@/modules/home/components/Hero";
 import Benefits from "@/modules/home/components/Benefits";
 import Testimonials from "@/modules/home/components/Testimonials";
 import ContactWsp from "@/modules/home/components/ContactWsp";
-
+import Discounts from "@/modules/home/components/Discounts";
 const HomePage = () => {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Navbar />
       <main className="flex-1">
-        {/* Hero Section con Carrusel */}
         <Hero />
-        {/* Beneficios */}
         <Benefits />
-        {/* Testimonios */}
         <Testimonials />
+        <Discounts />
       </main>
       <ContactWsp />
       <Footer />

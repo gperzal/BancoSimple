@@ -16,7 +16,33 @@ interface Testimonial {
 }
 
 const Testimonials = () => {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  // Testimonios dummy para mostrar mientras carga la API
+  const dummyTestimonials: Testimonial[] = [
+    {
+      name: "Denix Rivera",
+      location: "Doñihue, Chile",
+      image: "/img/denix.jpg",
+      text: "Un banco moderno y eficiente, justo lo que necesitaba.",
+      verified: true,
+    },
+    {
+      name: "Carolina Pichuman",
+      location: "La Cisterna, Chile",
+      image: "/img/carolina.jpg",
+      text: "Las transferencias son rápidas y seguras. Muy recomendado.",
+      verified: false,
+    },
+    {
+      name: "Angela Hernadez",
+      location: "Huechuraba, Chile",
+      image: "/img/angela.jpg",
+      text: "Me encanta la app, es intuitiva y fácil de usar.",
+      verified: true,
+    },
+  ];
+
+  const [testimonials, setTestimonials] =
+    useState<Testimonial[]>(dummyTestimonials);
 
   useEffect(() => {
     fetch("https://randomuser.me/api/?results=10&nat=us,gb,ca,au")
@@ -26,8 +52,8 @@ const Testimonials = () => {
           name: `${user.name.first} ${user.name.last}`,
           location: `${user.location.city}, ${user.location.country}`,
           image: user.picture.large,
-          text: getRandomTestimonial(), // Generamos texto aleatorio
-          verified: Math.random() > 0.5, // 50% de probabilidad de ser "cliente verificado"
+          text: getRandomTestimonial(),
+          verified: Math.random() > 0.5,
         }));
         setTestimonials(formattedTestimonials);
       })
