@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useTheme } from "@/context/ThemeContext";
-import Logo from "@/assets/img/logow.svg";
+import Logo from "/logow.svg";
 import RecoveryPasswordForm from "@/modules/auth/components/RecoveryPasswordForm";
 import { FaArrowLeft } from "react-icons/fa";
 

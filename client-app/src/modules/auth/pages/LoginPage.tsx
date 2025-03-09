@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import LoginForm from "@/modules/auth/components/LoginForm";
 import { useTheme } from "@/context/ThemeContext";
-import Logo from "@/assets/img/logow.svg"; 
+import Logo from "/logow.svg";
 
 const LoginPage = () => {
-  const { theme } = useTheme(); 
+  const { theme } = useTheme();
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#ef7b83] to-[#d8344e] px-4 py-12">

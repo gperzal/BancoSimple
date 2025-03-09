@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { Button } from "@shadcn/button";
 import { useTheme } from "@/context/ThemeContext";
+import Logo from "/logo.svg";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,11 +17,7 @@ const Navbar = () => {
           to="/"
           className="flex items-center text-xl font-bold text-primary"
         >
-          <img
-            src="src/assets/img/logo.svg"
-            alt="BancoSimple"
-            className="h-8"
-          />
+          <img src={Logo} alt="BancoSimple" className="h-8" />
         </Link>
 
         {/* Desktop Menu */}

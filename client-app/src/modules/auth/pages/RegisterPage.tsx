@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import RegisterForm from "@/modules/auth/components/RegisterForm";
 import { useTheme } from "@/context/ThemeContext";
-import Logo from "@/assets/img/logow.svg";
+import Logo from "/logow.svg";
 
 const RegisterPage = () => {
   const { theme } = useTheme();

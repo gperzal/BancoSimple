@@ -7,11 +7,11 @@ import { ChevronRight } from "lucide-react";
 
 const Hero = () => {
   const images = [
-    "src/assets/img/hero1.jpg",
-    "src/assets/img/hero2.jpg",
-    "src/assets/img/hero3.jpg",
-    "src/assets/img/hero4.jpg",
-    "src/assets/img/hero5.jpg",
+    "/img/hero1.jpg",
+    "/img/hero2.jpg",
+    "/img/hero3.jpg",
+    "/img/hero4.jpg",
+    "/img/hero5.jpg",
   ];
 
   const [heroImage, setHeroImage] = useState(images[0]);

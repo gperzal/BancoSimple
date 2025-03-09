@@ -17,7 +17,6 @@ const HomePage = () => {
         <Hero />
         {/* Beneficios */}
         <Benefits />
-        {/* Beneficios */}
         {/* Testimonios */}
         <Testimonials />
       </main>

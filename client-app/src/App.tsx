@@ -20,40 +20,47 @@ import DashboardAnalytics from "@/modules/dashboard/pages/DashboardAnalytics";
 // Layout del dashboard (envuelve todas las rutas protegidas)
 import DashboardLayout from "@/modules/dashboard/components/DashboardLayout";
 
+import ErrorBoundary from "@/components/ErrorBoundaryState";
+
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="banco-simple-theme">
       <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            {/* Rutas públicas */}
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route
-              path="/recover-password"
-              element={<PasswordRecoveryPage />}
-            />
-            {/* Rutas protegidas agrupadas en DashboardLayout */}
-            <Route element={<DashboardLayout />}>
-              <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/dashboard/profile" element={<DashboardProfile />} />
+        <ErrorBoundary>
+          <BrowserRouter>
+            <Routes>
+              {/* Rutas públicas */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
               <Route
-                path="/dashboard/security"
-                element={<DashboardSettings />}
+                path="/recover-password"
+                element={<PasswordRecoveryPage />}
               />
-              <Route
-                path="/dashboard/transactions"
-                element={<DashboardTransactions />}
-              />
-              <Route
-                path="/dashboard/analytics"
-                element={<DashboardAnalytics />}
-              />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-        <Toaster />
+              {/* Rutas protegidas agrupadas en DashboardLayout */}
+              <Route element={<DashboardLayout />}>
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route
+                  path="/dashboard/profile"
+                  element={<DashboardProfile />}
+                />
+                <Route
+                  path="/dashboard/security"
+                  element={<DashboardSettings />}
+                />
+                <Route
+                  path="/dashboard/transactions"
+                  element={<DashboardTransactions />}
+                />
+                <Route
+                  path="/dashboard/analytics"
+                  element={<DashboardAnalytics />}
+                />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+          <Toaster />
+        </ErrorBoundary>
       </AuthProvider>
     </ThemeProvider>
   );

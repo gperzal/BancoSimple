@@ -8,23 +8,21 @@ import {
   FaEnvelope,
   FaPhone,
 } from "react-icons/fa";
+import Logo from "/logow.svg";
 
 const Footer = () => {
   return (
     <footer
       className="py-6 text-white"
       style={{
-        backgroundColor: "#ef7b83", // Color corporativo
+        backgroundColor: "#ef7b83",
       }}
     >
       <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* 📌 Columna 1: Logo y Descripción */}
         <div className="space-y-4 flex flex-col items-center md:items-start">
-          <img
-            src="/src/assets/img/logow.svg"
-            alt="BancoSimple Logo Blanco"
-            className="h-10"
-          />
+          <img src={Logo} alt="BancoSimple Logo Blanco" className="h-10" />
+
           <p className="text-sm opacity-90 text-center md:text-left">
             Tu banco digital simple y seguro para gestionar tus finanzas desde
             cualquier lugar.
