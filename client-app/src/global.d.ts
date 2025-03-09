@@ -1,5 +1,3 @@
-// Configu de typescript para que reconozca los componentes de de Shadcn UI @shadcn/
-
 declare module "@shadcn/accordion" {
   export * from "@/components/ui/accordion";
 }
@@ -25,7 +23,25 @@ declare module "@shadcn/checkbox" {
 }
 
 declare module "@shadcn/sonner" {
-  export * from "@shadcn/sonner";
+  export * from "@/components/ui/sonner";
 }
 
-// Agrega más componentes aquí si los necesitas...
+declare module "@shadcn/switch" {
+  export * from "@/components/ui/switch";
+}
+
+declare module "@shadcn/toaster" {
+  export * from "@/components/ui/toaster";
+}
+
+declare module "@shadcn/input" {
+  export * from "@/components/ui/input";
+}
+
+declare module "@shadcn/label" {
+  export * from "@/components/ui/label";
+}
+
+declare module "swiper/css";
+declare module "swiper/css/navigation";
+declare module "swiper/css/pagination";

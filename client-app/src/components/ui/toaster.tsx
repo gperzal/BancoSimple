@@ -1,8 +1,8 @@
 import { Toaster as SonnerToaster, ToasterProps } from "sonner";
-import { useTheme } from "@/context/ThemeContext"; // Ajustado para Vite
+import { useTheme } from "@/context/ThemeContext"; 
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme } = useTheme(); // Usamos el ThemeContext de Vite
+  const { theme } = useTheme(); 
 
   return (
     <SonnerToaster

@@ -6,14 +6,23 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Star, CheckCircle, MapPin } from "lucide-react";
 
+// Define la forma de cada testimonio
+interface Testimonial {
+  name: string;
+  location: string;
+  image: string;
+  text: string;
+  verified: boolean;
+}
+
 const Testimonials = () => {
-  const [testimonials, setTestimonials] = useState([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
 
   useEffect(() => {
     fetch("https://randomuser.me/api/?results=10&nat=us,gb,ca,au")
       .then((response) => response.json())
       .then((data) => {
-        const formattedTestimonials = data.results.map((user) => ({
+        const formattedTestimonials = data.results.map((user: any) => ({
           name: `${user.name.first} ${user.name.last}`,
           location: `${user.location.city}, ${user.location.country}`,
           image: user.picture.large,
@@ -33,7 +42,7 @@ const Testimonials = () => {
         </h2>
         <Swiper
           modules={[Pagination, Autoplay]}
-          spaceBetween={30} // 🔹 Mayor separación entre tarjetas
+          spaceBetween={30}
           slidesPerView={1}
           breakpoints={{
             640: { slidesPerView: 1 },
@@ -55,7 +64,6 @@ const Testimonials = () => {
                   alt={testimonial.name}
                   className="w-24 h-24 rounded-full object-cover border-2 border-primary"
                 />
-
                 {/* Contenido del Testimonio */}
                 <div className="flex flex-col items-center text-center mt-4">
                   <div className="mb-2 flex items-center">
@@ -89,7 +97,7 @@ const Testimonials = () => {
   );
 };
 
-// 📌 Genera testimonios aleatorios
+// Función para generar testimonios aleatorios
 const getRandomTestimonial = () => {
   const testimonials = [
     "Un banco moderno y eficiente, justo lo que necesitaba.",

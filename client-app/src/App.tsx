@@ -1,34 +1,56 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Toaster } from "@shadcn/sonner";
-// import { AuthProvider } from "@/context/AuthContext";
+import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { AuthProvider } from "@/context/AuthContext";
+
 // Public routes
 import HomePage from "@/modules/home/pages/HomePage";
-
 import LoginPage from "@/modules/auth/pages/LoginPage";
-// import RegisterPage from "@/modules/auth/pages/RegisterPage";
-// import PasswordRecoveryPage from "@/modules/auth/pages/PasswordRecoveryPage";
+import RegisterPage from "@/modules/auth/pages/RegisterPage";
+import PasswordRecoveryPage from "@/modules/auth/pages/PasswordRecoveryPage";
 
-// Protected routes
-// import DashboardHome from "@/modules/dashboard/pages/Home";
-// import TransactionsPage from "@/modules/transactions/pages/TransactionsPage";
-// import ProfileSettings from "@/modules/settings/pages/ProfileSettings";
-// import SecuritySettings from "@/modules/settings/pages/SecuritySettings";
+// Protected routes (dentro del layout del dashboard)
+import DashboardPage from "@/modules/dashboard/pages/DashboarPage";
+// import TransactionsPage from "@/modules/dashboard/transactions/pages/TransactionsPage";
+import DashboardProfile from "@/modules/dashboard/pages/DashboardProfile";
+import DashboardSettings from "@/modules/dashboard/pages/DashboardSettings";
+import DashboardTransactions from "@/modules/dashboard/pages/DashboardTransactions";
+import DashboardAnalytics from "@/modules/dashboard/pages/DashboardAnalytics";
 
-// Layout components
-import ProtectedRoute from "@/routes/ProtectedRoute";
-// import DashboardLayout from "@/modules/dashboard/components/DashboardLayout";
+// Layout del dashboard (envuelve todas las rutas protegidas)
+import DashboardLayout from "@/modules/dashboard/components/DashboardLayout";
 
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="banco-simple-theme">
-      {/* ✅ Agregar AuthProvider */}
       <AuthProvider>
         <BrowserRouter>
           <Routes>
+            {/* Rutas públicas */}
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route
+              path="/recover-password"
+              element={<PasswordRecoveryPage />}
+            />
+            {/* Rutas protegidas agrupadas en DashboardLayout */}
+            <Route element={<DashboardLayout />}>
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/dashboard/profile" element={<DashboardProfile />} />
+              <Route
+                path="/dashboard/security"
+                element={<DashboardSettings />}
+              />
+              <Route
+                path="/dashboard/transactions"
+                element={<DashboardTransactions />}
+              />
+              <Route
+                path="/dashboard/analytics"
+                element={<DashboardAnalytics />}
+              />
+            </Route>
           </Routes>
         </BrowserRouter>
         <Toaster />

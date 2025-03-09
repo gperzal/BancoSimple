@@ -43,7 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, _password: string) => {
     setIsLoading(true);
     try {
       // Simulación de llamada a API
@@ -70,12 +70,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (
     name: string,
     email: string,
-    phone: string,
-    password: string
+    _phone: string,
+    _password: string
   ) => {
     setIsLoading(true);
     try {
-      // Simulación de llamada a API
+    
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Datos de usuario simulados
@@ -83,7 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: "1",
         name,
         email,
-        balance: 1000, // Balance inicial
+        balance: 1000, 
       };
 
       setUser(userData);
