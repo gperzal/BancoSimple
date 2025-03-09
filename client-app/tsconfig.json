@@ -2,8 +2,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-   
+      "@/*": ["src/*"],
+      "@shadcn/*": ["src/components/ui/*"],
+      "@modules/*": ["src/modules/*"],
+      "@home/*": ["src/modules/home/*"],
+      "@context/*": ["src/context/*"],
+      "@routes/*": ["src/routes/*"]
     }
   },
   "files": [],
