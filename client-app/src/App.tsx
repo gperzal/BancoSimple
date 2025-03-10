@@ -22,54 +22,47 @@ import PlaySimple from "@/modules/common/pages/PlaySimple";
 import SeguroSimple from "@/modules/common/pages/SeguroSimple";
 import EcoExpress from "@/modules/common/pages/EcoExpress";
 
-import ErrorBoundary from "@/components/ErrorBoundaryState";
-
 function App() {
   return (
     // theme default: system
     <ThemeProvider defaultTheme="system" storageKey="banco-simple-theme">
       <AuthProvider>
-        <ErrorBoundary>
-          <BrowserRouter>
-            <Routes>
-              {/* Rutas públicas */}
-              <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
+        <BrowserRouter>
+          <Routes>
+            {/* Rutas públicas */}
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route
+              path="/recover-password"
+              element={<PasswordRecoveryPage />}
+            />
+
+            {/* Páginas en construcción */}
+            <Route path="/seguro-simple" element={<SeguroSimple />} />
+            <Route path="/play-simple" element={<PlaySimple />} />
+            <Route path="/eco-express" element={<EcoExpress />} />
+
+            {/* Dashboard con layout */}
+            <Route element={<DashboardLayout />}>
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/dashboard/profile" element={<DashboardProfile />} />
               <Route
-                path="/recover-password"
-                element={<PasswordRecoveryPage />}
+                path="/dashboard/security"
+                element={<DashboardSettings />}
               />
-
-              {/* Páginas en construcción */}
-              <Route path="/seguro-simple" element={<SeguroSimple />} />
-              <Route path="/play-simple" element={<PlaySimple />} />
-              <Route path="/eco-express" element={<EcoExpress />} />
-
-              {/* Dashboard con layout */}
-              <Route element={<DashboardLayout />}>
-                <Route path="/dashboard" element={<DashboardPage />} />
-                <Route
-                  path="/dashboard/profile"
-                  element={<DashboardProfile />}
-                />
-                <Route
-                  path="/dashboard/security"
-                  element={<DashboardSettings />}
-                />
-                <Route
-                  path="/dashboard/transactions"
-                  element={<DashboardTransactions />}
-                />
-                <Route
-                  path="/dashboard/analytics"
-                  element={<DashboardAnalytics />}
-                />
-              </Route>
-            </Routes>
-          </BrowserRouter>
-          <Toaster />
-        </ErrorBoundary>
+              <Route
+                path="/dashboard/transactions"
+                element={<DashboardTransactions />}
+              />
+              <Route
+                path="/dashboard/analytics"
+                element={<DashboardAnalytics />}
+              />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+        <Toaster />
       </AuthProvider>
     </ThemeProvider>
   );
