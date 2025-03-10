@@ -21,7 +21,7 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden items-center space-x-6 md:flex">
+        <div className="hidden md:flex items-center space-x-8">
           {[
             { to: "/", text: "Inicio" },
             { to: "/#cuentas", text: "Cuentas" },
@@ -32,7 +32,7 @@ const Navbar = () => {
             <Link
               key={index}
               to={link.to}
-              className="text-sm font-medium hover:text-primary"
+              className="font-medium text-base md:text-lg hover:text-primary"
             >
               {link.text}
             </Link>
@@ -53,10 +53,13 @@ const Navbar = () => {
           </Button>
 
           {/* Botones de sesión */}
-          <Button asChild className="button-outline hidden md:inline-flex">
+          <Button
+            asChild
+            className="button-outline hidden md:inline-flex text-lg"
+          >
             <Link to="/login">Iniciar Sesión</Link>
           </Button>
-          <Button asChild className="button hidden md:inline-flex">
+          <Button asChild className="button hidden md:inline-flex text-lg">
             <Link to="/register">Registrarse</Link>
           </Button>
         </div>

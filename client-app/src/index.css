@@ -12,7 +12,6 @@
   --color-border-dark: #3f3f46;
   --color-primary: #ef7b83; 
 }
-
 /* 🌞 Modo Claro */
 body {
   background-color: var(--color-background-light);

@@ -9,21 +9,24 @@ import LoginPage from "@/modules/auth/pages/LoginPage";
 import RegisterPage from "@/modules/auth/pages/RegisterPage";
 import PasswordRecoveryPage from "@/modules/auth/pages/PasswordRecoveryPage";
 
-// Protected routes (dentro del layout del dashboard)
+// Protected routes (dashboard)
 import DashboardPage from "@/modules/dashboard/pages/DashboarPage";
-// import TransactionsPage from "@/modules/dashboard/transactions/pages/TransactionsPage";
 import DashboardProfile from "@/modules/dashboard/pages/DashboardProfile";
 import DashboardSettings from "@/modules/dashboard/pages/DashboardSettings";
 import DashboardTransactions from "@/modules/dashboard/pages/DashboardTransactions";
 import DashboardAnalytics from "@/modules/dashboard/pages/DashboardAnalytics";
-
-// Layout del dashboard (envuelve todas las rutas protegidas)
 import DashboardLayout from "@/modules/dashboard/components/DashboardLayout";
+
+// En construcción
+import PlaySimple from "@/modules/common/pages/PlaySimple";
+import SeguroSimple from "@/modules/common/pages/SeguroSimple";
+import EcoExpress from "@/modules/common/pages/EcoExpress";
 
 import ErrorBoundary from "@/components/ErrorBoundaryState";
 
 function App() {
   return (
+    // theme default: system
     <ThemeProvider defaultTheme="system" storageKey="banco-simple-theme">
       <AuthProvider>
         <ErrorBoundary>
@@ -37,7 +40,13 @@ function App() {
                 path="/recover-password"
                 element={<PasswordRecoveryPage />}
               />
-              {/* Rutas protegidas agrupadas en DashboardLayout */}
+
+              {/* Páginas en construcción */}
+              <Route path="/seguro-simple" element={<SeguroSimple />} />
+              <Route path="/play-simple" element={<PlaySimple />} />
+              <Route path="/eco-express" element={<EcoExpress />} />
+
+              {/* Dashboard con layout */}
               <Route element={<DashboardLayout />}>
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route
