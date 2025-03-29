@@ -10,13 +10,10 @@ import RegisterPage from "@/modules/auth/pages/RegisterPage";
 import PasswordRecoveryPage from "@/modules/auth/pages/PasswordRecoveryPage";
 
 // Protected routes (dashboard)
-import DashboardPage from "@/modules/dashboard/pages/DashboarPage";
-import DashboardProfile from "@/modules/dashboard/pages/DashboardProfile";
-import DashboardSettings from "@/modules/dashboard/pages/DashboardSettings";
-import DashboardTransactions from "@/modules/dashboard/pages/DashboardTransactions";
-import DashboardAnalytics from "@/modules/dashboard/pages/DashboardAnalytics";
-import DashboardLayout from "@/modules/dashboard/components/DashboardLayout";
-
+import DashboardPage from "@/modules/dashboard/common/page/DashboardPage";
+import CardsPage from "@/modules/dashboard/cards/page/CardsPage";
+import TransactionsPage from "@/modules/dashboard/transactions/page/TransactionsPage";
+import HistoryPage from "@/modules/dashboard/history/page/HistoryPage";
 // En construcción
 import PlaySimple from "@/modules/common/pages/PlaySimple";
 import SeguroSimple from "@/modules/common/pages/SeguroSimple";
@@ -44,22 +41,13 @@ function App() {
             <Route path="/eco-express" element={<EcoExpress />} />
 
             {/* Dashboard con layout */}
-            <Route element={<DashboardLayout />}>
-              <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/dashboard/profile" element={<DashboardProfile />} />
-              <Route
-                path="/dashboard/security"
-                element={<DashboardSettings />}
-              />
-              <Route
-                path="/dashboard/transactions"
-                element={<DashboardTransactions />}
-              />
-              <Route
-                path="/dashboard/analytics"
-                element={<DashboardAnalytics />}
-              />
-            </Route>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/dashboard/cards" element={<CardsPage />} />
+            <Route
+              path="/dashboard/transactions"
+              element={<TransactionsPage />}
+            />
+            <Route path="/dashboard/history" element={<HistoryPage />} />
           </Routes>
         </BrowserRouter>
         <Toaster />

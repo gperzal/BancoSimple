@@ -9,6 +9,7 @@ import {
 interface User {
   id: string;
   name: string;
+  avatar?: string;
   email: string;
   balance: number;
 }
@@ -75,7 +76,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   ) => {
     setIsLoading(true);
     try {
-    
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Datos de usuario simulados
@@ -83,7 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         id: "1",
         name,
         email,
-        balance: 1000, 
+        balance: 1000,
       };
 
       setUser(userData);
