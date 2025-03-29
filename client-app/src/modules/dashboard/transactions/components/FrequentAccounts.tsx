@@ -7,19 +7,8 @@ import {
 } from "@/components/ui/card";
 import { User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Check, ChevronsUpDown } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Filter } from "lucide-react";
 import { toast } from "sonner";
 
 // 🔁 Simulación de cuentas frecuentes
@@ -97,12 +86,10 @@ const frequentAccounts = [
 ];
 
 export default function FrequentAccounts() {
-  const [open, setOpen] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
 
   const handleSelect = (id: string) => {
     setSelectedAccount(id);
-    setOpen(false);
     const acc = frequentAccounts.find((a) => a.id === id);
     if (acc) {
       toast.success(`Cuenta seleccionada: ${acc.name}`);
@@ -121,54 +108,35 @@ export default function FrequentAccounts() {
       </CardHeader>
 
       <CardContent className="space-y-6">
-        {/* Combo selector */}
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={open}
-              className="w-full justify-between"
-            >
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" className="w-full justify-between">
               {selectedAccount
                 ? frequentAccounts.find((a) => a.id === selectedAccount)?.name
                 : "Selecciona una cuenta..."}
-              <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
+              <Filter className="ml-2 h-4 w-4 opacity-50" />
             </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0 z-50">
-            <Command>
-              <CommandInput placeholder="Buscar..." />
-              <CommandEmpty>No se encontraron cuentas</CommandEmpty>
-              <CommandGroup>
-                {frequentAccounts.map((acc) => (
-                  <CommandItem
-                    key={acc.id}
-                    value={acc.id}
-                    onSelect={() => handleSelect(acc.id)}
-                  >
-                    <Check
-                      className={`mr-2 h-4 w-4 ${
-                        selectedAccount === acc.id ? "opacity-100" : "opacity-0"
-                      }`}
-                    />
-                    <div className="flex items-center gap-2">
-                      <div className="rounded-full bg-bank-primary/10 p-1">
-                        <User className="h-4 w-4 text-bank-primary" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium">{acc.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {acc.bank} - {acc.accountNumber}
-                        </p>
-                      </div>
-                    </div>
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </Command>
-          </PopoverContent>
-        </Popover>
+          </DialogTrigger>
+          <DialogContent className="space-y-2 max-h-[400px] overflow-y-auto">
+            {frequentAccounts.map((acc) => (
+              <div
+                key={acc.id}
+                className="flex items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-muted"
+                onClick={() => handleSelect(acc.id)}
+              >
+                <div className="rounded-full bg-bank-primary/10 p-2">
+                  <User className="h-4 w-4 text-bank-primary" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">{acc.name}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {acc.bank} - {acc.accountNumber}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </DialogContent>
+        </Dialog>
 
         {/* Lista de accesos rápidos */}
         <div className="space-y-2">
