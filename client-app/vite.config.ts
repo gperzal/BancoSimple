@@ -10,8 +10,11 @@ export default defineConfig({
   ],
   build: {
     rollupOptions: {
-      external: ['react-hook-form'],
+      external: [], 
     }
+  },
+  optimizeDeps: {
+    include: ['react-hook-form'] 
   },
   resolve: {
     alias: {
