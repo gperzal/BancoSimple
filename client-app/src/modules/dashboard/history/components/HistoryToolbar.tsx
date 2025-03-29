@@ -10,7 +10,7 @@ interface HistoryToolbarProps {
   onSearchChange: (value: string) => void;
 }
 
-export function HistoryToolbar({
+export default function HistoryToolbar({
   currentTab,
   onTabChange,
   searchTerm,

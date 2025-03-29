@@ -16,6 +16,9 @@ export default defineConfig({
         "@home": path.resolve(__dirname, "./src/modules/home"),
         "@context": path.resolve(__dirname, "./src/context"),
         "@routes": path.resolve(__dirname, "./src/routes"),
+        "@utils": path.resolve(__dirname, "./src/utils"),
+        "@transactions": path.resolve(__dirname, "./src/modules/transactions"),
+        "@history": path.resolve(__dirname, "./src/modules/history"),
       },
     },
 })

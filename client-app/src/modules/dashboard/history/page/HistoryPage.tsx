@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Layout from "@/modules/dashboard/common/components/Layout";
-import HistorySummary from "../components/HistorySummary";
-import { HistoryToolbar } from "../components/HistoryToolbar";
+import HistorySummary from "@/modules/dashboard/history/components/HistorySummary";
+import HistoryToolbar from "@/modules/dashboard/history/components/HistoryToolbar";
 import { transactions } from "@/utils/mockData";
-import { HistoryTable } from "../components/HistoryTable";
-import { Filters } from "../components/Filters";
+import HistoryTable from "@/modules/dashboard/history/components/HistoryTable";
+import Filters from "@/modules/dashboard/history/components/Filters";
 import { Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 

@@ -1,5 +1,3 @@
-// ✅ FrequentAccounts.tsx - Rediseñado con estilo BancoSimple y soporte dark/light + ajustes de UX
-
 import { useState } from "react";
 import {
   CardContent,

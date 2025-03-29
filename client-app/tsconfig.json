@@ -7,7 +7,9 @@
       "@modules/*": ["src/modules/*"],
       "@home/*": ["src/modules/home/*"],
       "@context/*": ["src/context/*"],
-      "@routes/*": ["src/routes/*"]
+      "@routes/*": ["src/routes/*"],
+      "@transactions/*": ["src/modules/transactions/*"],
+      "@history/*": ["src/modules/history/*"]
     }
   },
   "files": [],

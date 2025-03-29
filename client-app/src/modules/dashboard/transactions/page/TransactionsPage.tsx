@@ -1,7 +1,6 @@
-// module/dashboard/transactions/page/TransactionsPage.tsx
 import Layout from "@/modules/dashboard/common/components/Layout";
-import { TransactionsForm } from "../components/TransactionsForm";
-import FrequentAccounts from "../components/FrequentAccounts";
+import TransactionsForm from "@/modules/dashboard/transactions/components/TransactionsForm";
+import FrequentAccounts from "@/modules/dashboard/transactions/components/FrequentAccounts";
 
 export default function TransactionsPage() {
   return (

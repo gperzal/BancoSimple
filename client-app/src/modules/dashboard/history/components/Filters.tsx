@@ -1,5 +1,3 @@
-// modules/dashboard/history/components/FiltersContent.tsx
-
 import {
   Select,
   SelectContent,
@@ -19,7 +17,7 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { useState } from "react";
 
-export function Filters() {
+export default function Filters() {
   const [period, setPeriod] = useState("30days");
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [endDate, setEndDate] = useState<Date | undefined>();

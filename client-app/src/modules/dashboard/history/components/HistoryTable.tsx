@@ -11,7 +11,7 @@ import {
 import EmptyState from "../../transactions/components/EmptyState";
 import { cn } from "@/lib/utils";
 
-export function HistoryTable() {
+export default function HistoryTable() {
   if (!transactions || transactions.length === 0) {
     return <EmptyState />;
   }

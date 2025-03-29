@@ -34,7 +34,7 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-export function TransactionsForm() {
+export default function TransactionsForm() {
   const [loading, setLoading] = useState(false);
 
   // Setup del hook react-hook-form
