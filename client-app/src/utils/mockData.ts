@@ -20,6 +20,34 @@ export const userData = {
     ]
   };
   
+  export const User = {
+    id: 1,
+    uuid: "550e8400-e29b-41d4-a716-446655440000",
+    nombres: "Juan Carlos",
+    apellidos: "Rodríguez Pérez",
+    correo: "juan.rodriguez@example.com",
+    telefono: "+56 9 1234 5678",
+    documento_tipo: "RUT",
+    documento_numero: "12.345.678-9",
+    fecha_nacimiento: new Date("1985-07-15"),
+    fecha_registro: new Date("2022-03-10"),
+    estado_id: 1,
+    direcciones: [
+      {
+        id: 1,
+        tipo_direccion: "residencial",
+        calle: "Av. Providencia",
+        numero: "1234",
+        comuna: "Providencia",
+        ciudad: "Santiago",
+        region: "Metropolitana",
+        codigo_postal: "7500000",
+        pais: "Chile",
+        activa: true
+      }
+    ]
+  };
+
   // Mock frequent accounts
   export const frequentAccounts = [
     {
@@ -169,3 +197,31 @@ export const userData = {
       fecha: "2023-10-01",
     },
   ];
+
+
+
+  // Mock data based on the database structure
+  export const monthlyTransactionData = [
+  { month: "Ene", ingresos: 4200000, gastos: 3200000 },
+  { month: "Feb", ingresos: 5100000, gastos: 3800000 },
+  { month: "Mar", ingresos: 4800000, gastos: 3500000 },
+  { month: "Abr", ingresos: 6000000, gastos: 4200000 },
+  { month: "May", ingresos: 5500000, gastos: 3900000 },
+  { month: "Jun", ingresos: 6800000, gastos: 5100000 },
+];
+
+export const categoryData = [
+  { name: "Entretenimiento", value: 1200000 },
+  { name: "Supermercado", value: 2300000 },
+  { name: "Transporte", value: 800000 },
+  { name: "Restaurantes", value: 1500000 },
+  { name: "Servicios", value: 950000 },
+];
+
+export const productData = [
+  { name: "Cuenta Corriente", usuarios: 3500 },
+  { name: "Cuenta Vista", usuarios: 5200 },
+  { name: "Tarjeta Crédito", usuarios: 2800 },
+  { name: "Crédito Personal", usuarios: 1200 },
+  { name: "Hipotecario", usuarios: 950 },
+];

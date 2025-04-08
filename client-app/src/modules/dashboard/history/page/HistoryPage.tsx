@@ -23,7 +23,7 @@ export default function HistoryPage() {
 
   return (
     <Layout>
-      <section className="max-w-6xl mx-auto px-4 md:px-6 py-8 space-y-6">
+      <section className="container mx-auto py-6 space-y-6">
         <div className="mb-4">
           <h1 className="text-4xl font-extrabold tracking-tight text-primary mb-2">
             Historial de transacciones

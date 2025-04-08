@@ -24,7 +24,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
 
-const RegisterForm = ({ theme }: { theme: string }) => {
+const RegisterForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -37,7 +37,6 @@ const RegisterForm = ({ theme }: { theme: string }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!acceptTerms) {
       toast.error("Debes aceptar los términos y condiciones para continuar.");
       return;
@@ -59,13 +58,7 @@ const RegisterForm = ({ theme }: { theme: string }) => {
   };
 
   return (
-    <Card
-      className={`shadow-2xl border rounded-xl p-6 transition-all ${
-        theme === "dark"
-          ? "bg-gray-900 border-gray-700 text-white"
-          : "bg-white border-gray-300 text-gray-900"
-      }`}
-    >
+    <Card className="card-auth">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl text-primary font-bold">
           Crear Cuenta
@@ -74,9 +67,10 @@ const RegisterForm = ({ theme }: { theme: string }) => {
           Regístrate para comenzar a usar BancoSimple
         </CardDescription>
       </CardHeader>
+
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-5">
-          {/* Nombre Completo */}
+          {/* Nombre */}
           <div className="space-y-2">
             <Label htmlFor="name" className="flex items-center gap-2">
               <FaUser className="text-gray-400" />
@@ -86,18 +80,14 @@ const RegisterForm = ({ theme }: { theme: string }) => {
               id="name"
               type="text"
               placeholder="Tu nombre"
-              className="
-                border border-gray-300 rounded-md text-gray-900 placeholder:text-gray-400
-                focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)]
-                transition-colors
-              "
+              className="input-primary"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
             />
           </div>
 
-          {/* Correo Electrónico */}
+          {/* Email */}
           <div className="space-y-2">
             <Label htmlFor="email" className="flex items-center gap-2">
               <FaEnvelope className="text-gray-400" />
@@ -107,11 +97,7 @@ const RegisterForm = ({ theme }: { theme: string }) => {
               id="email"
               type="email"
               placeholder="tucorreo@example.cl"
-              className="
-                border border-gray-300 rounded-md text-gray-900 placeholder:text-gray-400
-                focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)]
-                transition-colors
-              "
+              className="input-primary"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -128,11 +114,7 @@ const RegisterForm = ({ theme }: { theme: string }) => {
               id="phone"
               type="tel"
               placeholder="+56998877123"
-              className="
-                border border-gray-300 rounded-md text-gray-900 placeholder:text-gray-400
-                focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)]
-                transition-colors
-              "
+              className="input-primary"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               required
@@ -145,23 +127,19 @@ const RegisterForm = ({ theme }: { theme: string }) => {
               <FaLock className="text-gray-400" />
               Contraseña
             </Label>
-            <div className="relative">
+            <div className="input-password-wrapper">
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Contraseña"
-                className="
-                  border border-gray-300 rounded-md text-gray-900 placeholder:text-gray-400
-                  focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)]
-                  transition-colors pr-10
-                "
+                className="input-primary pr-10"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <button
                 type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                className="input-password-toggle"
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={
                   showPassword ? "Ocultar contraseña" : "Mostrar contraseña"
@@ -176,7 +154,7 @@ const RegisterForm = ({ theme }: { theme: string }) => {
             </div>
           </div>
 
-          {/* Términos y Condiciones */}
+          {/* Términos */}
           <div className="flex items-center space-x-2">
             <input
               id="terms"
@@ -186,7 +164,10 @@ const RegisterForm = ({ theme }: { theme: string }) => {
               className="h-4 w-4"
               required
             />
-            <label htmlFor="terms" className="text-sm text-gray-600">
+            <label
+              htmlFor="terms"
+              className="text-sm text-gray-600 dark:text-gray-400"
+            >
               Acepto los{" "}
               <Link to="/terminos" className="text-primary hover:underline">
                 términos y condiciones
@@ -194,34 +175,33 @@ const RegisterForm = ({ theme }: { theme: string }) => {
             </label>
           </div>
 
-          {/* Mensaje de saldo inicial */}
-          <div className="rounded-md bg-resolution-blue-50 p-3 text-sm text-resolution-blue-700">
-            Tu cuenta tendrá un saldo inicial de $1000
+          <div className="rounded-md bg-white/20 dark:bg-white/10 p-3 text-sm">
+            Tu cuenta tendrá un saldo inicial de <strong>$1000</strong>
           </div>
         </CardContent>
+
         <CardFooter className="flex flex-col space-y-4">
           <Button
             type="submit"
             disabled={isLoading}
-            className={`button w-full flex items-center justify-center gap-2 ${
-              isLoading ? "opacity-75" : ""
-            }`}
+            className={`button-primary ${isLoading ? "opacity-75" : ""}`}
           >
-            {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
+            {isLoading ? "Creando cuenta..." : "Registrarse"}
             <FaArrowRight />
           </Button>
 
           <div className="relative flex items-center justify-center">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-gray-300" />
+              <span className="w-full border-t border-gray-300 dark:border-gray-700" />
             </div>
-            <span className="relative px-3 text-sm font-semibold text-gray-600">
+            <span className="relative px-3 text-sm font-semibold bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400">
               O regístrate con
             </span>
           </div>
 
-          <Button variant="outline" className="w-full" type="button">
-            <FaGoogle className="mr-2 text-red-500" />
+          {/* Google */}
+          <Button className="button-outline group">
+            <FaGoogle className="mr-2 text-red-500 group-hover:text-white transition" />
             Continuar con Google
           </Button>
 

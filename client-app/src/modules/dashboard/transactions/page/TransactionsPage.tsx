@@ -1,11 +1,12 @@
 import Layout from "@/modules/dashboard/common/components/Layout";
 import TransactionsForm from "@/modules/dashboard/transactions/components/TransactionsForm";
-import FrequentAccounts from "@/modules/dashboard/transactions/components/FrequentAccounts";
+
+import { FrequentContactsSection } from "@/modules/dashboard/transactions/components/FrequentContactsSection";
 
 export default function TransactionsPage() {
   return (
     <Layout>
-      <section className="max-w-6xl mx-auto px-4 md:px-6 py-8">
+      <section className="container mx-auto py-6 space-y-6">
         <div className="mb-8">
           <h1 className="text-4xl font-extrabold tracking-tight text-primary mb-2">
             Transferencias
@@ -16,9 +17,9 @@ export default function TransactionsPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 ">
           <TransactionsForm />
-          <FrequentAccounts />
+          <FrequentContactsSection />
         </div>
       </section>
     </Layout>

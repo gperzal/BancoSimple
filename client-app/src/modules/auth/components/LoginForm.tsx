@@ -21,7 +21,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
 
-const LoginForm = ({ theme }: { theme: string }) => {
+const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -40,6 +40,7 @@ const LoginForm = ({ theme }: { theme: string }) => {
       });
       navigate("/dashboard");
     } catch (error) {
+      console.error("Error de inicio de sesión:", error);
       toast.error("Error de inicio de sesión", {
         description: "Credenciales incorrectas. Por favor, inténtalo de nuevo.",
       });
@@ -49,13 +50,7 @@ const LoginForm = ({ theme }: { theme: string }) => {
   };
 
   return (
-    <Card
-      className={`shadow-2xl border rounded-xl p-6 transition-all ${
-        theme === "dark"
-          ? "bg-gray-900 border-gray-700 text-white"
-          : "bg-white border-gray-300 text-gray-900"
-      }`}
-    >
+    <Card className="card-auth">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl text-primary font-bold">
           Iniciar Sesión
@@ -67,37 +62,24 @@ const LoginForm = ({ theme }: { theme: string }) => {
 
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-5">
-          {/* Correo Electrónico */}
+          {/* Email */}
           <div className="space-y-2">
-            {/* Label con ícono */}
             <Label htmlFor="email" className="flex items-center gap-2">
               <FaEnvelope className="text-gray-400" />
               Correo Electrónico
             </Label>
-            {/* Input sin ícono */}
             <Input
               id="email"
               type="email"
               placeholder="admin@x.cl"
-              className="
-                border 
-                border-gray-300 
-                rounded-md 
-                text-gray-900 
-                placeholder:text-gray-400
-                focus:outline-none
-                focus:ring-1 
-                focus:ring-[var(--color-primary)]
-                focus:border-[var(--color-primary)]
-                transition-colors
-              "
+              className="input-primary"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
 
-          {/* Contraseña */}
+          {/* Password */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="password" className="flex items-center gap-2">
@@ -115,26 +97,14 @@ const LoginForm = ({ theme }: { theme: string }) => {
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
-                className="
-                  border
-                  border-gray-300
-                  rounded-md
-                  text-gray-900
-                  placeholder:text-gray-400
-                  focus:outline-none
-                  focus:ring-1 
-                  focus:ring-[var(--color-primary)]
-                  focus:border-[var(--color-primary)]
-                  transition-colors
-                  pr-10
-                "
+                className="input-primary pr-10"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <button
                 type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                className="absolute inset-y-0 right-3 flex items-center text-gray-400"
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={
                   showPassword ? "Ocultar contraseña" : "Mostrar contraseña"
@@ -149,13 +119,11 @@ const LoginForm = ({ theme }: { theme: string }) => {
             </div>
           </div>
 
-          {/* Acciones */}
+          {/* Botón principal */}
           <Button
             type="submit"
             disabled={isLoading}
-            className={`button w-full flex items-center justify-center gap-2 ${
-              isLoading ? "opacity-75" : ""
-            }`}
+            className={`button-primary ${isLoading ? "opacity-75" : ""}`}
           >
             {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
             <FaArrowRight />
@@ -164,26 +132,16 @@ const LoginForm = ({ theme }: { theme: string }) => {
           {/* Separador */}
           <div className="relative flex items-center justify-center">
             <div className="absolute inset-0 flex items-center">
-              <span
-                className={`w-full border-t ${
-                  theme === "dark" ? "border-gray-700" : "border-gray-300"
-                }`}
-              />
+              <span className="w-full border-t border-gray-300 dark:border-gray-700" />
             </div>
-            <span
-              className={`relative px-3 text-sm font-semibold ${
-                theme === "dark"
-                  ? "bg-gray-900 text-gray-400"
-                  : "bg-white text-gray-600"
-              }`}
-            >
+            <span className="relative px-3 text-sm font-semibold bg-white/70 dark:bg-gray-900/70 text-gray-600 dark:text-gray-400">
               O continúa con
             </span>
           </div>
 
-          {/* Botón Google */}
-          <Button className="w-full py-3 px-6 flex items-center justify-center border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-100 dark:hover:bg-gray-500 transition">
-            <FaGoogle className="mr-2 text-red-500" />
+          {/* Google Login */}
+          <Button className="button-outline group">
+            <FaGoogle className="mr-2 text-red-500 group-hover:text-white transition" />
             Iniciar sesión con Google
           </Button>
 

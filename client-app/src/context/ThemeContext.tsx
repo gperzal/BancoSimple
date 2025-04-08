@@ -8,20 +8,22 @@ import {
 
 type Theme = "dark" | "light" | "system";
 
-type ThemeProviderProps = {
+interface ThemeProviderProps {
   children: ReactNode;
   defaultTheme?: Theme;
   storageKey?: string;
-};
+}
 
-type ThemeProviderState = {
+interface ThemeProviderState {
   theme: Theme;
   setTheme: (theme: Theme) => void;
-};
+  resolvedTheme: "dark" | "light";
+}
 
 const initialState: ThemeProviderState = {
   theme: "system",
   setTheme: () => null,
+  resolvedTheme: "light",
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
@@ -38,34 +40,44 @@ export function ThemeProvider({
     return defaultTheme;
   });
 
+  const [resolvedTheme, setResolvedTheme] = useState<"dark" | "light">("light");
+
+  // Actualiza las clases en <html> cuando theme cambie
   useEffect(() => {
-    const root = window.document.documentElement;
-    root.classList.remove("light", "dark");
+    const root = document.documentElement;
+    let effectiveTheme: "dark" | "light";
 
     if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
+      effectiveTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
         : "light";
-
-      root.classList.add(systemTheme);
     } else {
-      root.classList.add(theme);
+      effectiveTheme = theme;
     }
 
-    // Guardar la preferencia (no el cálculo) en localStorage
+    setResolvedTheme(effectiveTheme);
+
+    // Añadir o quitar la clase .dark
+    if (effectiveTheme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+
     localStorage.setItem(storageKey, theme);
   }, [theme, storageKey]);
 
-  // Agregar listener para cambios en la preferencia del sistema
+  // Escucha el cambio de preferencia (cuando theme="system")
   useEffect(() => {
     if (theme !== "system") return;
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
     const handleChange = () => {
-      const root = window.document.documentElement;
-      root.classList.remove("light", "dark");
-      root.classList.add(mediaQuery.matches ? "dark" : "light");
+      const newTheme = mediaQuery.matches ? "dark" : "light";
+      setResolvedTheme(newTheme);
+
+      document.documentElement.classList.toggle("dark", newTheme === "dark");
     };
 
     mediaQuery.addEventListener("change", handleChange);
@@ -76,13 +88,8 @@ export function ThemeProvider({
     setThemeState(newTheme);
   };
 
-  const value = {
-    theme,
-    setTheme,
-  };
-
   return (
-    <ThemeProviderContext.Provider value={value}>
+    <ThemeProviderContext.Provider value={{ theme, setTheme, resolvedTheme }}>
       {children}
     </ThemeProviderContext.Provider>
   );

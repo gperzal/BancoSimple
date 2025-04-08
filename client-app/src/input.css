@@ -1,0 +1,266 @@
+/* ───────────────────────────────
+  1. Tailwind Base Directives
+──────────────────────────────── */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* ───────────────────────────────
+  3. Custom Variables (Dark/Light Theme)
+──────────────────────────────── */
+:root {
+  --color-background-light: #ffffff;
+  --color-background-dark: #232323;
+  --color-foreground-light: #000000;
+  --color-foreground-dark: #f4f4f5;
+  --color-layout-light: #fff5f9;
+  --color-layout-dark: #232323;
+  --color-card-light: #ffffff;
+  --color-card-dark: #1f1f23;
+  --color-border-light: #e5e7eb;
+  --color-border-dark: #3f3f46;
+  --color-primary: #ef7b83;
+  --color-primary-darker: #d8344e;
+  --color-primary-lighter: #f59ea4;
+  --transition-speed: 0.3s;
+
+
+
+  --sidebar-bg: #ef7b83;
+  --sidebar-border: #e5e7eb;
+  --sidebar-hover-bg: #ed7e86;
+  --sidebar-submenu-hover-bg: #f59ea4;
+  --sidebar-active-bg: #ef7b83;
+  --sidebar-text: #ffffff;
+  --sidebar-hover-text: #ffffff;
+
+  --popover-bg-light: #ffffff;
+  --popover-bg-dark: #232323;
+  --popover-border-light: #e5e7eb;
+  --popover-border-dark: #3f3f46;
+  
+}
+
+.dark {
+  --sidebar-bg: #1f1f23;
+  --sidebar-border: #3f3f46;
+  --sidebar-hover-bg: #2c2c2f;
+  --sidebar-submenu-hover-bg: #2e2e33;
+  --sidebar-active-bg: #d8344e;
+}
+
+/* ───────────────────────────────
+  4. Base Styles
+──────────────────────────────── */
+@layer base {
+  body {
+    color: var(--color-foreground-light);
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+  }
+
+  .dark body {
+    background-color: var(--color-background-dark);
+    color: var(--color-foreground-dark);
+  }
+}
+
+/* ───────────────────────────────
+  5. Components
+──────────────────────────────── */
+@layer components {
+  .card {
+    background-color: var(--color-card-light);
+    border: 1px solid var(--color-border-light);
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: all var(--transition-speed) ease;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .dark .card {
+    background-color: var(--color-card-dark);
+    border-color: var(--color-border-dark);
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .button {
+    background-color: var(--color-primary);
+    color: #ffffff;
+    padding: 0.50rem 1.0rem;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+    transition: all var(--transition-speed) ease;
+  }
+
+  .button:hover {
+    background-color: var(--color-primary-darker);
+  }
+
+  .button-outline {
+    border: 2px solid var(--color-primary);
+    background-color: transparent;
+    color: var(--color-primary);
+    padding: 0.50rem 1.0rem;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+    transition: all var(--transition-speed) ease;
+  }
+
+  .button-outline:hover {
+    background-color: var(--color-primary);
+    color: #ffffff;
+  }
+
+  .button-cancel {
+    border: 2px solid var(--color-border-dark);
+    background-color: transparent;
+    color: var(--color-foreground-light);
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: bold;
+    text-align: center;
+    transition: all var(--transition-speed) ease;
+  }
+
+  .header-icon-button {
+    @apply border border-white/30 text-white bg-transparent
+           hover:bg-white hover:text-primary
+           transition-colors font-medium
+           flex items-center justify-center
+           w-10 h-10 rounded-full
+  }
+
+  .dark .button-cancel {
+    color: var(--color-foreground-dark);
+  }
+
+  .button-cancel:hover {
+    background-color: var(--color-border-dark);
+    color: #ffffff;
+  }
+
+  .navbar {
+    background-color: var(--color-background-light);
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .dark .navbar {
+    background-color: var(--color-background-dark);
+    border-bottom: 1px solid var(--color-border-dark);
+  }
+
+  .highlight-section {
+    background-color: var(--color-primary);
+    color: #ffffff;
+    text-align: center;
+    padding: 4rem 1rem;
+  }
+
+  .dark .highlight-section {
+    background-color: var(--color-primary-darker);
+  }
+
+  .footer {
+    background-color: var(--color-background-light);
+    color: var(--color-foreground-light);
+    border-top: 1px solid var(--color-border-light);
+    padding: 2rem 0;
+  }
+
+  .dark .footer {
+    background-color: var(--color-background-dark);
+    color: var(--color-foreground-dark);
+    border-top: 1px solid var(--color-border-dark);
+  }
+
+  .hero-section {
+    background: linear-gradient(to bottom, var(--color-primary), var(--color-primary-darker));
+  }
+
+  .dark .hero-section {
+    background: linear-gradient(to bottom, var(--color-primary-darker), #b30523);
+  }
+}
+
+/* ───────────────────────────────
+  6. Utilities
+──────────────────────────────── */
+@layer utilities {
+  .input-primary {
+    @apply border border-gray-300 dark:border-gray-600 
+           rounded-md text-gray-900 dark:text-white 
+           placeholder:text-gray-400 dark:placeholder:text-gray-500 
+           focus:outline-none focus:ring-1 
+           focus:ring-[var(--color-primary)] 
+           focus:border-[var(--color-primary)] 
+           transition-colors;
+  }
+
+  .input-password-wrapper {
+    @apply relative;
+  }
+
+  .input-password-toggle {
+    @apply absolute inset-y-0 right-3 flex items-center text-gray-400;
+  }
+
+  .button-primary {
+    @apply w-full flex items-center justify-center gap-2 
+           rounded-xl bg-[var(--color-primary)] text-white 
+           hover:bg-[var(--color-primary-darker)] 
+           transition-colors font-bold py-2 px-4;
+  }
+
+  .button-outline {
+    @apply w-full flex items-center justify-center gap-2 
+           rounded-xl border border-[var(--color-primary)]
+           text-[var(--color-primary)] bg-white 
+           hover:bg-[var(--color-primary)] hover:text-white 
+           transition-colors font-bold py-2 px-4;
+  }
+
+  .card-auth {
+    @apply bg-white dark:bg-gray-900 
+           border border-gray-200 dark:border-gray-700 
+           shadow-xl rounded-2xl p-6 
+           text-gray-900 dark:text-white;
+  }
+
+  .popover {
+    @apply bg-[var(--popover-bg-light)] text-[var(--color-foreground-light)] border border-border;
+  }
+  
+  .dark .popover {
+    @apply bg-[var(--popover-bg-dark)] text-[var(--color-foreground-dark)] border border-border;
+  }
+  
+
+  [role="option"] {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  [role="option"]:hover {
+    background-color: var(--color-border-light);
+  }
+
+  .dark [role="option"]:hover {
+    background-color: var(--color-border-dark);
+  }
+
+  .animate-fade-in {
+    @apply transition-all duration-300 ease-in-out opacity-0 translate-y-2;
+    animation: fadeIn 0.3s forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

@@ -6,11 +6,7 @@ import { Label } from "@shadcn/label";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { toast } from "sonner";
 
-interface RecoveryPasswordFormProps {
-  theme: string;
-}
-
-const RecoveryPasswordForm = ({ theme }: RecoveryPasswordFormProps) => {
+const RecoveryPasswordForm = () => {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -20,7 +16,6 @@ const RecoveryPasswordForm = ({ theme }: RecoveryPasswordFormProps) => {
     setIsLoading(true);
 
     try {
-      // Simula la llamada a la API
       await new Promise((resolve) => setTimeout(resolve, 1500));
       setIsSubmitted(true);
       toast.success("Correo enviado", {
@@ -38,13 +33,7 @@ const RecoveryPasswordForm = ({ theme }: RecoveryPasswordFormProps) => {
   };
 
   return (
-    <Card
-      className={`shadow-2xl border rounded-xl p-6 transition-all ${
-        theme === "dark"
-          ? "bg-gray-900 border-gray-700 text-white"
-          : "bg-white border-gray-300 text-gray-900"
-      }`}
-    >
+    <Card className="card-auth">
       {!isSubmitted ? (
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-5">
@@ -53,28 +42,15 @@ const RecoveryPasswordForm = ({ theme }: RecoveryPasswordFormProps) => {
                 <FaEnvelope className="text-gray-400" />
                 Correo Electrónico
               </Label>
-              <div className="relative mt-4 mb-4">
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="tu@email.com"
-                  className="
-                    pl-10 
-                    border border-gray-300 
-                    rounded-md 
-                    text-gray-900 
-                    placeholder:text-gray-400
-                    focus:outline-none 
-                    focus:ring-1 
-                    focus:ring-[var(--color-primary)] 
-                    focus:border-[var(--color-primary)]
-                    transition-colors
-                  "
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
+              <Input
+                id="email"
+                type="email"
+                placeholder="tu@email.com"
+                className="input-primary"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
           </CardContent>
 
@@ -82,9 +58,7 @@ const RecoveryPasswordForm = ({ theme }: RecoveryPasswordFormProps) => {
             <Button
               type="submit"
               disabled={isLoading}
-              className={`button w-full flex items-center justify-center gap-2 ${
-                isLoading ? "opacity-75" : ""
-              }`}
+              className={`button-primary ${isLoading ? "opacity-75" : ""}`}
             >
               {isLoading ? "Enviando..." : "Enviar Enlace de Recuperación"}
               <FaArrowRight />
@@ -93,7 +67,7 @@ const RecoveryPasswordForm = ({ theme }: RecoveryPasswordFormProps) => {
         </form>
       ) : (
         <CardContent className="space-y-4">
-          <div className="rounded-md bg-green-50 p-4 text-green-700">
+          <div className="rounded-md bg-green-50 p-4 text-green-700 dark:bg-green-900/20 dark:text-green-300">
             <p className="text-center">
               Hemos enviado un enlace de recuperación a <strong>{email}</strong>
               . Por favor, revisa tu correo.

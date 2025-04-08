@@ -1,22 +1,20 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@shadcn/button";
 import { motion } from "framer-motion";
-import { useTheme } from "@/context/ThemeContext";
 import { ChevronRight } from "lucide-react";
 
+const images = [
+  "/img/hero/hero1.jpg",
+  "/img/hero/hero2.jpg",
+  "/img/hero/hero3.jpg",
+  "/img/hero/hero4.jpg",
+  "/img/hero/hero5.jpg",
+];
+
 const Hero = () => {
-  const images = [
-    "/img/hero1.jpg",
-    "/img/hero2.jpg",
-    "/img/hero3.jpg",
-    "/img/hero4.jpg",
-    "/img/hero5.jpg",
-  ];
-
   const [heroImage, setHeroImage] = useState(images[0]);
-  const { theme } = useTheme();
 
+  // Cambiar imagen cada 5s
   useEffect(() => {
     const interval = setInterval(() => {
       setHeroImage(images[Math.floor(Math.random() * images.length)]);
@@ -25,19 +23,19 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative bg-gradient-to-b from-[#ef7b83] to-[#d8344e] py-20 text-white overflow-hidden">
+    <section className="hero-section relative py-20 text-white overflow-hidden">
       <div className="container mx-auto grid items-center gap-12 md:grid-cols-2">
-        {/* 📝 Texto y CTA */}
-        <div className="space-y-6 text-center md:text-left">
-          <motion.h1
-            className="text-5xl font-extrabold leading-tight drop-shadow-lg"
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
+        {/* Texto y CTA */}
+        <motion.div
+          className="space-y-6 text-center md:text-left"
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-5xl font-extrabold leading-tight drop-shadow-lg">
             Tu banco digital <br />
             <span className="text-yellow-300">rápido y seguro</span>
-          </motion.h1>
+          </h1>
 
           <motion.p
             className="text-xl text-white/90"
@@ -64,33 +62,39 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            Únete a miles de personas que confían en{" "}
-            <span className="font-semibold text-yellow-300">BancoSimple</span>.
+            Únete a miles de personas que confían en
+            <span className="font-semibold text-yellow-300"> BancoSimple</span>.
           </motion.p>
 
-          {/* 🎯 BOTÓN CTA MÁS GRANDE Y MEJORADO */}
+          {/* Botón CTA */}
           <motion.div
             className="flex justify-center md:justify-start"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
           >
-            <Button
-              className={`border-2 font-bold text-lg py-5 px-12 flex items-center gap-2 rounded-lg shadow-md transition-all hover:scale-105 ${
-                theme === "dark"
-                  ? "border-white text-white bg-primary hover:bg-primary/90"
-                  : "border-black text-white bg-primary hover:bg-primary/90"
-              }`}
-              asChild
+            <button
+              className="
+                flex items-center gap-2
+                text-lg py-4 px-8
+                text-white
+                border border-white
+                rounded-xl
+                hover:bg-white/10
+                transition-colors
+              "
             >
-              <Link to="/register">
-                Hazte Cliente <ChevronRight size={22} />
+              <Link
+                to="/register"
+                className="flex items-center font-bold text-xl"
+              >
+                Hazte Cliente <ChevronRight size={20} />
               </Link>
-            </Button>
+            </button>
           </motion.div>
-        </div>
+        </motion.div>
 
-        {/* 🖼 Imagen Dinámica con Fade In */}
+        {/* Imagen Dinámica con animaciones */}
         <motion.div
           className="relative flex justify-center"
           initial={{ opacity: 0, scale: 0.8 }}
@@ -107,17 +111,17 @@ const Hero = () => {
             transition={{ duration: 0.8 }}
           />
 
-          {/* 🌟 Efectos visuales flotantes */}
+          {/* Efectos visuales flotantes */}
           <motion.div
             className="absolute top-10 right-0 w-16 h-16 bg-yellow-300 rounded-full opacity-50"
             animate={{ scale: [1, 1.2, 1] }}
             transition={{ repeat: Infinity, duration: 3 }}
-          ></motion.div>
+          />
           <motion.div
             className="absolute bottom-10 left-0 w-24 h-24 bg-white/20 rounded-full"
             animate={{ scale: [1, 1.1, 1] }}
             transition={{ repeat: Infinity, duration: 4 }}
-          ></motion.div>
+          />
         </motion.div>
       </div>
     </section>
