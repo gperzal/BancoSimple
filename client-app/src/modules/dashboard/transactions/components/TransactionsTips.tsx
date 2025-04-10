@@ -1,23 +1,30 @@
-// ✅ Archivo: /modules/dashboard/transfers/components/TransferTips.tsx
-
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Lightbulb } from "lucide-react";
 
 export function TransferTips() {
   return (
-    <Card>
+    <Card className="card">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Lightbulb className="h-5 w-5 text-yellow-500" /> Consejos Útiles
+          <Lightbulb className="h-5 w-5 text-yellow-500" />
+          Consejos para transferencias seguras
         </CardTitle>
       </CardHeader>
-      <CardContent className="text-sm text-muted-foreground space-y-2">
+      <CardContent className="text-sm text-muted-foreground space-y-2 leading-relaxed">
         <p>
-          ✅ Verifica siempre el nombre del destinatario antes de transferir.
+          ✅ Revisa el nombre y número de cuenta antes de confirmar una
+          transferencia.
         </p>
-        <p>🔒 Nunca compartas tu contraseña o códigos de verificación.</p>
         <p>
-          📅 Guarda tus contactos frecuentes para agilizar futuras operaciones.
+          🔒 Nunca compartas tus contraseñas ni códigos de verificación por
+          ningún medio.
+        </p>
+        <p>
+          📅 Guarda a tus contactos frecuentes para hacer transferencias más
+          rápidas y seguras.
+        </p>
+        <p className="font-medium text-destructive">
+          ❓ Si dudas de la identidad del destinatario, detén la transferencia.
         </p>
       </CardContent>
     </Card>

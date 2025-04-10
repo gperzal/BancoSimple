@@ -23,7 +23,7 @@ declare module "@shadcn/checkbox" {
 }
 
 declare module "@shadcn/sonner" {
-  export * from "@/components/ui/sonner";
+  export * from "@/components/ui/sonner1";
 }
 
 declare module "@shadcn/switch" {

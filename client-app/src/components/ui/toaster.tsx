@@ -1,22 +1,23 @@
 import { Toaster as SonnerToaster, ToasterProps } from "sonner";
-import { useTheme } from "@/context/ThemeContext"; 
+import { useTheme } from "@/context/ThemeContext";
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme } = useTheme(); 
+  const { theme } = useTheme();
 
   return (
     <SonnerToaster
       theme={theme as ToasterProps["theme"]}
-      className="toaster group"
       toastOptions={{
         classNames: {
           toast:
-            "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg",
-          description: "group-[.toast]:text-muted-foreground",
-          actionButton:
-            "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground font-medium",
-          cancelButton:
-            "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground font-medium",
+            "bg-[var(--popover-bg-light)] text-[var(--color-foreground-light)] " +
+            "dark:bg-[var(--popover-bg-dark)] dark:text-[var(--color-foreground-dark)] " +
+            "border border-[var(--popover-border-light)] dark:border-[var(--popover-border-dark)] " +
+            "rounded-lg shadow-xl px-4 py-3",
+          title: "font-semibold text-sm",
+          description: "text-muted-foreground",
+          actionButton: "bg-primary text-primary-foreground font-medium",
+          cancelButton: "bg-muted text-muted-foreground font-medium",
         },
       }}
       {...props}

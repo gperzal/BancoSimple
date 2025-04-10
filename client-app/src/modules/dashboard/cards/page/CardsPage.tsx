@@ -10,7 +10,7 @@ export default function CardsPage() {
 
   return (
     <Layout>
-      <section className="container mx-auto py-6 space-y-6">
+      <section className="container mx-auto space-y-6">
         {!showTabs ? (
           <>
             <div className="mb-6">

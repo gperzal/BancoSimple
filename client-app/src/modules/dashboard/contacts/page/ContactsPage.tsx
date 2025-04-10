@@ -5,7 +5,7 @@ import { ContactsSection } from "@/modules/dashboard/contacts/components/Contact
 export default function ContactsPage() {
   return (
     <Layout>
-      <section className="container mx-auto py-6 space-y-6">
+      <section className="container mx-auto space-y-6">
         <div className="mb-8">
           <h1 className="text-4xl font-extrabold tracking-tight text-primary mb-2">
             Contactos Frecuentes

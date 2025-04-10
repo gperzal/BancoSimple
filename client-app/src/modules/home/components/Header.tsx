@@ -7,7 +7,7 @@ const Header = () => {
     { to: "/seguro-simple", text: "SeguroSimple" },
     { to: "/play-simple", text: "PlaySimple" },
     { to: "/eco-express", text: "EcoExpress" },
-    { to: "/eco-market", text: "EcoMarket" },
+    { to: "https://ecomarketf.vercel.app", text: "EcoMarket" },
   ];
 
   return (

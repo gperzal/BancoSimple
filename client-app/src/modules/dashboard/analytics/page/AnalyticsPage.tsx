@@ -52,7 +52,7 @@ const AnalyticsPage = () => {
 
   return (
     <Layout>
-      <section className="container mx-auto py-6 space-y-6">
+      <section className="container mx-auto space-y-6">
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-4xl font-extrabold tracking-tight text-primary mb-2">

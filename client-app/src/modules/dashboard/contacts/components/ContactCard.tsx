@@ -1,7 +1,22 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { ArrowRightLeft, Star, MoreHorizontal } from "lucide-react";
+import {
+  ArrowRightLeft,
+  Star,
+  MoreHorizontal,
+  Trash2,
+  Pencil,
+} from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  notifySuccess,
+  notifyWarning,
+  notifyInfo,
+} from "@/utils/notifications";
 
 interface Contact {
   id: number;
@@ -12,15 +27,36 @@ interface Contact {
   favorite: boolean;
 }
 
-export function ContactCard({ contact }: { contact: Contact }) {
+interface ContactCardProps {
+  contact: Contact;
+  onSelect?: (contact: Contact) => void;
+  onEdit?: (contact: Contact) => void;
+}
+
+export function ContactCard({ contact, onSelect, onEdit }: ContactCardProps) {
   const initials = contact.name
     .split(" ")
     .map((n) => n[0])
     .join("");
 
   const handleToggleFavorite = () => {
-    // lógica de actualización simulada
     console.log(`Favorito actualizado para: ${contact.name}`);
+  };
+
+  const handleDelete = () => {
+    notifyWarning(
+      "¿Eliminar contacto?",
+      `${contact.name} será removido permanentemente de tu lista de contactos.`,
+      () =>
+        notifySuccess(
+          "Contacto eliminado",
+          `${contact.name} fue eliminado correctamente.`
+        ),
+      () => {
+        notifyInfo("Cancelado", "El contacto no fue eliminado.");
+        return true; // fuerza cierre del toast en algunas versiones
+      }
+    );
   };
 
   return (
@@ -39,18 +75,44 @@ export function ContactCard({ contact }: { contact: Contact }) {
         <Button variant="ghost" size="sm" onClick={handleToggleFavorite}>
           <Star
             className={`h-4 w-4 ${
-              contact.favorite ? "fill-yellow-500 text-yellow-500" : ""
+              contact.favorite
+                ? "text-yellow-500 fill-yellow-500"
+                : "text-yellow-500"
             }`}
           />
         </Button>
-        <Button variant="outline" size="sm" asChild>
-          <Link to={`/transfers?contact=${contact.id}`}>
-            <ArrowRightLeft className="h-4 w-4" />
-          </Link>
+
+        <Button variant="outline" size="sm" onClick={() => onSelect?.(contact)}>
+          <ArrowRightLeft className="h-4 w-4" />
         </Button>
-        <Button variant="ghost" size="sm">
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="ghost" size="sm">
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent align="end" className="w-48 popover popover-menu">
+            <div className="flex flex-col gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="justify-start gap-2"
+                onClick={() => onEdit?.(contact)}
+              >
+                <Pencil className="h-4 w-4" /> Editar contacto
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="justify-start gap-2 text-destructive"
+                onClick={handleDelete}
+              >
+                <Trash2 className="h-4 w-4" /> Eliminar contacto
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
     </div>
   );

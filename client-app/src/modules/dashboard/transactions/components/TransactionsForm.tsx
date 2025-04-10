@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -17,9 +17,19 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { toast } from "sonner";
+import { notifySuccess } from "@/utils/notifications";
+import { FaPaperPlane } from "react-icons/fa";
+import { FormGroup } from "@/components/ui/form-group";
 
-// Validación del formulario usando Zod
+export interface Contact {
+  id: number;
+  name: string;
+  email: string;
+  accountNumber: string;
+  favorite: boolean;
+  image: string;
+}
+
 const schema = z.object({
   fromAccount: z.string().nonempty("Selecciona una cuenta de origen"),
   toAccount: z.string().nonempty("Ingresa la cuenta destino o RUT"),
@@ -34,10 +44,15 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-export default function TransactionsForm() {
+interface TransactionsFormProps {
+  selectedContact?: Contact | null;
+}
+
+export default function TransactionsForm({
+  selectedContact,
+}: TransactionsFormProps) {
   const [loading, setLoading] = useState(false);
 
-  // Setup del hook react-hook-form
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -46,19 +61,23 @@ export default function TransactionsForm() {
     },
   });
 
-  // Simulación de envío del formulario
+  useEffect(() => {
+    if (selectedContact) {
+      form.setValue("toAccount", selectedContact.accountNumber);
+      form.setValue("description", `Transferencia a ${selectedContact.name}`);
+    }
+  }, [selectedContact, form]);
+
   const onSubmit = (values: FormValues) => {
     setLoading(true);
     setTimeout(() => {
-      toast.success(`Has transferido ${values.amount} ${values.currency}`);
+      notifySuccess(
+        "Transferencia exitosa",
+        `Has transferido ${values.amount} ${values.currency}`
+      );
       setLoading(false);
     }, 1000);
   };
-  const inputClass =
-    "border border-gray-300 rounded-md text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] transition-colors";
-
-  const selectClass =
-    "border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] transition-colors";
 
   return (
     <div className="card">
@@ -73,151 +92,129 @@ export default function TransactionsForm() {
 
       <CardContent>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-          {/* Cuenta de origen */}
-          <div className="space-y-1">
-            <label
-              htmlFor="fromAccount"
-              className="text-sm font-medium text-foreground"
-            >
-              Cuenta de Origen
-            </label>
+          <FormGroup label="Cuenta de Origen" htmlFor="fromAccount">
             <Input
               id="fromAccount"
               placeholder="Ej: Cuenta Corriente CLP"
               {...form.register("fromAccount")}
-              className={inputClass}
+              className="input-primary"
             />
-          </div>
+          </FormGroup>
 
-          {/* Cuenta destino o RUT */}
-          <div className="space-y-1">
-            <label
-              htmlFor="toAccount"
-              className="text-sm font-medium text-foreground"
-            >
-              Cuenta Destino o RUT
-            </label>
+          <FormGroup label="Cuenta Destino o RUT" htmlFor="toAccount">
             <Input
               id="toAccount"
               placeholder="Ej: 12.345.678-9 o 123456789012"
               {...form.register("toAccount")}
-              className={inputClass}
+              className="input-primary"
             />
-          </div>
+          </FormGroup>
 
-          {/* Monto a transferir */}
-          <div className="space-y-1">
-            <label
-              htmlFor="amount"
-              className="text-sm font-medium text-foreground"
-            >
-              Monto a transferir
-            </label>
+          <FormGroup label="Monto a transferir" htmlFor="amount">
             <Input
               id="amount"
               placeholder="Ej: 10000"
               {...form.register("amount")}
-              className={inputClass}
+              className="input-primary"
             />
-          </div>
+          </FormGroup>
 
-          {/* Selector de moneda */}
-          <div className="space-y-1">
-            <label
-              htmlFor="currency"
-              className="text-sm font-medium text-foreground"
-            >
-              Moneda
-            </label>
+          <FormGroup label="Moneda" htmlFor="currency">
             <Select
-              defaultValue="CLP"
               onValueChange={(val) => form.setValue("currency", val)}
+              defaultValue="CLP"
             >
-              <SelectTrigger
-                id="currency"
-                className={`w-full border rounded-md px-3 py-2 ${selectClass}`}
-              >
+              <SelectTrigger id="currency" className="select-primary popover">
                 <SelectValue placeholder="Selecciona moneda" />
               </SelectTrigger>
-              <SelectContent className="z-50">
-                <SelectItem value="CLP">Peso Chileno (CLP)</SelectItem>
-                <SelectItem value="GBP">Libra Esterlina (GBP)</SelectItem>
-                <SelectItem value="ARS">Peso Argentino (ARS)</SelectItem>
-                <SelectItem value="BRL">Real Brasileño (BRL)</SelectItem>
-                <SelectItem value="USD">Dólar Estadounidense (USD)</SelectItem>
-                <SelectItem value="EUR">Euro (EUR)</SelectItem>
+              <SelectContent className="popover z-50">
+                <SelectItem value="CLP" className="popover-option">
+                  Peso Chileno (CLP)
+                </SelectItem>
+                <SelectItem value="GBP" className="popover-option">
+                  Libra Esterlina (GBP)
+                </SelectItem>
+                <SelectItem value="ARS" className="popover-option">
+                  Peso Argentino (ARS)
+                </SelectItem>
+                <SelectItem value="BRL" className="popover-option">
+                  Real Brasileño (BRL)
+                </SelectItem>
+                <SelectItem value="USD" className="popover-option">
+                  Dólar Estadounidense (USD)
+                </SelectItem>
+                <SelectItem value="EUR" className="popover-option">
+                  Euro (EUR)
+                </SelectItem>
               </SelectContent>
             </Select>
-          </div>
+          </FormGroup>
 
-          {/* Selector de categoría */}
-          <div className="space-y-1">
-            <label
-              htmlFor="category"
-              className="text-sm font-medium text-foreground"
-            >
-              Categoría
-            </label>
+          <FormGroup label="Categoría" htmlFor="category">
             <Select
-              defaultValue="transferencia"
               onValueChange={(val) => form.setValue("category", val)}
+              defaultValue="transferencia"
             >
-              <SelectTrigger
-                id="category"
-                className={`w-full border rounded-md px-3 py-2 ${selectClass}`}
-              >
+              <SelectTrigger id="category" className="select-primary popover">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className={"z-50 "}>
-                <SelectItem value="transferencia" defaultChecked>
+              <SelectContent className="popover z-50">
+                <SelectItem value="transferencia" className="popover-option">
                   Transferencia
                 </SelectItem>
-                <SelectItem value="recarga">Recarga</SelectItem>
-                <SelectItem value="compra">Compra</SelectItem>
-                <SelectItem value="pago_servicios">Pago Servicios</SelectItem>
-                <SelectItem value="arriendo">Arriendo</SelectItem>
-                <SelectItem value="salud">Salud</SelectItem>
-                <SelectItem value="gasto_familiar">Gasto Familiar</SelectItem>
-                <SelectItem value="otros">Otros</SelectItem>
+                <SelectItem value="recarga" className="popover-option">
+                  Recarga
+                </SelectItem>
+                <SelectItem value="compra" className="popover-option">
+                  Compra
+                </SelectItem>
+                <SelectItem value="pago_servicios" className="popover-option">
+                  Pago Servicios
+                </SelectItem>
+                <SelectItem value="arriendo" className="popover-option">
+                  Arriendo
+                </SelectItem>
+                <SelectItem value="salud" className="popover-option">
+                  Salud
+                </SelectItem>
+                <SelectItem value="gasto_familiar" className="popover-option">
+                  Gasto Familiar
+                </SelectItem>
+                <SelectItem value="otros" className="popover-option">
+                  Otros
+                </SelectItem>
               </SelectContent>
             </Select>
-          </div>
+          </FormGroup>
 
-          {/* Referencia externa opcional */}
-          <div className="space-y-1">
-            <label
-              htmlFor="reference"
-              className="text-sm font-medium text-foreground"
-            >
-              Referencia externa (solo si aplica)
-            </label>
+          <FormGroup
+            label="Referencia externa (solo si aplica)"
+            htmlFor="reference"
+          >
             <Input
               id="reference"
               {...form.register("reference")}
-              className={inputClass}
+              className="input-primary"
             />
-          </div>
+          </FormGroup>
 
-          {/* Descripción opcional */}
-          <div className="space-y-1">
-            <label
-              htmlFor="description"
-              className="text-sm font-medium text-foreground"
-            >
-              Descripción (opcional)
-            </label>
+          <FormGroup label="Descripción (opcional)" htmlFor="description">
             <Textarea
               id="description"
               placeholder="Ej: Pago por almuerzo, transferencia mensual, etc."
               {...form.register("description")}
-              className={inputClass}
+              className="input-primary"
             />
-          </div>
+          </FormGroup>
 
-          {/* Botón de envío */}
           <div className="flex justify-end">
-            <button type="submit" className="button" disabled={loading}>
-              {loading ? "Enviando..." : "Enviar transferencia"}
+            <button
+              type="submit"
+              disabled={loading}
+              className="button-primary-auto px-6"
+            >
+              {loading ? "Enviando..." : "Enviar transferencia"}{" "}
+              <FaPaperPlane />
             </button>
           </div>
         </form>

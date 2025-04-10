@@ -225,3 +225,47 @@ export const productData = [
   { name: "Crédito Personal", usuarios: 1200 },
   { name: "Hipotecario", usuarios: 950 },
 ];
+
+
+export const contacts = [
+    {
+      id: 1,
+      name: "John Smith",
+      email: "john.smith@example.com",
+      accountNumber: "****1234",
+      favorite: true,
+      image: "",
+    },
+    {
+      id: 2,
+      name: "Maria Garcia",
+      email: "maria.garcia@example.com",
+      accountNumber: "****5678",
+      favorite: true,
+      image: "",
+    },
+    {
+      id: 3,
+      name: "Alex Johnson",
+      email: "alex.j@example.com",
+      accountNumber: "****9012",
+      favorite: false,
+      image: "",
+    },
+    {
+      id: 4,
+      name: "Sarah Williams",
+      email: "sarah.w@example.com",
+      accountNumber: "****3456",
+      favorite: false,
+      image: "",
+    },
+    {
+      id: 5,
+      name: "Michael Brown",
+      email: "michael.b@example.com",
+      accountNumber: "****7890",
+      favorite: false,
+      image: "",
+    },
+  ]

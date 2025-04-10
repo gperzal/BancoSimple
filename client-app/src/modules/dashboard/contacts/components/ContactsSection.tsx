@@ -1,5 +1,3 @@
-// ✅ Archivo: /modules/dashboard/contacts/components/ContactsSection.tsx
-
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,55 +8,15 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Search, Star } from "lucide-react";
-import { AddContactDialog } from "@/modules/dashboard/contacts/components/AddContactDialog";
+import AddContactDialog from "@/modules/dashboard/contacts/components/AddContactDialog";
 import { ContactCard } from "./ContactCard";
 import { ContactStatsCard } from "@/modules/dashboard/contacts/components/ContactStatsCard";
+import { contacts as mockContacts } from "@/utils/mockData";
 
 export function ContactsSection() {
   const [searchTerm, setSearchTerm] = useState("");
-
-  const [contacts] = useState([
-    {
-      id: 1,
-      name: "John Smith",
-      email: "john.smith@example.com",
-      accountNumber: "****1234",
-      favorite: true,
-      image: "",
-    },
-    {
-      id: 2,
-      name: "Maria Garcia",
-      email: "maria.garcia@example.com",
-      accountNumber: "****5678",
-      favorite: true,
-      image: "",
-    },
-    {
-      id: 3,
-      name: "Alex Johnson",
-      email: "alex.j@example.com",
-      accountNumber: "****9012",
-      favorite: false,
-      image: "",
-    },
-    {
-      id: 4,
-      name: "Sarah Williams",
-      email: "sarah.w@example.com",
-      accountNumber: "****3456",
-      favorite: false,
-      image: "",
-    },
-    {
-      id: 5,
-      name: "Michael Brown",
-      email: "michael.b@example.com",
-      accountNumber: "****7890",
-      favorite: false,
-      image: "",
-    },
-  ]);
+  const [showAddContact, setShowAddContact] = useState(false);
+  const [contacts] = useState(mockContacts);
 
   const filteredContacts = contacts.filter(
     (contact) =>
@@ -80,13 +38,18 @@ export function ContactsSection() {
                 Administra y transfiere a tus contactos frecuentes.
               </CardDescription>
             </div>
-            <AddContactDialog />
+            <button
+              className="button-primary-auto px-6"
+              onClick={() => setShowAddContact(true)}
+            >
+              + Agregar contacto
+            </button>
           </div>
           <div className="relative mt-4">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Buscar contactos..."
-              className="pl-10"
+              className="input-primary pl-10"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -122,6 +85,11 @@ export function ContactsSection() {
       <div className="space-y-6">
         <ContactStatsCard contacts={contacts} />
       </div>
+
+      <AddContactDialog
+        open={showAddContact}
+        onOpenChange={setShowAddContact}
+      />
     </div>
   );
 }
