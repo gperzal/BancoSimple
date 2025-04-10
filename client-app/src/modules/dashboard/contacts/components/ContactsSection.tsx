@@ -59,8 +59,8 @@ export function ContactsSection() {
           {favoriteContacts.length > 0 && (
             <>
               <h3 className="font-medium text-lg mb-2 flex items-center">
-                <Star className="h-4 w-4 text-yellow-500 mr-2" /> Contactos
-                Favoritos
+                <Star className="h-4 w-4  text-yellow-500 fill-yellow-500 mr-2" />{" "}
+                Contactos Favoritos
               </h3>
               <div className="grid gap-4 mb-6">
                 {favoriteContacts.map((c) => (

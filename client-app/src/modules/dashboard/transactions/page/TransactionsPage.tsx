@@ -3,6 +3,7 @@ import Layout from "@/modules/dashboard/common/components/Layout";
 import TransactionsForm from "@/modules/dashboard/transactions/components/TransactionsForm";
 import type { Contact } from "@/modules/dashboard/transactions/components/TransactionsForm";
 import { FrequentContactsSection } from "@/modules/dashboard/transactions/components/FrequentContactsSection";
+import { TransferTipsFloating } from "@/modules/dashboard/transactions/components/TransferTipsFloating";
 
 export default function TransactionsPage() {
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
@@ -25,6 +26,7 @@ export default function TransactionsPage() {
           <FrequentContactsSection onSelectContact={setSelectedContact} />
         </div>
       </section>
+      <TransferTipsFloating />
     </Layout>
   );
 }
