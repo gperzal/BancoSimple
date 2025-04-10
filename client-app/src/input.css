@@ -231,7 +231,76 @@
     @apply bg-[var(--color-primary)] text-white rounded-md;
   }
   
+
+  /* ─────────── Dashboard Metrics Cards ─────────── */
+
+  .text-muted-foreground {
+    @apply text-gray-500;
+  }
+
+  .dashboard-card {
+    @apply card p-6;
+  }
   
+
+  .dashboard-card-title {
+    @apply text-sm font-medium text-gray-500; 
+  }
+
+.dashboard-card-value {
+  @apply text-2xl font-bold;
+}
+
+.dashboard-card-change {
+  @apply text-xs flex items-center;
+}
+
+.dashboard-card-icon {
+  @apply p-2 rounded-full;
+}
+
+
+/* ─────────── Tabs ─────────── */
+
+
+.tabs-trigger-primary {
+  @apply font-medium text-sm px-4 py-2 rounded-xl  text-white  transition-colors 
+         text-foreground border-[var(--color-border-light)] 
+         dark:text-[var(--color-foreground-dark)] 
+         dark:border-[var(--color-border-dark)] 
+         bg-transparent;
+}
+
+
+.tabs-trigger-primary:hover {
+  @apply text-[var(--color-primary)] border-[var(--color-primary)] bg-transparent;
+}
+
+.tabs-trigger-primary[data-state="active"] {
+  @apply !text-white !bg-[var(--color-primary)] !border-[var(--color-primary)];
+}
+
+
+.dark .tabs-trigger-primary {
+  border-color: var(--color-border-dark);
+  color: var(--color-foreground-dark);
+}
+
+.dark .tabs-trigger-primary:hover {
+  background-color: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.dark .tabs-trigger-primary[data-state="active"] {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+}
+
+.dark .tabs-trigger-primary-bg {
+  background-color: var(--color-layout-dark);
+}
 
   
   /* ─────────── Buttons ─────────── */
