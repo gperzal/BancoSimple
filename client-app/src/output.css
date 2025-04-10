@@ -3735,6 +3735,14 @@ body {
     margin-top: 0px;
   }
 
+  .sm\:mr-2 {
+    margin-right: 0.5rem;
+  }
+
+  .sm\:inline {
+    display: inline;
+  }
+
   .sm\:h-14 {
     height: 3.5rem;
   }

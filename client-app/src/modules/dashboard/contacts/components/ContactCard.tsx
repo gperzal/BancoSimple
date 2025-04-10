@@ -1,12 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  ArrowRightLeft,
-  Star,
-  MoreHorizontal,
-  Trash2,
-  Pencil,
-} from "lucide-react";
+import { Star, MoreHorizontal, Trash2, Pencil } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -27,44 +21,66 @@ interface Contact {
   favorite: boolean;
 }
 
-type ContactCardMode = "contacts" | "transactions";
-
 interface ContactCardProps {
   contact: Contact;
-  mode?: ContactCardMode;
-  onSelect?: (contact: Contact) => void;
   onEdit?: (contact: Contact) => void;
+  onDelete?: (id: number) => void;
+  onToggleFavorite?: (id: number, value?: boolean) => void;
 }
 
 export function ContactCard({
   contact,
-  onSelect,
   onEdit,
-  mode = "contacts",
+  onDelete,
+  onToggleFavorite,
 }: ContactCardProps) {
   const initials = contact.name
     .split(" ")
     .map((n) => n[0])
     .join("");
 
-  const handleToggleFavorite = () => {
-    console.log(`Favorito actualizado para: ${contact.name}`);
-  };
-
   const handleDelete = () => {
     notifyWarning(
       "¿Eliminar contacto?",
       `${contact.name} será removido permanentemente de tu lista de contactos.`,
-      () =>
+      () => {
+        onDelete?.(contact.id);
         notifySuccess(
           "Contacto eliminado",
           `${contact.name} fue eliminado correctamente.`
-        ),
+        );
+      },
       () => {
         notifyInfo("Cancelado", "El contacto no fue eliminado.");
         return true;
       }
     );
+  };
+
+  const handleToggleFavorite = () => {
+    if (!contact.favorite) {
+      onToggleFavorite?.(contact.id, true);
+      notifySuccess(
+        "Añadido a favoritos",
+        `${contact.name} fue marcado como favorito.`
+      );
+    } else {
+      notifyWarning(
+        "¿Quitar de favoritos?",
+        `${contact.name} será eliminado de tu lista de favoritos.`,
+        () => {
+          onToggleFavorite?.(contact.id, false);
+          notifySuccess(
+            "Removido de favoritos",
+            `${contact.name} fue eliminado de favoritos.`
+          );
+        },
+        () => {
+          notifyInfo("Cancelado", "El contacto no fue eliminado de favoritos.");
+          return true;
+        }
+      );
+    }
   };
 
   return (
@@ -80,27 +96,15 @@ export function ContactCard({
         </div>
       </div>
       <div className="flex items-center gap-2">
-        {mode === "contacts" && (
-          <Button variant="ghost" size="sm" onClick={handleToggleFavorite}>
-            <Star
-              className={`h-4 w-4 ${
-                contact.favorite
-                  ? "text-yellow-500 fill-yellow-500"
-                  : "text-yellow-500"
-              }`}
-            />
-          </Button>
-        )}
-
-        {mode === "transactions" && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onSelect?.(contact)}
-          >
-            <ArrowRightLeft className="h-4 w-4" />
-          </Button>
-        )}
+        <Button variant="ghost" size="sm" onClick={handleToggleFavorite}>
+          <Star
+            className={`h-4 w-4 ${
+              contact.favorite
+                ? "text-yellow-500 fill-yellow-500"
+                : "text-gray-400"
+            }`}
+          />
+        </Button>
 
         <Popover>
           <PopoverTrigger asChild>

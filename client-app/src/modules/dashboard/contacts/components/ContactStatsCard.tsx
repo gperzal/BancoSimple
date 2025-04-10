@@ -1,5 +1,3 @@
-// ✅ Archivo: /modules/dashboard/contacts/components/ContactStatsCard.tsx
-
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 interface Contact {
@@ -14,7 +12,7 @@ interface Contact {
 export function ContactStatsCard({ contacts }: { contacts: Contact[] }) {
   const total = contacts.length;
   const favorites = contacts.filter((c) => c.favorite).length;
-  const recentTransfers = 12; // Este valor puede venir de props o API si fuera dinámico
+  const recentTransfers = 12; 
 
   return (
     <Card>
