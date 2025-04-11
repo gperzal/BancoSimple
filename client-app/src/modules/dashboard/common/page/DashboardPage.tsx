@@ -4,7 +4,13 @@
 import { ReactNode } from "react";
 import Layout from "@/modules/dashboard/common/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import {
   CreditCard,
   Gift,
@@ -41,10 +47,16 @@ export default function DashboardPage() {
             <p className="text-muted-foreground mt-1">{formattedDate}</p>
           </div>
           <div className="flex mt-4 sm:mt-0 gap-2">
-            <Button variant="outline" className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              className="button-outline-auto flex items-center gap-2"
+            >
               <RefreshCw className="w-4 h-4" /> Actualizar
             </Button>
-            <Button variant="default" className="flex items-center gap-2">
+            <Button
+              variant="default"
+              className="button-primary-auto flex items-center gap-2"
+            >
               <Bell className="w-4 h-4" /> Notificaciones
               <Badge className="ml-1 bg-white text-primary">3</Badge>
             </Button>
@@ -99,22 +111,22 @@ export default function DashboardPage() {
           </Card>
         </div>
 
-        {/* Vista de saldos por cuenta */}
-        <div className="mt-6 animate-fade-in">
+        {/* Mis cuentas y transacciones */}
+        <div className="mt-6 animate-fade-in grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card className="border-primary/20">
             <CardHeader className="pb-2">
               <CardTitle className="text-xl font-semibold flex items-center">
                 <CreditCard className="h-5 w-5 mr-2 text-primary" /> Mis Cuentas
               </CardTitle>
+              <CardDescription className="text-sm text-muted-foreground">
+                Vista general de tus balances y movimientos
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <AccountBalance />
             </CardContent>
           </Card>
-        </div>
 
-        {/* Últimas transacciones */}
-        <div className="mt-6 animate-fade-in">
           <Card className="border-primary/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-xl font-semibold flex items-center">
@@ -124,11 +136,14 @@ export default function DashboardPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="flex items-center gap-1 text-primary"
+                className="button-outline-auto"
               >
                 Ver todas <ArrowRight className="h-4 w-4 ml-1" />
               </Button>
             </CardHeader>
+            <CardDescription className="text-sm text-muted-foreground">
+              Vista general de tus balances y movimientos
+            </CardDescription>
             <CardContent>
               <TransactionsTable limit={5} />
             </CardContent>
@@ -137,23 +152,14 @@ export default function DashboardPage() {
 
         {/* Acciones rápidas / promociones */}
         <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 animate-fade-in">
-          <Button
-            variant="outline"
-            className="flex items-center gap-2 border-primary/20 hover:border-primary/50 shadow-sm h-12"
-          >
+          <Button variant="outline" className="button-outline-auto">
             <PlusCircle className="w-4 h-4 text-primary" /> Solicitar nuevo
             producto
           </Button>
-          <Button
-            variant="outline"
-            className="flex items-center gap-2 border-primary/20 hover:border-primary/50 shadow-sm h-12"
-          >
+          <Button variant="outline" className="button-outline-auto">
             <CreditCard className="w-4 h-4 text-primary" /> Ver mis tarjetas
           </Button>
-          <Button
-            variant="default"
-            className="flex items-center gap-2 shadow-sm h-12"
-          >
+          <Button variant="default" className="button-outline-auto">
             <Gift className="w-4 h-4" /> Promociones activas
           </Button>
         </div>

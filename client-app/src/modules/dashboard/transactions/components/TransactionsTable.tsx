@@ -38,7 +38,7 @@ export default function TransactionsTable({ limit }: TransactionsTableProps) {
   }
 
   return (
-    <div className="card overflow-x-auto mt-3">
+    <div>
       <Table>
         <TableHeader>
           <TableRow>

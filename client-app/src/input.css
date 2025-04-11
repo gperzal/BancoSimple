@@ -329,6 +329,14 @@
            transition-colors font-bold py-2 px-4;
   }
 
+  .button-outline-auto {
+    @apply flex items-center justify-center gap-2 
+           rounded-xl border border-[var(--color-primary)]
+           text-[var(--color-primary)] bg-white 
+           hover:bg-[var(--color-primary)] hover:text-white 
+           transition-colors font-bold py-2 px-4 w-auto;
+  }
+
   .card-auth {
     @apply bg-white dark:bg-gray-900 
            border border-gray-200 dark:border-gray-700 

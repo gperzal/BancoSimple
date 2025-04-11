@@ -1,33 +1,19 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { userData } from "@/utils/mockData";
 import { Banknote, PiggyBank } from "lucide-react";
 
 const AccountBalance = () => {
   return (
-    <Card className="w-500 md:w-full lg:w-1/2 xl:w-1/3 mx-start">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-xl font-semibold tracking-tight">
-          Mis Cuentas
-        </CardTitle>
-        <CardDescription className="text-sm text-muted-foreground">
-          Vista general de tus balances y movimientos
-        </CardDescription>
-      </CardHeader>
+    <Card className="w-full">
       <CardContent>
-        <Tabs defaultValue={userData.accounts[0].id} className="w-full">
+        <Tabs defaultValue={userData.accounts[0].id} className="w-full ">
           <TabsList className="grid grid-cols-2 mb-4">
             {userData.accounts.map((account) => (
               <TabsTrigger
                 key={account.id}
                 value={account.id}
-                className="flex items-center gap-1 text-sm"
+                className="flex items-center gap-1 text-sm tabs-trigger-primary"
               >
                 {account.name.includes("Ahorro") ? (
                   <PiggyBank className="w-4 h-4" />
