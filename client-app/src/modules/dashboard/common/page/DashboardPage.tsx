@@ -16,10 +16,12 @@ import {
   Gift,
   PlusCircle,
   TrendingUp,
+  Clock,
   RefreshCw,
   ArrowRight,
   Bell,
 } from "lucide-react";
+
 import AccountBalance from "@/modules/dashboard/cards/components/AccountBalance";
 import TransactionsTable from "@/modules/dashboard/transactions/components/TransactionsTable";
 
@@ -64,51 +66,38 @@ export default function DashboardPage() {
         </div>
 
         {/* Cartas de resumen */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="border-primary/20 hover:border-primary/50 transition-all shadow-sm hover:shadow">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-md font-medium">Saldo Total</CardTitle>
-              <CreditCard className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">$24,580.45</div>
-              <p className="text-xs text-muted-foreground mt-1">
-                <span className="inline-flex items-center text-green-600 font-medium">
-                  <TrendingUp className="w-3 h-3 mr-1" /> +2.5%
-                </span>{" "}
-                desde el mes pasado
-              </p>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <MetricCard
+            title="Saldo Total"
+            value="$24,580.45"
+            icon={<CreditCard className="h-4 w-4" />}
+            description="desde el mes pasado"
+            descriptionIcon={<TrendingUp className="w-3 h-3 mr-1" />}
+            descriptionColor="text-green-600"
+          />
 
-          <Card className="border-primary/20 hover:border-primary/50 transition-all shadow-sm hover:shadow">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-md font-medium">
-                Tarjetas Activas
-              </CardTitle>
-              <CreditCard className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">3</div>
-              <p className="text-xs text-muted-foreground mt-1">
-                Débito (1), Crédito (2)
-              </p>
-            </CardContent>
-          </Card>
+          <MetricCard
+            title="Tarjetas Activas"
+            value="3"
+            icon={<CreditCard className="h-4 w-4" />}
+            description="Débito (1), Crédito (2)"
+          />
 
-          <Card className="border-primary/20 hover:border-primary/50 transition-all shadow-sm hover:shadow">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-md font-medium">Promociones</CardTitle>
-              <Gift className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">5</div>
-              <p className="text-xs text-muted-foreground mt-1">
-                <span className="text-primary font-medium">2 nuevas</span> esta
-                semana
-              </p>
-            </CardContent>
-          </Card>
+          <MetricCard
+            title="Promociones"
+            value="5"
+            icon={<Gift className="h-4 w-4" />}
+            description="2 nuevas esta semana"
+            descriptionColor="text-primary"
+          />
+
+          <MetricCard
+            title="Transacciones Pendientes"
+            value="7"
+            icon={<Clock className="h-4 w-4" />}
+            description="4 vencen hoy"
+            descriptionColor="text-yellow-500"
+          />
         </div>
 
         {/* Mis cuentas y transacciones */}
@@ -128,22 +117,25 @@ export default function DashboardPage() {
           </Card>
 
           <Card className="border-primary/20">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xl font-semibold flex items-center">
-                <RefreshCw className="h-5 w-5 mr-2 text-primary" /> Últimas
-                Transferencias
-              </CardTitle>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="button-outline-auto"
-              >
-                Ver todas <ArrowRight className="h-4 w-4 ml-1" />
-              </Button>
+            {/* Últimas transacciones */}
+            <CardHeader className="pb-4">
+              <div className="flex flex-row items-center justify-between w-full">
+                <CardTitle className="text-lg font-semibold flex items-center">
+                  <RefreshCw className="h-5 w-5 mr-2 text-primary" /> Últimas
+                  Transferencias
+                </CardTitle>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="button-outline-auto"
+                >
+                  Ver todas <ArrowRight className="h-4 w-4 ml-1" />
+                </Button>
+              </div>
+              <CardDescription className="text-sm text-muted-foreground mt-2">
+                Vista general de tus balances y movimientos
+              </CardDescription>
             </CardHeader>
-            <CardDescription className="text-sm text-muted-foreground">
-              Vista general de tus balances y movimientos
-            </CardDescription>
             <CardContent>
               <TransactionsTable limit={5} />
             </CardContent>
@@ -181,5 +173,45 @@ function Badge({
     >
       {children}
     </span>
+  );
+}
+
+//  Subcomponente local
+function MetricCard({
+  title,
+  value,
+  icon,
+  description,
+  descriptionIcon,
+  descriptionColor = "text-muted-foreground",
+}: {
+  title: string;
+  value: string;
+  icon: React.ReactNode;
+  description?: string;
+  descriptionIcon?: React.ReactNode;
+  descriptionColor?: string;
+}) {
+  return (
+    <div className="dashboard-card hover:border-primary/50 hover:shadow transition-all">
+      <div className="flex items-center justify-between pb-2">
+        <p className="dashboard-card-title">{title}</p>
+        <div className="dashboard-card-icon bg-[var(--color-primary-lighter)] text-white rounded-full">
+          {icon}
+        </div>
+      </div>
+      <div className="dashboard-card-value">{value}</div>
+      {description && (
+        <p className={`text-xs mt-1 ${descriptionColor}`}>
+          {descriptionIcon && (
+            <span className="inline-flex items-center font-medium">
+              {descriptionIcon}
+              &nbsp;
+            </span>
+          )}
+          {description}
+        </p>
+      )}
+    </div>
   );
 }

@@ -2145,6 +2145,22 @@ body {
   background-color: rgb(147 51 234 / 0.1);
 }
 
+.bg-primary-light {
+  background-color: var(--color-primary-light);
+}
+
+.bg-\[\] {
+  background-color: ;
+}
+
+.bg-\[var\(--color-primary-lighter\)\] {
+  background-color: var(--color-primary-lighter);
+}
+
+.bg-\[var\(--color-primary-darker\)\] {
+  background-color: var(--color-primary-darker);
+}
+
 .bg-gradient-to-t {
   background-image: linear-gradient(to top, var(--tw-gradient-stops));
 }
