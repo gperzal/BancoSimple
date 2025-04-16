@@ -20,7 +20,7 @@ export default function HistoryTable() {
     <div className="card overflow-x-auto">
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow className="table-header">
             <TableHead>Fecha</TableHead>
             <TableHead>Descripción</TableHead>
             <TableHead>Categoría</TableHead>
@@ -30,24 +30,24 @@ export default function HistoryTable() {
         </TableHeader>
         <TableBody>
           {transactions.map((tx) => (
-            <TableRow key={tx.id}>
-              <TableCell className="text-sm text-muted-foreground">
+            <TableRow key={tx.id} className="table-row-hover">
+              <TableCell className="table-cell text-muted-foreground">
                 {new Date(tx.fecha).toLocaleDateString("es-CL", {
                   day: "2-digit",
                   month: "short",
                   year: "numeric",
                 })}
               </TableCell>
-              <TableCell className="font-medium max-w-xs truncate">
+              <TableCell className="table-cell font-medium max-w-xs truncate">
                 {tx.descripcion || "Transferencia bancaria"}
               </TableCell>
-              <TableCell className="capitalize text-sm text-muted-foreground">
+              <TableCell className="table-cell capitalize text-muted-foreground">
                 {tx.categoria || "Sin categoría"}
               </TableCell>
-              <TableCell className="text-xs text-muted-foreground">
+              <TableCell className="table-cell text-xs text-muted-foreground">
                 {tx.referencia_externa ?? "-"}
               </TableCell>
-              <TableCell className="text-right">
+              <TableCell className="table-cell text-right">
                 <span
                   className={cn(
                     "flex items-center justify-end font-semibold text-sm",

@@ -1,0 +1,90 @@
+paths:
+  /api/points-history:
+    get:
+      summary: Obtener historial de puntos
+      description: Devuelve el historial completo de movimientos de puntos de los usuarios.
+      tags: [Historial de Puntos]
+      responses:
+        '200':
+          description: Lista de movimientos de puntos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PointsHistoryDTO'
+
+    post:
+      summary: Registrar movimiento de puntos
+      description: Registra un nuevo movimiento de puntos (carga o canje) para un usuario.
+      tags: [Historial de Puntos]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PointsHistoryDTO'
+      responses:
+        '200':
+          description: Movimiento registrado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PointsHistoryDTO'
+
+  /api/points-history/{id}:
+    get:
+      summary: Obtener movimiento por ID
+      description: Devuelve los detalles de un movimiento específico del historial de puntos.
+      tags: [Historial de Puntos]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del movimiento
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Movimiento encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PointsHistoryDTO'
+
+    delete:
+      summary: Eliminar movimiento del historial
+      description: Elimina un movimiento específico del historial de puntos.
+      tags: [Historial de Puntos]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del movimiento
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Movimiento eliminado correctamente
+
+components:
+  schemas:
+    PointsHistoryDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        operationType:
+          type: string
+          example: "carga"
+        points:
+          type: integer
+          example: 100
+        description:
+          type: string
+          example: "Bonificación por bienvenida"
+        date:
+          type: string
+          format: date-time

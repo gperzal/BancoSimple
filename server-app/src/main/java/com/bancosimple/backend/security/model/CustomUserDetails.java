@@ -1,31 +1,38 @@
 package com.bancosimple.backend.security.model;
 
-import com.bancosimple.backend.usuario.model.Usuario;
+import com.bancosimple.backend.features.user.model.User;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+import static com.bancosimple.backend.features.role.shared.RoleUtils.getRoleName;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.stream.Collectors;
 
+@Getter
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
-    private final Usuario usuario;
+    private final User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return user.getUserRoles().stream()
+                .map(userRole -> new SimpleGrantedAuthority("ROLE_" + getRoleName(userRole.getRoleId())))
+                .collect(Collectors.toList());
     }
+
+
 
     @Override
     public String getPassword() {
-        return usuario.getContrasenaHash();
+        return user.getPasswordHash();
     }
 
     @Override
     public String getUsername() {
-        return usuario.getCorreo();
+        return user.getEmail();
     }
 
     @Override

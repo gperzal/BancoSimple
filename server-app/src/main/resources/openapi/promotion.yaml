@@ -1,0 +1,128 @@
+paths:
+  /api/promotions:
+    get:
+      summary: Obtener todas las promociones
+      description: Devuelve una lista con todas las promociones disponibles en el sistema.
+      tags: [Promociones]
+      responses:
+        '200':
+          description: Lista de promociones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PromotionDTO'
+
+    post:
+      summary: Crear nueva promoción
+      description: Crea una nueva promoción y la deja disponible para los usuarios.
+      tags: [Promociones]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionDTO'
+      responses:
+        '200':
+          description: Promoción creada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionDTO'
+
+  /api/promotions/{id}:
+    get:
+      summary: Obtener promoción por ID
+      description: Devuelve los detalles de una promoción específica.
+      tags: [Promociones]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la promoción
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Promoción encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionDTO'
+
+    put:
+      summary: Actualizar promoción
+      description: Modifica los datos de una promoción existente.
+      tags: [Promociones]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la promoción
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionDTO'
+      responses:
+        '200':
+          description: Promoción actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionDTO'
+
+    delete:
+      summary: Eliminar promoción
+      description: Elimina una promoción del sistema por su ID.
+      tags: [Promociones]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la promoción
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Promoción eliminada correctamente
+
+components:
+  schemas:
+    PromotionDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: "Descuento Black Friday"
+        description:
+          type: string
+          example: "20% de descuento en todas las compras"
+        type:
+          type: string
+          example: "porcentaje"
+        percentage:
+          type: number
+          format: double
+          example: 20.0
+        maxAmount:
+          type: number
+          format: double
+          example: 50000.0
+        weekDays:
+          type: array
+          items:
+            type: string
+          example: ["LUNES", "VIERNES"]
+        store:
+          type: string
+          example: "Tienda Central"
+        startDate:
+          type: string

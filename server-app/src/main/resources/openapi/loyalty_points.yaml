@@ -1,0 +1,112 @@
+paths:
+  /api/loyalty-points:
+    get:
+      summary: Obtener puntos de fidelización
+      description: Devuelve el listado de puntos de fidelización acumulados por cada usuario.
+      tags: [Puntos de Fidelización]
+      responses:
+        '200':
+          description: Lista de puntos por usuario
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LoyaltyPointsDTO'
+
+    post:
+      summary: Crear registro de puntos de fidelización
+      description: Crea un nuevo registro de puntos de fidelización para un usuario.
+      tags: [Puntos de Fidelización]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyPointsDTO'
+      responses:
+        '200':
+          description: Registro creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyPointsDTO'
+
+  /api/loyalty-points/{id}:
+    get:
+      summary: Obtener puntos por ID
+      description: Devuelve los puntos de fidelización de un usuario específico.
+      tags: [Puntos de Fidelización]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del registro de puntos
+      responses:
+        '200':
+          description: Registro encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyPointsDTO'
+
+    put:
+      summary: Actualizar puntos de fidelización
+      description: Actualiza el saldo de puntos de un usuario.
+      tags: [Puntos de Fidelización]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del registro de puntos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyPointsDTO'
+      responses:
+        '200':
+          description: Registro actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyPointsDTO'
+
+    delete:
+      summary: Eliminar puntos de fidelización
+      description: Elimina el registro de puntos de un usuario.
+      tags: [Puntos de Fidelización]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del registro de puntos
+      responses:
+        '204':
+          description: Registro eliminado correctamente
+
+components:
+  schemas:
+    LoyaltyPointsDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        accumulatedPoints:
+          type: integer
+          example: 500
+        usedPoints:
+          type: integer
+          example: 100
+        updatedAt:
+          type: string
+          format: date-time

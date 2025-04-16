@@ -1,0 +1,132 @@
+paths:
+  /api/addresses:
+    get:
+      summary: Obtener todas las direcciones
+      description: Devuelve todas las direcciones registradas por los usuarios.
+      tags: [Direcciones]
+      responses:
+        '200':
+          description: Lista de direcciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddressDTO'
+
+    post:
+      summary: Crear una dirección
+      description: Registra una nueva dirección asociada a un usuario.
+      tags: [Direcciones]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressDTO'
+      responses:
+        '200':
+          description: Dirección creada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressDTO'
+
+  /api/addresses/{id}:
+    get:
+      summary: Obtener dirección por ID
+      description: Devuelve los datos de una dirección específica.
+      tags: [Direcciones]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la dirección
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Dirección encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressDTO'
+
+    put:
+      summary: Actualizar dirección
+      description: Actualiza los datos de una dirección existente.
+      tags: [Direcciones]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la dirección
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressDTO'
+      responses:
+        '200':
+          description: Dirección actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressDTO'
+
+    delete:
+      summary: Eliminar dirección
+      description: Elimina una dirección del sistema según su ID.
+      tags: [Direcciones]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la dirección
+      responses:
+        '204':
+          description: Dirección eliminada correctamente
+
+components:
+  schemas:
+    AddressDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        addressType:
+          type: string
+          example: "residencial"
+        street:
+          type: string
+          example: "Av. Siempre Viva"
+        number:
+          type: string
+          example: "742"
+        district:
+          type: string
+          example: "Springfield Norte"
+        city:
+          type: string
+          example: "Springfield"
+        region:
+          type: string
+          example: "Región Metropolitana"
+        postalCode:
+          type: string
+          example: "8320000"
+        country:
+          type: string
+          example: "Chile"
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time

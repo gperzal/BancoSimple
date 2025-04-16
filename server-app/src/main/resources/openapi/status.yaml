@@ -1,0 +1,107 @@
+paths:
+  /api/statuses:
+    get:
+      summary: Obtener todos los estados
+      description: Devuelve una lista con todos los estados generales del sistema.
+      tags: [Estados]
+      responses:
+        '200':
+          description: Lista de estados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StatusDTO'
+
+    post:
+      summary: Crear un estado
+      description: Registra un nuevo estado general en el sistema.
+      tags: [Estados]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusDTO'
+      responses:
+        '200':
+          description: Estado creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusDTO'
+
+  /api/statuses/{id}:
+    get:
+      summary: Obtener estado por ID
+      description: Devuelve la información de un estado específico.
+      tags: [Estados]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del estado
+      responses:
+        '200':
+          description: Estado encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusDTO'
+
+    put:
+      summary: Actualizar estado
+      description: Actualiza los datos de un estado existente.
+      tags: [Estados]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del estado
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusDTO'
+      responses:
+        '200':
+          description: Estado actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusDTO'
+
+    delete:
+      summary: Eliminar estado
+      description: Elimina un estado del sistema por su ID.
+      tags: [Estados]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del estado
+      responses:
+        '204':
+          description: Estado eliminado correctamente
+
+components:
+  schemas:
+    StatusDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+          example: "ACTIVO"
+        description:
+          type: string
+          example: "Estado habilitado para uso general"

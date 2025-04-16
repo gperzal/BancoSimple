@@ -1,0 +1,94 @@
+paths:
+  /api/user-promotions:
+    get:
+      summary: Obtener promociones aplicadas por usuario
+      description: Devuelve todas las promociones que han sido utilizadas por los usuarios.
+      tags: [Promociones de Usuario]
+      responses:
+        '200':
+          description: Lista de promociones aplicadas por usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserPromotionDTO'
+
+    post:
+      summary: Registrar promoción aplicada
+      description: Registra una promoción utilizada por un usuario en una transacción o producto específico.
+      tags: [Promociones de Usuario]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPromotionDTO'
+      responses:
+        '200':
+          description: Promoción registrada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPromotionDTO'
+
+  /api/user-promotions/{id}:
+    get:
+      summary: Obtener promoción aplicada por ID
+      description: Devuelve los detalles de una promoción aplicada por un usuario específico.
+      tags: [Promociones de Usuario]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la promoción aplicada
+      responses:
+        '200':
+          description: Registro encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPromotionDTO'
+
+    delete:
+      summary: Eliminar promoción aplicada
+      description: Elimina una promoción aplicada del sistema.
+      tags: [Promociones de Usuario]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la promoción aplicada
+      responses:
+        '204':
+          description: Registro eliminado correctamente
+
+components:
+  schemas:
+    UserPromotionDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        promotionId:
+          type: integer
+        productId:
+          type: integer
+        transactionId:
+          type: integer
+        applicationType:
+          type: string
+          example: "transferencia"
+        appliedAmount:
+          type: number
+          format: double
+          example: 15000.0
+        applicationDate:
+          type: string
+          format: date-time

@@ -1,0 +1,108 @@
+paths:
+  /api/user-roles:
+    get:
+      summary: Obtener todas las asignaciones de roles a usuarios
+      description: Devuelve todas las relaciones entre usuarios y roles asignados.
+      tags: [Roles de Usuario]
+      responses:
+        '200':
+          description: Lista de roles asignados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserRoleDTO'
+
+    post:
+      summary: Asignar rol a usuario
+      description: Crea una nueva asignación de un rol a un usuario.
+      tags: [Roles de Usuario]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRoleDTO'
+      responses:
+        '200':
+          description: Rol asignado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleDTO'
+
+  /api/user-roles/{id}:
+    get:
+      summary: Obtener asignación de rol por ID
+      description: Devuelve los detalles de una asignación de rol a usuario por su ID.
+      tags: [Roles de Usuario]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la asignación
+      responses:
+        '200':
+          description: Asignación encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleDTO'
+
+    put:
+      summary: Actualizar asignación de rol
+      description: Modifica la relación entre un usuario y un rol.
+      tags: [Roles de Usuario]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la asignación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRoleDTO'
+      responses:
+        '200':
+          description: Asignación actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleDTO'
+
+    delete:
+      summary: Eliminar asignación de rol
+      description: Elimina la asignación de un rol a un usuario.
+      tags: [Roles de Usuario]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la asignación
+      responses:
+        '204':
+          description: Asignación eliminada correctamente
+
+components:
+  schemas:
+    UserRoleDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        roleId:
+          type: integer
+        registeredAt:
+          type: string
+          format: date-time

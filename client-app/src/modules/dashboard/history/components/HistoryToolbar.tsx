@@ -27,9 +27,15 @@ export default function HistoryToolbar({
         className="w-full md:w-auto"
       >
         <TabsList className="grid grid-cols-3 w-full md:w-[300px]">
-          <TabsTrigger value="all">Todas</TabsTrigger>
-          <TabsTrigger value="incoming">Recibidas</TabsTrigger>
-          <TabsTrigger value="outgoing">Enviadas</TabsTrigger>
+          <TabsTrigger value="all" className="tabs-trigger-primary">
+            Todas
+          </TabsTrigger>
+          <TabsTrigger value="incoming" className="tabs-trigger-primary">
+            Recibidas
+          </TabsTrigger>
+          <TabsTrigger value="outgoing" className="tabs-trigger-primary">
+            Enviadas
+          </TabsTrigger>
         </TabsList>
       </Tabs>
 
@@ -41,7 +47,7 @@ export default function HistoryToolbar({
             placeholder="Buscar transacción..."
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="pl-9"
+            className="pl-9 input-primary"
           />
         </div>
       </div>

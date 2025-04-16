@@ -1,7 +1,7 @@
 package com.bancosimple.backend.security.service;
 
-import com.bancosimple.backend.usuario.model.Usuario;
-import com.bancosimple.backend.usuario.repository.UsuarioRepository;
+import com.bancosimple.backend.features.user.model.User;
+import com.bancosimple.backend.features.user.repository.UserRepository;
 import com.bancosimple.backend.security.model.CustomUserDetails;
 
 import lombok.RequiredArgsConstructor;
@@ -14,12 +14,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UsuarioRepository usuarioRepository;
+    private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByCorreo(correo)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con correo: " + correo));
-        return new CustomUserDetails(usuario);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        return new CustomUserDetails(user);
     }
+
 }

@@ -1,0 +1,153 @@
+paths:
+  /api/transacciones:
+    get:
+      summary: Obtener todas las transacciones
+      description: Devuelve una lista de todas las transacciones registradas en el sistema.
+      tags: [Transacciones]
+      responses:
+        '200':
+          description: Lista de transacciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransaccionDTO'
+
+  /api/transacciones/{id}:
+    get:
+      summary: Obtener transacción por ID
+      description: Devuelve los detalles de una transacción específica.
+      tags: [Transacciones]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la transacción
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Transacción encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransaccionDTO'
+
+    delete:
+      summary: Eliminar transacción
+      description: Elimina una transacción según su ID.
+      tags: [Transacciones]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la transacción
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Transacción eliminada correctamente
+
+  /api/transacciones/transferir:
+    post:
+      summary: Realizar transferencia
+      description: Ejecuta una transferencia entre productos, creando una nueva transacción.
+      tags: [Transacciones]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransaccionDTO'
+      responses:
+        '200':
+          description: Transferencia realizada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransaccionDTO'
+
+  /api/transacciones/filtrar:
+    get:
+      summary: Filtrar transacciones
+      description: Filtra transacciones por producto, tipo, fecha y descripción.
+      tags: [Transacciones]
+      parameters:
+        - name: productoId
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: ID del producto origen o destino
+
+        - name: tipo
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [realizadas, recibidas]
+          description: Tipo de transacción a filtrar
+
+        - name: desde
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Fecha inicial del filtro (YYYY-MM-DD)
+
+        - name: hasta
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Fecha final del filtro (YYYY-MM-DD)
+
+        - name: descripcion
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Texto contenido en la descripción de la transacción
+
+      responses:
+        '200':
+          description: Transacciones filtradas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransaccionDTO'
+
+components:
+  schemas:
+    TransaccionDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        productoIdOrigen:
+          type: integer
+        productoIdDestino:
+          type: integer
+        monto:
+          type: number
+          format: double
+        moneda:
+          type: string
+        descripcion:
+          type: string
+        categoria:
+          type: string
+        referenciaExterna:
+          type: string
+        estadoId:
+          type: integer
+        fecha:
+          type: string
+          format: date-time
+        tipoOperacion:
+          type: string

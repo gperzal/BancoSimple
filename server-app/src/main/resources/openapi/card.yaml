@@ -1,0 +1,128 @@
+paths:
+  /api/tarjetas:
+    get:
+      summary: Obtener todas las tarjetas
+      description: Devuelve una lista de todas las tarjetas activas o inactivas.
+      tags: [Tarjetas]
+      responses:
+        '200':
+          description: Lista de tarjetas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TarjetaDTO'
+
+    post:
+      summary: Crear una tarjeta
+      description: Registra una nueva tarjeta asociada a un producto.
+      tags: [Tarjetas]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TarjetaDTO'
+      responses:
+        '200':
+          description: Tarjeta creada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TarjetaDTO'
+
+  /api/tarjetas/{id}:
+    get:
+      summary: Obtener tarjeta por ID
+      description: Devuelve los datos de una tarjeta específica.
+      tags: [Tarjetas]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la tarjeta
+      responses:
+        '200':
+          description: Tarjeta encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TarjetaDTO'
+
+    put:
+      summary: Actualizar tarjeta
+      description: Modifica los datos de una tarjeta existente.
+      tags: [Tarjetas]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la tarjeta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TarjetaDTO'
+      responses:
+        '200':
+          description: Tarjeta actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TarjetaDTO'
+
+    delete:
+      summary: Eliminar tarjeta
+      description: Elimina una tarjeta por su ID.
+      tags: [Tarjetas]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la tarjeta
+      responses:
+        '204':
+          description: Tarjeta eliminada correctamente
+
+components:
+  schemas:
+    TarjetaDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        productoId:
+          type: integer
+        tipoTarjeta:
+          type: string
+          example: "Crédito"
+        numeroTarjeta:
+          type: string
+          example: "1234-5678-9012-3456"
+        cvv:
+          type: string
+          example: "123"
+        pinHash:
+          type: string
+          example: "$2a$10$..."
+        fechaExpiracion:
+          type: string
+          format: date
+        nombreImpreso:
+          type: string
+          example: "JUAN PÉREZ"
+        activa:
+          type: boolean
+        estadoId:
+          type: integer
+        emitida:
+          type: string
+          format: date-time

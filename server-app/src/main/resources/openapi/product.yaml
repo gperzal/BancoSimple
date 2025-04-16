@@ -1,0 +1,167 @@
+paths:
+  /api/products:
+    get:
+      summary: Obtener todos los productos
+      description: Devuelve una lista de todos los productos registrados para todos los usuarios.
+      tags: [Productos]
+      responses:
+        '200':
+          description: Lista de productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductDTO'
+
+    post:
+      summary: Crear un nuevo producto
+      description: Crea un producto nuevo para un usuario específico.
+      tags: [Productos]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDTO'
+      responses:
+        '200':
+          description: Producto creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+
+  /api/products/{id}:
+    get:
+      summary: Obtener producto por ID
+      description: Devuelve los detalles de un producto específico.
+      tags: [Productos]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del producto
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+
+    put:
+      summary: Actualizar producto
+      description: Actualiza los datos de un producto existente.
+      tags: [Productos]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del producto
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDTO'
+      responses:
+        '200':
+          description: Producto actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+
+    delete:
+      summary: Eliminar producto
+      description: Elimina un producto por su ID.
+      tags: [Productos]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del producto
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Producto eliminado correctamente
+
+  /api/products/request:
+    post:
+      summary: Solicitar producto
+      description: Permite que un usuario solicite un nuevo producto, sin crearlo directamente.
+      tags: [Productos]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDTO'
+      responses:
+        '200':
+          description: Solicitud procesada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+
+  /api/products/{id}/status:
+    patch:
+      summary: Actualizar estado del producto
+      description: Cambia el estado de un producto existente.
+      tags: [Productos]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del producto
+          schema:
+            type: integer
+        - name: estadoId
+          in: query
+          required: true
+          description: Nuevo ID del estado
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Estado actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+
+components:
+  schemas:
+    ProductDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        usuarioId:
+          type: integer
+        tipoProducto:
+          type: string
+        numeroProducto:
+          type: string
+        alias:
+          type: string
+        moneda:
+          type: string
+        saldo:
+          type: number
+          format: double
+        limiteCredito:
+          type: number
+          format: double
+        estadoId:
+          type: integer
+        creadoEn:
+          type: string
+          format: date-time

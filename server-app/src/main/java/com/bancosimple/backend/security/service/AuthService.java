@@ -1,54 +1,74 @@
 package com.bancosimple.backend.security.service;
 
+import com.bancosimple.backend.exception.ApiException;
 import com.bancosimple.backend.security.dto.LoginRequest;
 import com.bancosimple.backend.security.dto.LoginResponse;
 import com.bancosimple.backend.security.dto.RegisterRequest;
 import com.bancosimple.backend.security.jwt.JwtUtil;
-import com.bancosimple.backend.usuario.model.Usuario;
-import com.bancosimple.backend.usuario.repository.UsuarioRepository;
+import com.bancosimple.backend.features.user.model.User;
+import com.bancosimple.backend.features.user.repository.UserRepository;
+import com.bancosimple.backend.features.user_role.model.UserRole;
+import com.bancosimple.backend.features.user_role.repository.UserRoleRepository;
+import static com.bancosimple.backend.features.role.shared.RoleUtils.getRoleName;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Service
 public class AuthService {
 
-    private final UsuarioRepository usuarioRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
+    private final UserRoleRepository userRoleRepository;
 
     public void register(RegisterRequest request) {
-        if (usuarioRepository.existsByCorreo(request.getCorreo())) {
-            throw new RuntimeException("El correo ya está en uso");
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new ApiException("Mail is already in use");
         }
 
-        Usuario usuario = new Usuario();
-        usuario.setCorreo(request.getCorreo());
-        usuario.setNombres(request.getNombres());
-        usuario.setApellidos(request.getApellidos());
-        usuario.setContrasenaHash(passwordEncoder.encode(request.getContrasena()));
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setPasswordHash(passwordEncoder.encode(request.getPasswordHash()));
 
-        usuarioRepository.save(usuario);
+        User savedUser = userRepository.save(user);
+
+        UserRole userRole = new UserRole();
+        userRole.setUserId(savedUser.getId());
+        userRole.setRoleId(3L); // Rol por defecto: CLIENT
+        userRole.setRegisteredAt(LocalDateTime.now());
+
+        userRoleRepository.save(userRole);
     }
 
     public LoginResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getCorreo(),
-                        request.getContrasena()
+                        request.getEmail(),
+                        request.getPassword()
                 )
         );
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getCorreo());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
         String jwt = jwtUtil.generateToken(userDetails);
 
-        return new LoginResponse(jwt, request.getCorreo());
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new ApiException("Mail does not exist"));
+
+        String rol = getRoleName(user.getUserRoles().getFirst().getRoleId());
+
+
+       return new LoginResponse(jwt, user.getEmail(), rol);
     }
+
+
 }

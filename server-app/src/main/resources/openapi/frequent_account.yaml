@@ -1,0 +1,113 @@
+paths:
+  /api/frequent-accounts:
+    get:
+      summary: Obtener todas las cuentas frecuentes
+      description: Devuelve la lista de cuentas frecuentes registradas por los usuarios.
+      tags: [Cuentas Frecuentes]
+      responses:
+        '200':
+          description: Lista de cuentas frecuentes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FrequentAccountDTO'
+
+    post:
+      summary: Agregar cuenta frecuente
+      description: Agrega una nueva cuenta frecuente asociada a un usuario.
+      tags: [Cuentas Frecuentes]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FrequentAccountDTO'
+      responses:
+        '200':
+          description: Cuenta frecuente agregada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FrequentAccountDTO'
+
+  /api/frequent-accounts/{id}:
+    get:
+      summary: Obtener cuenta frecuente por ID
+      description: Devuelve los detalles de una cuenta frecuente específica.
+      tags: [Cuentas Frecuentes]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la cuenta frecuente
+      responses:
+        '200':
+          description: Cuenta frecuente encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FrequentAccountDTO'
+
+    put:
+      summary: Actualizar cuenta frecuente
+      description: Actualiza la información de una cuenta frecuente.
+      tags: [Cuentas Frecuentes]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la cuenta frecuente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FrequentAccountDTO'
+      responses:
+        '200':
+          description: Cuenta frecuente actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FrequentAccountDTO'
+
+    delete:
+      summary: Eliminar cuenta frecuente
+      description: Elimina una cuenta frecuente del sistema.
+      tags: [Cuentas Frecuentes]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la cuenta frecuente
+      responses:
+        '204':
+          description: Cuenta frecuente eliminada correctamente
+
+components:
+  schemas:
+    FrequentAccountDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        favoriteProductId:
+          type: integer
+        alias:
+          type: string
+          example: "Cuenta de mamá"
+        addedDate:
+          type: string
+          format: date-time
+        active:
+          type: boolean

@@ -1,0 +1,98 @@
+paths:
+  /api/backup-logs:
+    get:
+      summary: Obtener todos los respaldos de seguridad
+      description: Devuelve una lista de logs de respaldo que contienen cambios en las tablas del sistema.
+      tags: [Logs de Respaldo]
+      responses:
+        '200':
+          description: Lista de respaldos registrados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BackupLogDTO'
+
+    post:
+      summary: Registrar un respaldo
+      description: Registra un respaldo con los datos anteriores y actuales de una operación realizada.
+      tags: [Logs de Respaldo]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackupLogDTO'
+      responses:
+        '200':
+          description: Respaldo registrado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupLogDTO'
+
+  /api/backup-logs/{id}:
+    get:
+      summary: Obtener respaldo por ID
+      description: Devuelve la información de un respaldo específico por su ID.
+      tags: [Logs de Respaldo]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del respaldo
+      responses:
+        '200':
+          description: Respaldo encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupLogDTO'
+
+    delete:
+      summary: Eliminar respaldo
+      description: Elimina un log de respaldo del sistema por su ID.
+      tags: [Logs de Respaldo]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del respaldo
+      responses:
+        '204':
+          description: Respaldo eliminado correctamente
+
+components:
+  schemas:
+    BackupLogDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        userActionId:
+          type: integer
+        table:
+          type: string
+          example: "usuarios"
+        recordId:
+          type: integer
+        operationType:
+          type: string
+          example: "UPDATE"
+        previousData:
+          type: string
+          example: "{ \"nombre\": \"Juan\" }"
+        newData:
+          type: string
+          example: "{ \"nombre\": \"Juan Pérez\" }"
+        createdAt:
+          type: string
+          format: date-time
+        ipAddress:
+          type: string
+          example: "192.168.0.10"

@@ -1,5 +1,9 @@
-import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  ArrowDownLeft,
+  ArrowUpRight,
+  LineChart,
+  SendHorizonal,
+} from "lucide-react";
 import { transactions } from "@/utils/mockData";
 
 interface HistorySummaryProps {
@@ -13,75 +17,80 @@ export default function HistorySummary({
   totalOutgoing,
   periodLabel,
 }: HistorySummaryProps) {
+  const balance = totalIncoming - totalOutgoing;
+
+  const totalTransfers = transactions.filter(
+    (t) => t.categoria === "transferencia"
+  ).length;
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base font-medium flex items-center gap-2">
-            <ArrowDownLeft className="h-4 w-4 text-bank-success" /> Ingresos
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-2xl font-bold text-bank-success">
-            {totalIncoming.toLocaleString("es-CL", {
-              style: "currency",
-              currency: "CLP",
-            })}
-          </p>
-          <p className="text-xs text-muted-foreground mt-1">{periodLabel}</p>
-        </CardContent>
-      </Card>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      {/* Ingresos */}
+      <div className="dashboard-card">
+        <div className="flex items-center justify-between pb-2">
+          <p className="dashboard-card-title">Ingresos</p>
+          <div className="dashboard-card-icon bg-green-100 text-green-600 rounded-full">
+            <ArrowDownLeft className="h-4 w-4" />
+          </div>
+        </div>
+        <p className="dashboard-card-value text-green-600">
+          {totalIncoming.toLocaleString("es-CL", {
+            style: "currency",
+            currency: "CLP",
+          })}
+        </p>
+        <p className="text-xs mt-1 text-muted-foreground">{periodLabel}</p>
+      </div>
 
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base font-medium flex items-center gap-2">
-            <ArrowUpRight className="h-4 w-4 text-bank-error" /> Egresos
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-2xl font-bold text-bank-error">
-            {totalOutgoing.toLocaleString("es-CL", {
-              style: "currency",
-              currency: "CLP",
-            })}
-          </p>
-          <p className="text-xs text-muted-foreground mt-1">{periodLabel}</p>
-        </CardContent>
-      </Card>
+      {/* Egresos */}
+      <div className="dashboard-card">
+        <div className="flex items-center justify-between pb-2">
+          <p className="dashboard-card-title">Egresos</p>
+          <div className="dashboard-card-icon bg-red-100 text-red-600 rounded-full">
+            <ArrowUpRight className="h-4 w-4" />
+          </div>
+        </div>
+        <p className="dashboard-card-value text-red-600">
+          {totalOutgoing.toLocaleString("es-CL", {
+            style: "currency",
+            currency: "CLP",
+          })}
+        </p>
+        <p className="text-xs mt-1 text-muted-foreground">{periodLabel}</p>
+      </div>
 
-      <Card className="hidden md:block">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-base font-medium">
-            Balance neto estimado
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-2xl font-bold text-foreground">
-            {(totalIncoming - totalOutgoing).toLocaleString("es-CL", {
-              style: "currency",
-              currency: "CLP",
-            })}
-          </p>
-          <p className="text-xs text-muted-foreground mt-1">
-            Basado en ingresos y egresos
-          </p>
-        </CardContent>
-      </Card>
+      {/* Balance Neto */}
+      <div className="dashboard-card hidden md:block">
+        <div className="flex items-center justify-between pb-2">
+          <p className="dashboard-card-title">Balance neto estimado</p>
+          <div className="dashboard-card-icon bg-blue-100 text-blue-600 rounded-full">
+            <LineChart className="h-4 w-4" />
+          </div>
+        </div>
+        <p className="dashboard-card-value">
+          {balance.toLocaleString("es-CL", {
+            style: "currency",
+            currency: "CLP",
+          })}
+        </p>
+        <p className="text-xs mt-1 text-muted-foreground">
+          Basado en ingresos y egresos
+        </p>
+      </div>
+
+      {/* Transferencias */}
+      <div className="dashboard-card hidden md:block">
+        <div className="flex items-center justify-between pb-2">
+          <p className="dashboard-card-title">Transferencias realizadas</p>
+          <div className="dashboard-card-icon bg-purple-100 text-purple-600 rounded-full">
+            <SendHorizonal className="h-4 w-4" />
+          </div>
+        </div>
+        <p className="dashboard-card-value">{totalTransfers}</p>
+        <p className="text-xs mt-1 text-muted-foreground">
+          Solo en los últimos 30 días
+        </p>
+      </div>
     </div>
   );
 }
-
-// Cálculos simulados para uso temporal
-const totalIncoming = transactions
-  .filter((t) => t.producto_id_origen === null)
-  .reduce((acc, t) => acc + t.monto, 0);
-
-const totalOutgoing = transactions
-  .filter((t) => t.producto_id_origen !== null)
-  .reduce((acc, t) => acc + t.monto, 0);
-
-export const mockSummaryData = {
-  totalIncoming,
-  totalOutgoing,
-  periodLabel: "Últimos 30 días",
-};

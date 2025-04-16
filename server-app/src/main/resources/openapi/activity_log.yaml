@@ -1,0 +1,90 @@
+paths:
+  /api/activity-logs:
+    get:
+      summary: Obtener todos los registros de actividad
+      description: Devuelve todos los logs de acciones realizadas por los usuarios en el sistema.
+      tags: [Logs de Actividad]
+      responses:
+        '200':
+          description: Lista de logs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActivityLogDTO'
+
+    post:
+      summary: Registrar nueva actividad
+      description: Registra una acción realizada por un usuario en el sistema.
+      tags: [Logs de Actividad]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivityLogDTO'
+      responses:
+        '200':
+          description: Log registrado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityLogDTO'
+
+  /api/activity-logs/{id}:
+    get:
+      summary: Obtener log de actividad por ID
+      description: Devuelve los detalles de un registro de actividad específico.
+      tags: [Logs de Actividad]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del log
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Log encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityLogDTO'
+
+    delete:
+      summary: Eliminar log de actividad
+      description: Elimina un log del sistema.
+      tags: [Logs de Actividad]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del log
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Log eliminado correctamente
+
+components:
+  schemas:
+    ActivityLogDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        action:
+          type: string
+          example: "LOGIN"
+        sourceIp:
+          type: string
+          example: "192.168.1.1"
+        date:
+          type: string
+          format: date-time
+        details:
+          type: string
+          example: "Inicio de sesión exitoso desde cliente web"

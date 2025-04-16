@@ -1,0 +1,107 @@
+paths:
+  /api/roles:
+    get:
+      summary: Obtener todos los roles
+      description: Devuelve una lista con todos los roles definidos en el sistema.
+      tags: [Roles]
+      responses:
+        '200':
+          description: Lista de roles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleDTO'
+
+    post:
+      summary: Crear nuevo rol
+      description: Crea un nuevo rol con su respectiva descripción.
+      tags: [Roles]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleDTO'
+      responses:
+        '200':
+          description: Rol creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDTO'
+
+  /api/roles/{id}:
+    get:
+      summary: Obtener rol por ID
+      description: Devuelve los detalles de un rol específico.
+      tags: [Roles]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del rol
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Rol encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDTO'
+
+    put:
+      summary: Actualizar rol
+      description: Modifica los datos de un rol existente.
+      tags: [Roles]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del rol
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleDTO'
+      responses:
+        '200':
+          description: Rol actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDTO'
+
+    delete:
+      summary: Eliminar rol
+      description: Elimina un rol del sistema por su ID.
+      tags: [Roles]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del rol
+      responses:
+        '204':
+          description: Rol eliminado correctamente
+
+components:
+  schemas:
+    RoleDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: "ADMIN"
+        description:
+          type: string
+          example: "Rol con permisos administrativos completos"

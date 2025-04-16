@@ -1,0 +1,1736 @@
+openapi: 3.1.1
+info:
+  title: BancoSimple API
+  version: 1.0.0
+  description: Documentación combinada de los módulos de la API
+paths:
+  /api/activity-logs:
+    get:
+      summary: Obtener todos los registros de actividad
+      description: Devuelve todos los logs de acciones realizadas por los usuarios
+        en el sistema.
+      tags:
+      - Logs de Actividad
+      responses:
+        '200':
+          description: Lista de logs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActivityLogDTO'
+    post:
+      summary: Registrar nueva actividad
+      description: Registra una acción realizada por un usuario en el sistema.
+      tags:
+      - Logs de Actividad
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivityLogDTO'
+      responses:
+        '200':
+          description: Log registrado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityLogDTO'
+  /api/activity-logs/{id}:
+    get:
+      summary: Obtener log de actividad por ID
+      description: Devuelve los detalles de un registro de actividad específico.
+      tags:
+      - Logs de Actividad
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID del log
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Log encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityLogDTO'
+    delete:
+      summary: Eliminar log de actividad
+      description: Elimina un log del sistema.
+      tags:
+      - Logs de Actividad
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID del log
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Log eliminado correctamente
+  /api/addresses:
+    get:
+      summary: Obtener todas las direcciones
+      description: Devuelve todas las direcciones registradas por los usuarios.
+      tags:
+      - Direcciones
+      responses:
+        '200':
+          description: Lista de direcciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddressDTO'
+    post:
+      summary: Crear una dirección
+      description: Registra una nueva dirección asociada a un usuario.
+      tags:
+      - Direcciones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressDTO'
+      responses:
+        '200':
+          description: Dirección creada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressDTO'
+  /api/addresses/{id}:
+    get:
+      summary: Obtener dirección por ID
+      description: Devuelve los datos de una dirección específica.
+      tags:
+      - Direcciones
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID de la dirección
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Dirección encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressDTO'
+    put:
+      summary: Actualizar dirección
+      description: Actualiza los datos de una dirección existente.
+      tags:
+      - Direcciones
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID de la dirección
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressDTO'
+      responses:
+        '200':
+          description: Dirección actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressDTO'
+    delete:
+      summary: Eliminar dirección
+      description: Elimina una dirección del sistema según su ID.
+      tags:
+      - Direcciones
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la dirección
+      responses:
+        '204':
+          description: Dirección eliminada correctamente
+  /api/backup-logs:
+    get:
+      summary: Obtener todos los respaldos de seguridad
+      description: Devuelve una lista de logs de respaldo que contienen cambios en
+        las tablas del sistema.
+      tags:
+      - Logs de Respaldo
+      responses:
+        '200':
+          description: Lista de respaldos registrados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BackupLogDTO'
+    post:
+      summary: Registrar un respaldo
+      description: Registra un respaldo con los datos anteriores y actuales de una
+        operación realizada.
+      tags:
+      - Logs de Respaldo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackupLogDTO'
+      responses:
+        '200':
+          description: Respaldo registrado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupLogDTO'
+  /api/backup-logs/{id}:
+    get:
+      summary: Obtener respaldo por ID
+      description: Devuelve la información de un respaldo específico por su ID.
+      tags:
+      - Logs de Respaldo
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del respaldo
+      responses:
+        '200':
+          description: Respaldo encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupLogDTO'
+    delete:
+      summary: Eliminar respaldo
+      description: Elimina un log de respaldo del sistema por su ID.
+      tags:
+      - Logs de Respaldo
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del respaldo
+      responses:
+        '204':
+          description: Respaldo eliminado correctamente
+  /api/tarjetas:
+    get:
+      summary: Obtener todas las tarjetas
+      description: Devuelve una lista de todas las tarjetas activas o inactivas.
+      tags:
+      - Tarjetas
+      responses:
+        '200':
+          description: Lista de tarjetas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TarjetaDTO'
+    post:
+      summary: Crear una tarjeta
+      description: Registra una nueva tarjeta asociada a un producto.
+      tags:
+      - Tarjetas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TarjetaDTO'
+      responses:
+        '200':
+          description: Tarjeta creada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TarjetaDTO'
+  /api/tarjetas/{id}:
+    get:
+      summary: Obtener tarjeta por ID
+      description: Devuelve los datos de una tarjeta específica.
+      tags:
+      - Tarjetas
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la tarjeta
+      responses:
+        '200':
+          description: Tarjeta encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TarjetaDTO'
+    put:
+      summary: Actualizar tarjeta
+      description: Modifica los datos de una tarjeta existente.
+      tags:
+      - Tarjetas
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la tarjeta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TarjetaDTO'
+      responses:
+        '200':
+          description: Tarjeta actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TarjetaDTO'
+    delete:
+      summary: Eliminar tarjeta
+      description: Elimina una tarjeta por su ID.
+      tags:
+      - Tarjetas
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la tarjeta
+      responses:
+        '204':
+          description: Tarjeta eliminada correctamente
+  /api/frequent-accounts:
+    get:
+      summary: Obtener todas las cuentas frecuentes
+      description: Devuelve la lista de cuentas frecuentes registradas por los usuarios.
+      tags:
+      - Cuentas Frecuentes
+      responses:
+        '200':
+          description: Lista de cuentas frecuentes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FrequentAccountDTO'
+    post:
+      summary: Agregar cuenta frecuente
+      description: Agrega una nueva cuenta frecuente asociada a un usuario.
+      tags:
+      - Cuentas Frecuentes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FrequentAccountDTO'
+      responses:
+        '200':
+          description: Cuenta frecuente agregada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FrequentAccountDTO'
+  /api/frequent-accounts/{id}:
+    get:
+      summary: Obtener cuenta frecuente por ID
+      description: Devuelve los detalles de una cuenta frecuente específica.
+      tags:
+      - Cuentas Frecuentes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la cuenta frecuente
+      responses:
+        '200':
+          description: Cuenta frecuente encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FrequentAccountDTO'
+    put:
+      summary: Actualizar cuenta frecuente
+      description: Actualiza la información de una cuenta frecuente.
+      tags:
+      - Cuentas Frecuentes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la cuenta frecuente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FrequentAccountDTO'
+      responses:
+        '200':
+          description: Cuenta frecuente actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FrequentAccountDTO'
+    delete:
+      summary: Eliminar cuenta frecuente
+      description: Elimina una cuenta frecuente del sistema.
+      tags:
+      - Cuentas Frecuentes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la cuenta frecuente
+      responses:
+        '204':
+          description: Cuenta frecuente eliminada correctamente
+  /api/loyalty-points:
+    get:
+      summary: Obtener puntos de fidelización
+      description: Devuelve el listado de puntos de fidelización acumulados por cada
+        usuario.
+      tags:
+      - Puntos de Fidelización
+      responses:
+        '200':
+          description: Lista de puntos por usuario
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LoyaltyPointsDTO'
+    post:
+      summary: Crear registro de puntos de fidelización
+      description: Crea un nuevo registro de puntos de fidelización para un usuario.
+      tags:
+      - Puntos de Fidelización
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyPointsDTO'
+      responses:
+        '200':
+          description: Registro creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyPointsDTO'
+  /api/loyalty-points/{id}:
+    get:
+      summary: Obtener puntos por ID
+      description: Devuelve los puntos de fidelización de un usuario específico.
+      tags:
+      - Puntos de Fidelización
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del registro de puntos
+      responses:
+        '200':
+          description: Registro encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyPointsDTO'
+    put:
+      summary: Actualizar puntos de fidelización
+      description: Actualiza el saldo de puntos de un usuario.
+      tags:
+      - Puntos de Fidelización
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del registro de puntos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyPointsDTO'
+      responses:
+        '200':
+          description: Registro actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyPointsDTO'
+    delete:
+      summary: Eliminar puntos de fidelización
+      description: Elimina el registro de puntos de un usuario.
+      tags:
+      - Puntos de Fidelización
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del registro de puntos
+      responses:
+        '204':
+          description: Registro eliminado correctamente
+  /api/points-history:
+    get:
+      summary: Obtener historial de puntos
+      description: Devuelve el historial completo de movimientos de puntos de los
+        usuarios.
+      tags:
+      - Historial de Puntos
+      responses:
+        '200':
+          description: Lista de movimientos de puntos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PointsHistoryDTO'
+    post:
+      summary: Registrar movimiento de puntos
+      description: Registra un nuevo movimiento de puntos (carga o canje) para un
+        usuario.
+      tags:
+      - Historial de Puntos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PointsHistoryDTO'
+      responses:
+        '200':
+          description: Movimiento registrado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PointsHistoryDTO'
+  /api/points-history/{id}:
+    get:
+      summary: Obtener movimiento por ID
+      description: Devuelve los detalles de un movimiento específico del historial
+        de puntos.
+      tags:
+      - Historial de Puntos
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID del movimiento
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Movimiento encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PointsHistoryDTO'
+    delete:
+      summary: Eliminar movimiento del historial
+      description: Elimina un movimiento específico del historial de puntos.
+      tags:
+      - Historial de Puntos
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID del movimiento
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Movimiento eliminado correctamente
+  /api/products:
+    get:
+      summary: Obtener todos los productos
+      description: Devuelve una lista de todos los productos registrados para todos
+        los usuarios.
+      tags:
+      - Productos
+      responses:
+        '200':
+          description: Lista de productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductDTO'
+    post:
+      summary: Crear un nuevo producto
+      description: Crea un producto nuevo para un usuario específico.
+      tags:
+      - Productos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDTO'
+      responses:
+        '200':
+          description: Producto creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+  /api/products/{id}:
+    get:
+      summary: Obtener producto por ID
+      description: Devuelve los detalles de un producto específico.
+      tags:
+      - Productos
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID del producto
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+    put:
+      summary: Actualizar producto
+      description: Actualiza los datos de un producto existente.
+      tags:
+      - Productos
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID del producto
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDTO'
+      responses:
+        '200':
+          description: Producto actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+    delete:
+      summary: Eliminar producto
+      description: Elimina un producto por su ID.
+      tags:
+      - Productos
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID del producto
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Producto eliminado correctamente
+  /api/products/request:
+    post:
+      summary: Solicitar producto
+      description: Permite que un usuario solicite un nuevo producto, sin crearlo
+        directamente.
+      tags:
+      - Productos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDTO'
+      responses:
+        '200':
+          description: Solicitud procesada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+  /api/products/{id}/status:
+    patch:
+      summary: Actualizar estado del producto
+      description: Cambia el estado de un producto existente.
+      tags:
+      - Productos
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID del producto
+        schema:
+          type: integer
+      - name: estadoId
+        in: query
+        required: true
+        description: Nuevo ID del estado
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Estado actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+  /api/promotions:
+    get:
+      summary: Obtener todas las promociones
+      description: Devuelve una lista con todas las promociones disponibles en el
+        sistema.
+      tags:
+      - Promociones
+      responses:
+        '200':
+          description: Lista de promociones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PromotionDTO'
+    post:
+      summary: Crear nueva promoción
+      description: Crea una nueva promoción y la deja disponible para los usuarios.
+      tags:
+      - Promociones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionDTO'
+      responses:
+        '200':
+          description: Promoción creada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionDTO'
+  /api/promotions/{id}:
+    get:
+      summary: Obtener promoción por ID
+      description: Devuelve los detalles de una promoción específica.
+      tags:
+      - Promociones
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID de la promoción
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Promoción encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionDTO'
+    put:
+      summary: Actualizar promoción
+      description: Modifica los datos de una promoción existente.
+      tags:
+      - Promociones
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID de la promoción
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionDTO'
+      responses:
+        '200':
+          description: Promoción actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionDTO'
+    delete:
+      summary: Eliminar promoción
+      description: Elimina una promoción del sistema por su ID.
+      tags:
+      - Promociones
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID de la promoción
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Promoción eliminada correctamente
+  /api/roles:
+    get:
+      summary: Obtener todos los roles
+      description: Devuelve una lista con todos los roles definidos en el sistema.
+      tags:
+      - Roles
+      responses:
+        '200':
+          description: Lista de roles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleDTO'
+    post:
+      summary: Crear nuevo rol
+      description: Crea un nuevo rol con su respectiva descripción.
+      tags:
+      - Roles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleDTO'
+      responses:
+        '200':
+          description: Rol creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDTO'
+  /api/roles/{id}:
+    get:
+      summary: Obtener rol por ID
+      description: Devuelve los detalles de un rol específico.
+      tags:
+      - Roles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID del rol
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Rol encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDTO'
+    put:
+      summary: Actualizar rol
+      description: Modifica los datos de un rol existente.
+      tags:
+      - Roles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del rol
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleDTO'
+      responses:
+        '200':
+          description: Rol actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDTO'
+    delete:
+      summary: Eliminar rol
+      description: Elimina un rol del sistema por su ID.
+      tags:
+      - Roles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del rol
+      responses:
+        '204':
+          description: Rol eliminado correctamente
+  /api/statuses:
+    get:
+      summary: Obtener todos los estados
+      description: Devuelve una lista con todos los estados generales del sistema.
+      tags:
+      - Estados
+      responses:
+        '200':
+          description: Lista de estados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StatusDTO'
+    post:
+      summary: Crear un estado
+      description: Registra un nuevo estado general en el sistema.
+      tags:
+      - Estados
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusDTO'
+      responses:
+        '200':
+          description: Estado creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusDTO'
+  /api/statuses/{id}:
+    get:
+      summary: Obtener estado por ID
+      description: Devuelve la información de un estado específico.
+      tags:
+      - Estados
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del estado
+      responses:
+        '200':
+          description: Estado encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusDTO'
+    put:
+      summary: Actualizar estado
+      description: Actualiza los datos de un estado existente.
+      tags:
+      - Estados
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del estado
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusDTO'
+      responses:
+        '200':
+          description: Estado actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusDTO'
+    delete:
+      summary: Eliminar estado
+      description: Elimina un estado del sistema por su ID.
+      tags:
+      - Estados
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del estado
+      responses:
+        '204':
+          description: Estado eliminado correctamente
+  /api/transacciones:
+    get:
+      summary: Obtener todas las transacciones
+      description: Devuelve una lista de todas las transacciones registradas en el
+        sistema.
+      tags:
+      - Transacciones
+      responses:
+        '200':
+          description: Lista de transacciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransaccionDTO'
+  /api/transacciones/{id}:
+    get:
+      summary: Obtener transacción por ID
+      description: Devuelve los detalles de una transacción específica.
+      tags:
+      - Transacciones
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID de la transacción
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Transacción encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransaccionDTO'
+    delete:
+      summary: Eliminar transacción
+      description: Elimina una transacción según su ID.
+      tags:
+      - Transacciones
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID de la transacción
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Transacción eliminada correctamente
+  /api/transacciones/transferir:
+    post:
+      summary: Realizar transferencia
+      description: Ejecuta una transferencia entre productos, creando una nueva transacción.
+      tags:
+      - Transacciones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransaccionDTO'
+      responses:
+        '200':
+          description: Transferencia realizada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransaccionDTO'
+  /api/transacciones/filtrar:
+    get:
+      summary: Filtrar transacciones
+      description: Filtra transacciones por producto, tipo, fecha y descripción.
+      tags:
+      - Transacciones
+      parameters:
+      - name: productoId
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: ID del producto origen o destino
+      - name: tipo
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - realizadas
+          - recibidas
+        description: Tipo de transacción a filtrar
+      - name: desde
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+        description: Fecha inicial del filtro (YYYY-MM-DD)
+      - name: hasta
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+        description: Fecha final del filtro (YYYY-MM-DD)
+      - name: descripcion
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Texto contenido en la descripción de la transacción
+      responses:
+        '200':
+          description: Transacciones filtradas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TransaccionDTO'
+  /api/users:
+    get:
+      summary: Obtener todos los usuarios
+      description: Devuelve una lista de todos los usuarios registrados en el sistema.
+      tags:
+      - Usuarios
+      responses:
+        '200':
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDTO'
+    post:
+      summary: Crear un nuevo usuario
+      description: Registra un nuevo usuario en el sistema.
+      tags:
+      - Usuarios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+      responses:
+        '200':
+          description: Usuario creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+  /api/users/{id}:
+    get:
+      summary: Obtener usuario por ID
+      description: Obtiene los datos de un usuario específico.
+      tags:
+      - Usuarios
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID del usuario
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+    put:
+      summary: Actualizar usuario
+      description: Actualiza la información de un usuario existente.
+      tags:
+      - Usuarios
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID del usuario
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+      responses:
+        '200':
+          description: Usuario actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+    delete:
+      summary: Eliminar usuario
+      description: Elimina un usuario por su ID.
+      tags:
+      - Usuarios
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID del usuario
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Usuario eliminado correctamente
+  /api/user-promotions:
+    get:
+      summary: Obtener promociones aplicadas por usuario
+      description: Devuelve todas las promociones que han sido utilizadas por los
+        usuarios.
+      tags:
+      - Promociones de Usuario
+      responses:
+        '200':
+          description: Lista de promociones aplicadas por usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserPromotionDTO'
+    post:
+      summary: Registrar promoción aplicada
+      description: Registra una promoción utilizada por un usuario en una transacción
+        o producto específico.
+      tags:
+      - Promociones de Usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPromotionDTO'
+      responses:
+        '200':
+          description: Promoción registrada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPromotionDTO'
+  /api/user-promotions/{id}:
+    get:
+      summary: Obtener promoción aplicada por ID
+      description: Devuelve los detalles de una promoción aplicada por un usuario
+        específico.
+      tags:
+      - Promociones de Usuario
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la promoción aplicada
+      responses:
+        '200':
+          description: Registro encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPromotionDTO'
+    delete:
+      summary: Eliminar promoción aplicada
+      description: Elimina una promoción aplicada del sistema.
+      tags:
+      - Promociones de Usuario
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la promoción aplicada
+      responses:
+        '204':
+          description: Registro eliminado correctamente
+  /api/user-roles:
+    get:
+      summary: Obtener todas las asignaciones de roles a usuarios
+      description: Devuelve todas las relaciones entre usuarios y roles asignados.
+      tags:
+      - Roles de Usuario
+      responses:
+        '200':
+          description: Lista de roles asignados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserRoleDTO'
+    post:
+      summary: Asignar rol a usuario
+      description: Crea una nueva asignación de un rol a un usuario.
+      tags:
+      - Roles de Usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRoleDTO'
+      responses:
+        '200':
+          description: Rol asignado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleDTO'
+  /api/user-roles/{id}:
+    get:
+      summary: Obtener asignación de rol por ID
+      description: Devuelve los detalles de una asignación de rol a usuario por su
+        ID.
+      tags:
+      - Roles de Usuario
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la asignación
+      responses:
+        '200':
+          description: Asignación encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleDTO'
+    put:
+      summary: Actualizar asignación de rol
+      description: Modifica la relación entre un usuario y un rol.
+      tags:
+      - Roles de Usuario
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la asignación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRoleDTO'
+      responses:
+        '200':
+          description: Asignación actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRoleDTO'
+    delete:
+      summary: Eliminar asignación de rol
+      description: Elimina la asignación de un rol a un usuario.
+      tags:
+      - Roles de Usuario
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la asignación
+      responses:
+        '204':
+          description: Asignación eliminada correctamente
+components:
+  schemas:
+    ActivityLogDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        action:
+          type: string
+          example: LOGIN
+        sourceIp:
+          type: string
+          example: 192.168.1.1
+        date:
+          type: string
+          format: date-time
+        details:
+          type: string
+          example: Inicio de sesión exitoso desde cliente web
+    AddressDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        addressType:
+          type: string
+          example: residencial
+        street:
+          type: string
+          example: Av. Siempre Viva
+        number:
+          type: string
+          example: '742'
+        district:
+          type: string
+          example: Springfield Norte
+        city:
+          type: string
+          example: Springfield
+        region:
+          type: string
+          example: Región Metropolitana
+        postalCode:
+          type: string
+          example: '8320000'
+        country:
+          type: string
+          example: Chile
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+    BackupLogDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        userActionId:
+          type: integer
+        table:
+          type: string
+          example: usuarios
+        recordId:
+          type: integer
+        operationType:
+          type: string
+          example: UPDATE
+        previousData:
+          type: string
+          example: '{ "nombre": "Juan" }'
+        newData:
+          type: string
+          example: '{ "nombre": "Juan Pérez" }'
+        createdAt:
+          type: string
+          format: date-time
+        ipAddress:
+          type: string
+          example: 192.168.0.10
+    TarjetaDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        productoId:
+          type: integer
+        tipoTarjeta:
+          type: string
+          example: Crédito
+        numeroTarjeta:
+          type: string
+          example: 1234-5678-9012-3456
+        cvv:
+          type: string
+          example: '123'
+        pinHash:
+          type: string
+          example: $2a$10$...
+        fechaExpiracion:
+          type: string
+          format: date
+        nombreImpreso:
+          type: string
+          example: JUAN PÉREZ
+        activa:
+          type: boolean
+        estadoId:
+          type: integer
+        emitida:
+          type: string
+          format: date-time
+    FrequentAccountDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        favoriteProductId:
+          type: integer
+        alias:
+          type: string
+          example: Cuenta de mamá
+        addedDate:
+          type: string
+          format: date-time
+        active:
+          type: boolean
+    LoyaltyPointsDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        accumulatedPoints:
+          type: integer
+          example: 500
+        usedPoints:
+          type: integer
+          example: 100
+        updatedAt:
+          type: string
+          format: date-time
+    PointsHistoryDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        operationType:
+          type: string
+          example: carga
+        points:
+          type: integer
+          example: 100
+        description:
+          type: string
+          example: Bonificación por bienvenida
+        date:
+          type: string
+          format: date-time
+    ProductDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        usuarioId:
+          type: integer
+        tipoProducto:
+          type: string
+        numeroProducto:
+          type: string
+        alias:
+          type: string
+        moneda:
+          type: string
+        saldo:
+          type: number
+          format: double
+        limiteCredito:
+          type: number
+          format: double
+        estadoId:
+          type: integer
+        creadoEn:
+          type: string
+          format: date-time
+    PromotionDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: Descuento Black Friday
+        description:
+          type: string
+          example: 20% de descuento en todas las compras
+        type:
+          type: string
+          example: porcentaje
+        percentage:
+          type: number
+          format: double
+          example: 20.0
+        maxAmount:
+          type: number
+          format: double
+          example: 50000.0
+        weekDays:
+          type: array
+          items:
+            type: string
+          example:
+          - LUNES
+          - VIERNES
+        store:
+          type: string
+          example: Tienda Central
+        startDate:
+          type: string
+    RoleDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          example: ADMIN
+        description:
+          type: string
+          example: Rol con permisos administrativos completos
+    StatusDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+          example: ACTIVO
+        description:
+          type: string
+          example: Estado habilitado para uso general
+    TransaccionDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        productoIdOrigen:
+          type: integer
+        productoIdDestino:
+          type: integer
+        monto:
+          type: number
+          format: double
+        moneda:
+          type: string
+        descripcion:
+          type: string
+        categoria:
+          type: string
+        referenciaExterna:
+          type: string
+        estadoId:
+          type: integer
+        fecha:
+          type: string
+          format: date-time
+        tipoOperacion:
+          type: string
+    UserDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nombres:
+          type: string
+          example: Juan
+        apellidos:
+          type: string
+          example: Pérez
+        correo:
+          type: string
+          example: juan.perez@example.com
+        telefono:
+          type: string
+          example: '+56912345678'
+        documentoTipo:
+          type: string
+          example: RUT
+        documentoNumero:
+          type: string
+          example: 12.345.678-9
+        tipoUsuario:
+          type: string
+          example: cliente
+        estadoId:
+          type: integer
+          example: 1
+        fechaNacimiento:
+          type: string
+          format: date
+        fechaRegistro:
+          type: string
+          format: date-time
+    UserPromotionDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        promotionId:
+          type: integer
+        productId:
+          type: integer
+        transactionId:
+          type: integer
+        applicationType:
+          type: string
+          example: transferencia
+        appliedAmount:
+          type: number
+          format: double
+          example: 15000.0
+        applicationDate:
+          type: string
+          format: date-time
+    UserRoleDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        roleId:
+          type: integer
+        registeredAt:
+          type: string
+          format: date-time
