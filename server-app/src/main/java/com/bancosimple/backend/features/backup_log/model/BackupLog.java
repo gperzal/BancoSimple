@@ -5,7 +5,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "logs_respaldo")
+@Table(name = "backup_logs")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,6 +18,7 @@ public class BackupLog {
     @Column(name = "user_action_id")
     private Long userActionId;
 
+    @Column(name = "table_name")
     private String table;
 
     @Column(name = "record_id")

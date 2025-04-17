@@ -3,9 +3,11 @@ package com.bancosimple.backend.security.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import jakarta.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -16,10 +18,32 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(
-            System.getenv("JWT_SECRET").getBytes(StandardCharsets.UTF_8)
-    );
-    private final long EXPIRATION_TIME = Long.parseLong(System.getenv("JWT_EXPIRATION_MS"));
+    private SecretKey SECRET_KEY;
+    private long EXPIRATION_TIME;
+
+    @Value("${jwt.secret:#{null}}")
+    private String secretFromProperties;
+
+    @Value("${jwt.expirationMs:#{null}}")
+    private String expirationFromProperties;
+
+    @PostConstruct
+    public void init() {
+        String secret = (secretFromProperties != null)
+                ? secretFromProperties
+                : System.getenv("JWT_SECRET");
+
+        String expirationRaw = (expirationFromProperties != null)
+                ? expirationFromProperties
+                : System.getenv("JWT_EXPIRATION_MS");
+
+        if (secret == null || expirationRaw == null) {
+            throw new IllegalStateException("JWT_SECRET or JWT_EXPIRATION_MS not configured");
+        }
+
+        this.SECRET_KEY = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        this.EXPIRATION_TIME = Long.parseLong(expirationRaw);
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -59,7 +83,7 @@ public class JwtUtil {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SECRET_KEY) // usa la firma segura
+                .signWith(SECRET_KEY)
                 .compact();
     }
 

@@ -1,0 +1,85 @@
+paths:
+  /api/auth/register:
+    post:
+      summary: Registro de usuario
+      description: Permite registrar un nuevo usuario en el sistema. El usuario recibe automáticamente el rol CLIENT.
+      tags: [Autenticación]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '200':
+          description: Usuario registrado correctamente
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "User successfully registered"
+
+  /api/auth/login:
+    post:
+      summary: Autenticación de usuario
+      description: Permite a un usuario iniciar sesión y obtener un token JWT válido.
+      tags: [Autenticación]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Usuario autenticado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+
+components:
+  schemas:
+    RegisterRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        documentType:
+          type: string
+        documentNumber:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        phone:
+          type: string
+          example: "+56912345678"
+        email:
+          type: string
+        passwordHash:
+          type: string
+          format: password
+
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+          format: password
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT generado para autenticación
+        email:
+          type: string
+        role:
+          type: string
+          example: "CLIENT"

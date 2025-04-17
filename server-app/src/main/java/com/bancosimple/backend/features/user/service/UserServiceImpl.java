@@ -56,4 +56,11 @@ public class UserServiceImpl implements UserService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public UserDTO findByEmail(String email) {
+        return repository.findByEmail(email)
+                .map(UserMapper::toDTO)
+                .orElseThrow(() -> new ApiException("User not found with email: " + email));
+    }
 }

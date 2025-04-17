@@ -59,4 +59,16 @@ public class GlobalExceptionHandler {
                 )
         );
     }
+
+
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<?> handleApi(ApiException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                Map.of(
+                        "timestamp", LocalDateTime.now(),
+                        "error", "Not Found",
+                        "message", ex.getMessage()
+                )
+        );
+    }
 }

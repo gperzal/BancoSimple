@@ -1,6 +1,7 @@
 package com.bancosimple.backend.features.promotion.dto;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public record PromotionDTO(
         String type,
         BigDecimal percentage,
         BigDecimal maxAmount,
-        List<String> weekDays,
+        List<DayOfWeek> weekDays,
         String store,
         LocalDate startDate,
         LocalDate endDate,

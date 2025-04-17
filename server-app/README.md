@@ -1,73 +1,141 @@
-# 📦 Arquitectura de Carpetas - Proyecto BancoSimple
 
-Este proyecto está organizado según principios de **DDD (Domain-Driven Design)** y buenas prácticas de modularización en Spring Boot. Cada dominio del negocio tiene su propio paquete y está desacoplado de otros para mejorar la mantenibilidad, la escalabilidad y la legibilidad del código.
+# 💳 BancoSimple Backend - Arquitectura Modular con Spring Boot
+
+Este proyecto es una API backend para BancoSimple, estructurada siguiendo principios de arquitectura modular y diseño orientado al dominio (DDD). Soporta gestión de usuarios, productos financieros, transacciones, seguridad con JWT, sistema de puntos de fidelización y más.
 
 ---
 
-## 🧩 Estructura de Paquetes
+## 📦 Estructura de Carpetas
 
 ```
 com.bancosimple.backend
-├── config                # Configuración general del proyecto (seguridad, beans, CORS, etc.)
-├── common                # Clases compartidas (utilidades, validadores, excepciones comunes, etc.)
-├── cuenta_frecuente
-├── direccion
-├── estado
-├── historial_puntos
-├── log_actividad
-├── log_respaldo
-├── producto
-├── promocion
-├── promocion_usuario
-├── puntos_fidelizacion
-├── rol
-├── rol_usuario
-├── tarjeta
-├── transaccion
-└── usuario
+├── config                 # Configuraciones generales (CORS, beans, Swagger, etc.)
+├── security              # Seguridad (JWT, filtros, autenticación)
+├── common                # Utilidades compartidas y manejo centralizado de errores
+├── features              # Módulos del dominio, organizados por feature
+│   ├── address
+│   ├── frequent_account
+│   ├── loyalty_points
+│   ├── product
+│   ├── promotion
+│   ├── state
+│   ├── transaction
+│   ├── user
+│   ├── user_role
+│   ├── point_history
+│   ├── role
+│   ├── card
+│   ├── activity_log
+│   ├── backup_log
+│   └── user_promotion
 ```
 
 ---
 
-## 🧱 Estructura Interna por Módulo
+## 🧱 Estructura por Feature
 
-Cada módulo contiene:
+Cada carpeta `features/*` contiene:
 
-- `controller` → Maneja las peticiones HTTP (REST API)
-- `service` → Contiene la lógica de negocio
-- `repository` → Acceso a la base de datos (JPA Repositories)
-- `model` → Entidades JPA
-- `dto` → Data Transfer Objects
-- `mapper` → Conversión entre Model ↔ DTO
-- `security` → Reglas o filtros de seguridad específicos del módulo (si aplica)
-- `shared` → Clases reutilizables dentro del mismo módulo
-- `exception` → Excepciones personalizadas
+- `model` → Entidad JPA
+- `dto` → DTOs inmutables (`record` de Java)
+- `mapper` → Conversión DTO ↔ Entity (manualmente o con MapStruct)
+- `repository` → Repositorio JPA
+- `service` → Lógica de negocio
+- `controller` → Controladores REST
+- `shared` → Constantes/utilidades internas
+- `exception` → Excepciones personalizadas del dominio (opcional)
 
 ---
 
 ## 🔐 Seguridad
 
-Toda la lógica de autenticación/autorización con JWT o roles se puede ubicar en `config` si es general o en `usuario/security` si es específica del módulo de usuarios.
+- Autenticación basada en JWT.
+- Acceso basado en roles (`ADMIN`, `EXECUTIVE`, `CLIENT`).
+- Contraseñas encriptadas con BCrypt.
+- Toda la lógica de seguridad se encuentra en `security/`.
+
+El login y registro retornan un token válido y el rol del usuario para control de acceso en el frontend.
 
 ---
 
-## 🧪 Pruebas
+## 📜 Validaciones
 
-Los tests se encuentran en la carpeta:
+Las validaciones en los DTO utilizan anotaciones de Jakarta:
+
+```java
+@NotBlank
+@Size(min = 6)
+@Email
+@Pattern(regexp = "\+56\d{9}", message = "Phone must follow Chilean format +569XXXXXXXX")
 ```
-src/test/java/com/bancosimple/backend/...
+
+---
+
+## 🎯 Principales Mejoras
+
+- ✅ Estructura modular por feature (domain-driven)
+- ✅ Seguridad moderna con JWT y BCrypt
+- ✅ Excepciones centralizadas con `@ControllerAdvice`
+- ✅ Uso de DTOs `record` inmutables
+- ✅ Uso de inglés técnico en entidades y rutas
+- ✅ Estructura lista para integración con Swagger
+- ✅ Preparado para escalar a microservicios
+
+---
+
+
+## 🧪 Testing
+
+El proyecto cuenta con una cobertura de pruebas bien estructurada que sigue el patrón modular de la aplicación principal:
+
 ```
-Y pueden seguir la misma estructura de los paquetes de `main`.
+src/test/java/com/bancosimple/backend/
+├── auth                    # Pruebas de autenticación (login y registro)
+│   ├── LoginControllerTest
+│   └── RegisterControllerTest
+├── config                  # Configuraciones de seguridad y beans
+│   └── TestSecurityConfig
+├── controller              # Controlador master centralizado
+│   └── MasterControllerTest
+├── user                    # Pruebas específicas del módulo de usuario
+│   ├── UserRepositoryTest
+│   └── UserServiceTest
+└── BackendApplicationTests # Smoke test para validación general del contexto
+```
 
----
+### 🔍 Cobertura de pruebas:
 
-## ✅ Ventajas
+- **Controladores**: Se validan respuestas HTTP, payloads y restricciones de acceso.
+- **Servicios**: Se testea la lógica de negocio de cada módulo con mocks (Mockito).
+- **Repositorios**: Se testean operaciones CRUD sobre una base de datos en memoria (H2).
+- **Validaciones**: Se prueba el comportamiento de los DTOs con restricciones `@Valid`.
+- **Seguridad**: Se simulan usuarios autenticados con diferentes roles usando `@WithMockUser`.
 
-- Alta cohesión por dominio
-- Bajo acoplamiento entre módulos
-- Mejor escalabilidad para equipos grandes
-- Ideal para extender funcionalidades por dominio
+### 🧪 Herramientas y buenas prácticas:
 
----
+- Framework de pruebas: **JUnit 5**
+- Simulaciones: **Mockito**
+- Tests de integración aislados: `@SpringBootTest`, `@DataJpaTest`, `@WebMvcTest`
+- Archivos de configuración de prueba:  
+  `src/test/resources/application-test.properties`
 
-> Estructura basada en experiencia práctica y alineada con las recomendaciones de Spring y DDD.
+> Las pruebas están diseñadas para ser escalables por feature y facilitar el mantenimiento continuo.
+
+
+## 📘 Documentación API (Swagger)
+
+La documentación completa de la API está disponible en:
+👉 [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+
+La estructura de documentación OpenAPI está modularizada por feature en `src/main/resources/openapi/`.
+Cada archivo `.yaml` representa un módulo (ej. `user.yaml`, `product.yaml`, etc).
+
+### 🛠️ ¿Cómo agregar nueva documentación?
+Si agregas un nuevo `*.yaml`, ejecuta el script:
+
+```bash
+python src/main/resources/openapi/combine_openapi.py
+```
+
+Esto combinará todos los archivos en `openapi/openapi.yaml`, el cual es luego movido automáticamente al directorio `static/` para ser servido por Swagger.
+

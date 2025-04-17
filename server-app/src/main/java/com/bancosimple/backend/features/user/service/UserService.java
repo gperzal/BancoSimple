@@ -9,4 +9,5 @@ public interface UserService {
     UserDTO save(UserDTO userDTO);
     UserDTO update(Long id, UserDTO userDTO);
     void deleteById(Long id);
+    UserDTO findByEmail(String email);
 }

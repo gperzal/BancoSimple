@@ -4,11 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "promociones")
+@Table(name = "promotions")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,9 +29,11 @@ public class Promotion {
     private BigDecimal maxAmount;
 
     @ElementCollection
-    @CollectionTable(name = "promotion_weekdays", joinColumns = @JoinColumn(name = "promotion_id"))
-    @Column(name = "day")
-    private List<String> weekDays;
+    @CollectionTable(name = "promotion_weekdays",
+            joinColumns = @JoinColumn(name = "promotion_id"))
+    @Column(name = "weekday")
+    @Enumerated(EnumType.STRING)
+    private List<DayOfWeek> weekDays;
 
     private String store;
     private LocalDate startDate;
