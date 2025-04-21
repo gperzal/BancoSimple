@@ -43,8 +43,10 @@ export const loginSchema = z.object({
       .string()
       .nonempty("La contraseña es obligatoria")
       .min(6, "La contraseña debe tener al menos 6 caracteres"),
-    acceptTerms: z.literal(true, {
-      errorMap: () => ({ message: "Debes aceptar los términos y condiciones" }),
-    }),
+      acceptTerms: z
+      .boolean()
+      .refine((v) => v === true, {
+        message: "Debes aceptar los términos y condiciones",
+      }),
   });
   export type RegisterInput = z.infer<typeof registerSchema>;
