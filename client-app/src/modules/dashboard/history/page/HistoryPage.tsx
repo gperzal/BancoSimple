@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Layout from "@/modules/dashboard/common/components/Layout";
 import HistorySummary from "@/modules/dashboard/history/components/HistorySummary";
 import HistoryToolbar from "@/modules/dashboard/history/components/HistoryToolbar";
 import { transactions } from "@/utils/mockData";
@@ -22,8 +21,8 @@ export default function HistoryPage() {
     .reduce((sum, t) => sum + t.monto, 0);
 
   return (
-    <Layout>
-      <section className="container mx-auto space-y-6">
+    <>
+      <section className="container mx-auto space-y-6 py-4">
         <div className="mb-4">
           <h1 className="text-4xl font-extrabold tracking-tight text-primary mb-2">
             Historial de transacciones
@@ -70,6 +69,6 @@ export default function HistoryPage() {
 
         <HistoryTable />
       </section>
-    </Layout>
+    </>
   );
 }

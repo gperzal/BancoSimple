@@ -1,11 +1,11 @@
-import Layout from "@/modules/dashboard/common/components/Layout";
+
 
 import { ContactsSection } from "@/modules/dashboard/contacts/components/ContactsSection";
 
 export default function ContactsPage() {
   return (
-    <Layout>
-      <section className="container mx-auto space-y-6">
+    <>
+      <section className="container mx-auto space-y-6 py-4">
         <div className="mb-8">
           <h1 className="text-4xl font-extrabold tracking-tight text-primary mb-2">
             Contactos Frecuentes
@@ -18,6 +18,6 @@ export default function ContactsPage() {
 
         <ContactsSection />
       </section>
-    </Layout>
+    </>
   );
 }

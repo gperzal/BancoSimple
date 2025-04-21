@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Layout from "@/modules/dashboard/common/components/Layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
@@ -26,8 +25,8 @@ const Settings = () => {
   };
 
   return (
-    <Layout>
-      <section className="container mx-auto space-y-6">
+    <>
+      <section className="container mx-auto space-y-6 py-4">
         <div className="mb-8">
           <h1 className="text-4xl font-extrabold tracking-tight text-primary mb-2">
             Mi Configuración
@@ -114,7 +113,7 @@ const Settings = () => {
           </CardFooter>
         </Card>
       </section>
-    </Layout>
+    </>
   );
 };
 

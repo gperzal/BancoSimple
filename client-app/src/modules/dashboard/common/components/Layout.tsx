@@ -1,13 +1,14 @@
-// modules/dashbaord/common/components/Layout.tsx
-import { ReactNode, useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+// src/modules/dashboard/common/components/Layout.tsx
+import { useState, useEffect } from "react";
+import { useLocation, Outlet } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
+  // cierra el sidebar móvil al cambiar de ruta
   useEffect(() => {
     setSidebarOpen(false);
   }, [location.pathname]);
@@ -17,7 +18,9 @@ export default function Layout({ children }: { children: ReactNode }) {
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header onMenuClick={() => setSidebarOpen(true)} />
-        <main className="flex-1 overflow-y-auto p-4 md:p-6">{children}</main>
+        <main className="flex-1 overflow-y-auto">
+          <Outlet />
+        </main>
       </div>
     </div>
   );

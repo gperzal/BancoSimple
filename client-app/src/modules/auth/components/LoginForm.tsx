@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   FaEnvelope,
   FaLock,
@@ -18,34 +20,35 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { useAuth } from "@/context/AuthContext";
+
 import { toast } from "sonner";
+import { useLogin } from "../hooks/useLogin";
+import { loginSchema, LoginInput } from "../utils/validation";
 
-const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
   const navigate = useNavigate();
+  const login = useLogin();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginInput>({
+    resolver: zodResolver(loginSchema),
+  });
 
+  const onSubmit = async (data: LoginInput) => {
     try {
-      await login(email, password);
-      toast.success("Inicio de sesión exitoso", {
-        description: "Redirigiendo al panel de control...",
+      const authResponse = await login(data.email, data.password);
+      toast.success(`¡Bienvenido, ${authResponse.fullName}!`, {
+        description: "Tu sesión ha comenzado con éxito.",
       });
       navigate("/dashboard");
-    } catch (error) {
-      console.error("Error de inicio de sesión:", error);
-      toast.error("Error de inicio de sesión", {
-        description: "Credenciales incorrectas. Por favor, inténtalo de nuevo.",
+    } catch {
+      toast.error("Error en credenciales", {
+        description: "Por favor, verifica tus credenciales.",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -60,7 +63,7 @@ const LoginForm = () => {
         </CardDescription>
       </CardHeader>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <CardContent className="space-y-5">
           {/* Email */}
           <div className="space-y-2">
@@ -71,12 +74,15 @@ const LoginForm = () => {
             <Input
               id="email"
               type="email"
-              placeholder="admin@x.cl"
-              className="input-primary"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              placeholder="tucorreo@example.cl"
+              className={`input-primary ${
+                errors.email ? "border-red-500" : ""
+              }`}
+              {...register("email")}
             />
+            {errors.email && (
+              <p className="text-sm text-red-600">{errors.email.message}</p>
+            )}
           </div>
 
           {/* Password */}
@@ -97,11 +103,17 @@ const LoginForm = () => {
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
-                className="input-primary pr-10"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
+                placeholder="******"
+                className={`input-primary pr-10 ${
+                  errors.password ? "border-red-500" : ""
+                }`}
+                {...register("password")}
               />
+              {errors.password && (
+                <p className="text-sm text-red-600">
+                  {errors.password.message}
+                </p>
+              )}
               <button
                 type="button"
                 className="absolute inset-y-0 right-3 flex items-center text-gray-400"
@@ -122,11 +134,11 @@ const LoginForm = () => {
           {/* Botón principal */}
           <Button
             type="submit"
-            disabled={isLoading}
-            className={`button-primary ${isLoading ? "opacity-75" : ""}`}
+            disabled={isSubmitting}
+            className={`button-primary ${isSubmitting ? "opacity-75" : ""}`}
           >
-            {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
-            <FaArrowRight />
+            {isSubmitting ? "Iniciando sesión..." : "Iniciar Sesión"}
+            <FaArrowRight className="ml-2" />
           </Button>
 
           {/* Separador */}

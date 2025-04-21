@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Layout from "@/modules/dashboard/common/components/Layout";
 import { CardOverview } from "@/modules/dashboard/cards/components/CardOverview";
 import { QuickActions } from "@/modules/dashboard/cards/components/QuickActions";
 import { RecentTransactions } from "@/modules/dashboard/cards/components/RecentTransactions";
@@ -9,8 +8,8 @@ export default function CardsPage() {
   const [showTabs, setShowTabs] = useState(false);
 
   return (
-    <Layout>
-      <section className="container mx-auto space-y-6">
+    <>
+      <section className="container mx-auto space-y-6 py-4">
         {!showTabs ? (
           <>
             <div className="mb-6">
@@ -42,6 +41,6 @@ export default function CardsPage() {
           </div>
         )}
       </section>
-    </Layout>
+    </>
   );
 }

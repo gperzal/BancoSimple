@@ -1,6 +1,4 @@
-// src/modules/dashboard/common/components/Sidebar.tsx
-
-import { Link, useLocation } from "react-router-dom";
+// src/modules/dashboard/common/components/Header.tsx
 import {
   LayoutDashboard,
   Contact,
@@ -12,17 +10,19 @@ import {
   X,
   ChevronsLeft,
   ChevronsRight,
+  Users,
+  ShieldAlert,
+  UserCheck,
 } from "lucide-react";
-
+import { Link, useLocation } from "react-router-dom";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
@@ -33,19 +33,24 @@ interface SidebarProps {
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const location = useLocation();
-  const { logout } = useAuth();
+  const { auth, logout } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
+
+  const roles = auth?.roles ?? [];
+  const isAdmin = roles.includes("ADMIN");
+  const isExecutive = roles.includes("EXECUTIVE");
+  const isClient = roles.includes("CLIENT");
+  const isPremium = roles.includes("PREMIUM");
 
   const isActive = (path: string) => location.pathname === path;
   const isPartialActive = (path: string) =>
-    location.pathname.includes(path) && path !== "/dashboard";
+    location.pathname.startsWith(path) && path !== "/dashboard";
 
   return (
     <>
-      {/* Overlay para móvil */}
       {isOpen && (
         <div
-          className="fixed inset-0 md:hidden transition-opacity duration-300 z-40 bg-black/50 backdrop-blur-sm"
+          className="fixed inset-0 md:hidden bg-black/50 backdrop-blur-sm z-40 transition-opacity"
           onClick={onClose}
         />
       )}
@@ -59,7 +64,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         )}
       >
         <div className="flex h-full flex-col">
-          {/* Encabezado: Logo y Botón collapse */}
+          {/* Header */}
           <div className="flex items-center justify-between p-4">
             <Link
               to="/"
@@ -89,62 +94,105 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden text-white hover:bg-white/10"
                 onClick={onClose}
                 aria-label="Cerrar menú"
+                className="md:hidden text-white hover:bg-white/10"
               >
                 <X size={20} />
               </Button>
             </div>
           </div>
 
-          {/* Navegación */}
+          {/* Nav Links */}
           <nav className="flex-1 overflow-y-auto p-4 space-y-2">
-            <SidebarLink
-              to="/dashboard"
-              icon={LayoutDashboard}
-              text="Inicio"
-              collapsed={collapsed}
-              active={isActive("/dashboard")}
-            />
-            <SidebarLink
-              to="/dashboard/contacts"
-              icon={Contact}
-              text="Contactos"
-              collapsed={collapsed}
-              active={isActive("/dashboard/contacts")}
-            />
-            <SidebarLink
-              to="/dashboard/transactions"
-              icon={Repeat}
-              text="Transferencias"
-              collapsed={collapsed}
-              active={isPartialActive("/dashboard/transactions")}
-            />
-            <SidebarLink
-              to="/dashboard/history"
-              icon={History}
-              text="Historial"
-              collapsed={collapsed}
-              active={isPartialActive("/dashboard/history")}
-            />
-            <SidebarLink
-              to="/dashboard/cards"
-              icon={CreditCard}
-              text="Tarjetas"
-              collapsed={collapsed}
-              active={isPartialActive("/dashboard/cards")}
-            />
-            <SidebarLink
-              to="/dashboard/analytics"
-              icon={BarChart2}
-              text="Analítica"
-              collapsed={collapsed}
-              active={isPartialActive("/dashboard/analytics")}
-            />
+            {(isAdmin || isClient) && (
+              <>
+                <SidebarLink
+                  to="/dashboard"
+                  icon={LayoutDashboard}
+                  text="Inicio"
+                  collapsed={collapsed}
+                  active={isActive("/dashboard")}
+                />
+                <SidebarLink
+                  to="/dashboard/contacts"
+                  icon={Contact}
+                  text="Contactos"
+                  collapsed={collapsed}
+                  active={isActive("/dashboard/contacts")}
+                />
+                <SidebarLink
+                  to="/dashboard/transactions"
+                  icon={Repeat}
+                  text="Transferencias"
+                  collapsed={collapsed}
+                  active={isPartialActive("/dashboard/transactions")}
+                />
+                <SidebarLink
+                  to="/dashboard/history"
+                  icon={History}
+                  text="Historial"
+                  collapsed={collapsed}
+                  active={isPartialActive("/dashboard/history")}
+                />
+                <SidebarLink
+                  to="/dashboard/cards"
+                  icon={CreditCard}
+                  text="Tarjetas"
+                  collapsed={collapsed}
+                  active={isPartialActive("/dashboard/cards")}
+                />
+                <SidebarLink
+                  to="/dashboard/analytics"
+                  icon={BarChart2}
+                  text="Analítica"
+                  collapsed={collapsed}
+                  active={isPartialActive("/dashboard/analytics")}
+                />
+              </>
+            )}
+
+            {isPremium && (
+              <SidebarLink
+                to="/dashboard/premium"
+                icon={ShieldAlert}
+                text="Beneficios Premium"
+                collapsed={collapsed}
+                active={isPartialActive("/dashboard/premium")}
+              />
+            )}
+
+            {(isAdmin || isExecutive) && (
+              <SidebarLink
+                to="/dashboard/executive"
+                icon={UserCheck}
+                text="Atención al Cliente"
+                collapsed={collapsed}
+                active={isPartialActive("/dashboard/executive")}
+              />
+            )}
+
+            {isAdmin && (
+              <>
+                <SidebarLink
+                  to="/dashboard/admin"
+                  icon={ShieldAlert}
+                  text="Administración"
+                  collapsed={collapsed}
+                  active={isPartialActive("/dashboard/admin")}
+                />
+                <SidebarLink
+                  to="/dashboard/admin/users"
+                  icon={Users}
+                  text="Usuarios"
+                  collapsed={collapsed}
+                  active={isPartialActive("/dashboard/admin/users")}
+                />
+              </>
+            )}
           </nav>
 
-          {/* Cerrar sesión */}
+          {/* Logout */}
           <div className="border-t border-white/20 p-4">
             <SidebarLogoutButton collapsed={collapsed} onLogout={logout} />
           </div>
@@ -167,7 +215,7 @@ function SidebarLink({
   collapsed: boolean;
   active: boolean;
 }) {
-  const baseClasses = cn(
+  const base = cn(
     "border border-transparent border-white/30 bg-transparent text-white hover:bg-white hover:text-primary transition-colors font-medium",
     collapsed
       ? "w-10 h-10 flex items-center justify-center rounded-full"
@@ -176,7 +224,7 @@ function SidebarLink({
   );
 
   const content = (
-    <Link to={to} className={baseClasses}>
+    <Link to={to} className={base}>
       <Icon size={18} />
       {!collapsed && text}
     </Link>
@@ -197,7 +245,6 @@ function SidebarLink({
       </TooltipProvider>
     );
   }
-
   return content;
 }
 
@@ -208,7 +255,7 @@ function SidebarLogoutButton({
   collapsed: boolean;
   onLogout: () => void;
 }) {
-  const baseClasses = cn(
+  const base = cn(
     "border border-transparent border-white/30 bg-transparent text-white hover:bg-white hover:text-primary transition-colors font-medium",
     collapsed
       ? "w-10 h-10 flex items-center justify-center rounded-full"
@@ -216,7 +263,7 @@ function SidebarLogoutButton({
   );
 
   return (
-    <button onClick={onLogout} className={baseClasses}>
+    <button onClick={onLogout} className={base}>
       <LogOut size={16} />
       {!collapsed && "Cerrar sesión"}
     </button>

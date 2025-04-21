@@ -5,7 +5,7 @@ import Logo from "/logow.svg";
 
 const RegisterPage = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[var(--color-primary)] to-[var(--color-primary-dark)] px-4 py-12">
+    <div className="flex min-h-screen items-center justify-center bg-[var(--color-primary)] to-[var(--color-primary-dark)] px-4 py-8">
       <div className="w-full max-w-md flex flex-col items-center">
         <div className="flex justify-center mb-6">
           <img src={Logo} alt="BancoSimple" className="w-60" />

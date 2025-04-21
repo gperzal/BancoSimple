@@ -232,6 +232,21 @@
   }
   
 
+/* ─── Checkbox estilizada ─── */
+.checkbox-primary {
+  @apply h-5 w-5 text-[var(--color-primary)] border border-gray-300
+         dark:border-gray-600 rounded focus:outline-none focus:ring-2
+         focus:ring-[var(--color-primary)] transition-colors;
+}
+
+/* ─── Contenido de términos con salto de línea ─── */
+.terms-content {
+  @apply whitespace-pre-line leading-relaxed text-sm
+         text-gray-700 dark:text-gray-300;
+}
+
+
+
   /* ─────────── Dashboard Metrics Cards ─────────── */
 
   .text-muted-foreground {

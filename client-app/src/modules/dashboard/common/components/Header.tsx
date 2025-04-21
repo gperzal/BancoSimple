@@ -22,11 +22,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { useTheme } from "@/context/ThemeContext";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/modules/auth/hooks/useAuth";
 import { useLocation, Link } from "react-router-dom";
-
-// Importamos la clase .header-icon-button que definiste en tu index.css
-// import { Button } from "@/components/ui/button"; // si ya no la usas, puedes comentarlo
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -34,7 +31,7 @@ interface HeaderProps {
 
 export function Header({ onMenuClick }: HeaderProps) {
   const { theme, setTheme } = useTheme();
-  const { user, logout } = useAuth();
+  const { auth, logout } = useAuth();
 
   const location = useLocation();
 
@@ -49,6 +46,9 @@ export function Header({ onMenuClick }: HeaderProps) {
     cards: "Tarjetas",
     transactions: "Transferencias",
     history: "Historial",
+    premium: "Clientes Premium",
+    admin: "Admintrador",
+    exacutive: "Ejecutivo",
   };
 
   // Generador de breadcrumb
@@ -118,8 +118,8 @@ export function Header({ onMenuClick }: HeaderProps) {
 
   const breadcrumb = generateBreadcrumb();
 
-  function getInitials(name: string) {
-    const words = name.trim().split(" ");
+  function getInitials(fullName: string) {
+    const words = fullName.trim().split(" ");
     if (words.length === 1) return words[0].charAt(0).toUpperCase();
     return (
       words[0].charAt(0).toUpperCase() +
@@ -242,7 +242,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                 group-hover:text-primary
               "
                   >
-                    {getInitials(user?.name || "Usuario Desconocido")}
+                    {getInitials(auth?.fullName || "Usuario Desconocido")}
                   </AvatarFallback>
                 </Avatar>
               </button>

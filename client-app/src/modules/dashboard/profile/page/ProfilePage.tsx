@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Layout from "@/modules/dashboard/common/components/Layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserProfileForm } from "@/modules/dashboard/profile/components/UserProfileForm";
 import { UserAddressForm } from "@/modules/dashboard/profile/components/UserAddressForm";
@@ -11,8 +10,8 @@ const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("personal");
 
   return (
-    <Layout>
-      <section className="container mx-auto space-y-6">
+    <>
+      <section className="container mx-auto space-y-6 py-4">
         <div className="mb-8">
           <h1 className="text-4xl font-extrabold tracking-tight text-primary mb-2">
             Mi Perfil
@@ -44,7 +43,7 @@ const ProfilePage = () => {
           </TabsContent>
         </Tabs>
       </section>
-    </Layout>
+    </>
   );
 };
 
