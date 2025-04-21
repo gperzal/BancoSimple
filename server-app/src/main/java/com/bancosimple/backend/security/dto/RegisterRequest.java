@@ -23,6 +23,10 @@ public class RegisterRequest {
     @NotBlank(message = "Last name is required")
     private String lastName;
 
+    @NotBlank(message = "Document type is required")
+    @Pattern(regexp = "^(RUT|DNI|NIE|PASAPORTE|CI|LE|LC|CEDULA|CPF|RG)$",
+            flags = Pattern.Flag.CASE_INSENSITIVE,
+            message = "Document type must be RUT, DNI, NIE, PASAPORTE, CI, LE, LC, CEDULA, CPF or RG")
     private String documentType;
     private String documentNumber;
     private LocalDate birthDate;

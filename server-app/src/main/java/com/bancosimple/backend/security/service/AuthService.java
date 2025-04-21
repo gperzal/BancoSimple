@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -69,16 +70,19 @@ public class AuthService {
         String jwt = jwtUtil.generateToken(userDetails);
 
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ApiException("Mail does not exist"));
+                .orElseThrow(() -> new ApiException("Email does not exist"));
 
-        String role = getRoleName(user.getUserRoles().getFirst().getRoleId());
+        List<String> roles = user.getUserRoles().stream()
+                .map(userRole -> getRoleName(userRole.getRoleId()))
+                .toList();
 
         return LoginResponse.builder()
                 .token(jwt)
                 .email(user.getEmail())
-                .role(role)
+                .roles(roles)
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .build();
     }
+
 }

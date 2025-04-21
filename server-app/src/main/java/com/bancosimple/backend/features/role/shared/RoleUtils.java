@@ -5,7 +5,9 @@ public class RoleUtils {
         return switch (rolId.intValue()) {
             case 1 -> "ADMIN";
             case 2 -> "EXECUTIVE";
-            default -> "CLIENT";
+            case 3 -> "CLIENT";
+            case 4 -> "PREMIUM";
+            default -> "UNKNOWN";
         };
     }
 }
