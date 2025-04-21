@@ -32,21 +32,27 @@ public class AuthService {
 
     public void register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new ApiException("Mail is already in use");
+            throw new ApiException("Email is already in use");
         }
 
-        User user = new User();
-        user.setEmail(request.getEmail());
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setPasswordHash(passwordEncoder.encode(request.getPasswordHash()));
+        User user = User.builder()
+                .email(request.getEmail())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .documentType(request.getDocumentType())
+                .documentNumber(request.getDocumentNumber())
+                .birthDate(request.getBirthDate())
+                .phone(request.getPhone())
+                .passwordHash(passwordEncoder.encode(request.getPasswordHash()))
+                .build();
 
         User savedUser = userRepository.save(user);
 
-        UserRole userRole = new UserRole();
-        userRole.setUserId(savedUser.getId());
-        userRole.setRoleId(3L); // Rol por defecto: CLIENT
-        userRole.setRegisteredAt(LocalDateTime.now());
+        UserRole userRole = UserRole.builder()
+                .userId(savedUser.getId())
+                .roleId(3L) // Default role: CLIENT
+                .registeredAt(LocalDateTime.now())
+                .build();
 
         userRoleRepository.save(userRole);
     }
@@ -62,13 +68,17 @@ public class AuthService {
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
         String jwt = jwtUtil.generateToken(userDetails);
 
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new ApiException("Mail does not exist"));
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ApiException("Mail does not exist"));
 
-        String rol = getRoleName(user.getUserRoles().getFirst().getRoleId());
+        String role = getRoleName(user.getUserRoles().getFirst().getRoleId());
 
-
-       return new LoginResponse(jwt, user.getEmail(), rol);
+        return LoginResponse.builder()
+                .token(jwt)
+                .email(user.getEmail())
+                .role(role)
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .build();
     }
-
-
 }
