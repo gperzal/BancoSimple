@@ -11,7 +11,7 @@ combined = {
     "openapi": "3.1.1",
     "info": {
         "title": "BancoSimple API",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "description": "Documentación combinada de los módulos de la API"
     },
     "paths": {},

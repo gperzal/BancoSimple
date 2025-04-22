@@ -13,4 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u JOIN FETCH u.userRoles WHERE u.id = :id")
     Optional<User> findUserWithRoles(@Param("id") Long id);
+
+    Optional<User> findByDocumentNumber(String documentNumber);
 }

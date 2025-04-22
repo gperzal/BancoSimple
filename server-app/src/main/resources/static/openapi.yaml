@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: BancoSimple API
-  version: 1.0.0
+  version: 1.0.1
   description: Documentación combinada de los módulos de la API
 paths:
   /api/activity-logs:
@@ -462,6 +462,35 @@ paths:
       responses:
         '204':
           description: Cuenta frecuente eliminada correctamente
+  /api/frequent-accounts/banks:
+    get:
+      summary: Listar bancos soportados
+      description: Devuelve el listado de bancos externos permitidos al crear una
+        cuenta frecuente de tipo EXTERNAL.
+      tags:
+      - Cuentas Frecuentes
+      responses:
+        '200':
+          description: Lista de nombres de bancos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  enum:
+                  - BANCO_DE_CHILE
+                  - BANCOESTADO
+                  - SANTANDER
+                  - BCI
+                  - ITAU
+                  - FALABELLA
+                  - CENCOSUD
+                  - SECURITY
+                  - BICE
+                  - SCOTIABANK
+                  - HSBC
+                  - CORPBANCA
   /api/loyalty-points:
     get:
       summary: Obtener puntos de fidelización
@@ -1261,6 +1290,27 @@ paths:
       responses:
         '204':
           description: Usuario eliminado correctamente
+  /api/users/search:
+    get:
+      summary: Buscar usuario por RUT
+      description: Devuelve nombre, correo, RUT y números de cuenta frecuentes (internas
+        o externas) de un cliente dado su RUT.
+      tags:
+      - Usuarios
+      parameters:
+      - name: rut
+        in: query
+        required: true
+        description: RUT del cliente (formato 12.345.678-9)
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Datos de usuario y cuentas frecuentes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAccountDTO'
   /api/user-promotions:
     get:
       summary: Obtener promociones aplicadas por usuario
@@ -1518,17 +1568,17 @@ components:
       properties:
         token:
           type: string
-          example: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHguY2wiLCJpYXQiOjE3NDUyMTIyNTMsImV4cCI6MTc0NTIxNTg1M30.OiqhUx9JkGAuQX4UIPlCZLReoncBWTaTGa22NgsL-fc"
+          example: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHguY2wiLCJpYXQiOjE3NDUyMTIyNTMsImV4cCI6MTc0NTIxNTg1M30.OiqhUx9JkGAuQX4UIPlCZLReoncBWTaTGa22NgsLdEo
           description: JWT generado para autenticación
         email:
           type: string
-          example: "test@x.cl"
+          example: test@x.cl
         role:
           type: string
-          example: "CLIENT"
+          example: CLIENT
         fullName:
           type: string
-          example: "Juan Soto"
+          example: Juan Soto
     BackupLogDTO:
       type: object
       properties:
@@ -1595,8 +1645,36 @@ components:
           type: integer
         userId:
           type: integer
+        type:
+          type: string
+          enum:
+          - INTERNAL
+          - EXTERNAL
         favoriteProductId:
           type: integer
+          nullable: true
+        externalBankName:
+          type: string
+          enum:
+          - BANCO_DE_CHILE
+          - BANCOESTADO
+          - SANTANDER
+          - BCI
+          - ITAU
+          - FALABELLA
+          - CENCOSUD
+          - SECURITY
+          - BICE
+          - SCOTIABANK
+          - HSBC
+          - CORPBANCA
+          nullable: true
+        externalAccountNumber:
+          type: string
+          nullable: true
+        externalHolderName:
+          type: string
+          nullable: true
         alias:
           type: string
           example: Cuenta de mamá
@@ -1785,6 +1863,28 @@ components:
         fechaRegistro:
           type: string
           format: date-time
+    UserAccountDTO:
+      type: object
+      properties:
+        nombres:
+          type: string
+          example: Juan
+        apellidos:
+          type: string
+          example: Pérez
+        correo:
+          type: string
+          example: juan.perez@example.com
+        documentoNumero:
+          type: string
+          example: 12.345.678-9
+        numerosDeCuenta:
+          type: array
+          items:
+            type: string
+          example:
+          - '42'
+          - '9876543210'
     UserPromotionDTO:
       type: object
       properties:

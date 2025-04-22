@@ -92,6 +92,34 @@ paths:
         '204':
           description: Cuenta frecuente eliminada correctamente
 
+  /api/frequent-accounts/banks:
+    get:
+      summary: Listar bancos soportados
+      description: Devuelve el listado de bancos externos permitidos al crear una cuenta frecuente de tipo EXTERNAL.
+      tags: [Cuentas Frecuentes]
+      responses:
+        '200':
+          description: Lista de nombres de bancos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  enum:
+                    - BANCO_DE_CHILE
+                    - BANCOESTADO
+                    - SANTANDER
+                    - BCI
+                    - ITAU
+                    - FALABELLA
+                    - CENCOSUD
+                    - SECURITY
+                    - BICE
+                    - SCOTIABANK
+                    - HSBC
+                    - CORPBANCA
+
 components:
   schemas:
     FrequentAccountDTO:
@@ -99,15 +127,54 @@ components:
       properties:
         id:
           type: integer
+          example: 1
         userId:
           type: integer
+          example: 42
+        type:
+          type: string
+          description: Tipo de cuenta (INTERNAL = propia de BancoSimple, EXTERNAL = otro banco)
+          enum:
+            - INTERNAL
+            - EXTERNAL
         favoriteProductId:
           type: integer
+          description: ID del producto interno de BancoSimple (requerido si type = INTERNAL)
+          example: 1001
+        externalBankName:
+          type: string
+          description: Nombre del banco externo (requerido si type = EXTERNAL)
+          enum:
+            - BANCO_DE_CHILE
+            - BANCOESTADO
+            - SANTANDER
+            - BCI
+            - ITAU
+            - FALABELLA
+            - CENCOSUD
+            - SECURITY
+            - BICE
+            - SCOTIABANK
+            - HSBC
+            - CORPBANCA
+        externalAccountNumber:
+          type: string
+          description: Número de cuenta en el banco externo (requerido si type = EXTERNAL)
+          example: "1234567890"
+        externalHolderName:
+          type: string
+          description: Nombre del titular en el banco externo (requerido si type = EXTERNAL)
+          example: "María González"
         alias:
           type: string
+          description: Alias local para identificar la cuenta
           example: "Cuenta de mamá"
         addedDate:
           type: string
           format: date-time
+          description: Fecha de alta automática
+          example: "2025-04-21T18:25:35.266Z"
         active:
           type: boolean
+          description: Estado de la cuenta frecuente
+          example: true

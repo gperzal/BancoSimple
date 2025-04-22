@@ -1,6 +1,7 @@
 package com.bancosimple.backend.features.user.controller;
 
 import com.bancosimple.backend.features.user.dto.UserDTO;
+import com.bancosimple.backend.features.user.dto.UserAccountDTO;
 import com.bancosimple.backend.features.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,5 +35,12 @@ public class UserController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<UserAccountDTO> findByDocumentNumber(
+            @RequestParam("rut") String rut
+    ) {
+        return ResponseEntity.ok(userService.findByDocumentNumber(rut));
     }
 }

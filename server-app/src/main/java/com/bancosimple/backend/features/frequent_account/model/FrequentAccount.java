@@ -2,7 +2,6 @@ package com.bancosimple.backend.features.frequent_account.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,11 +15,27 @@ public class FrequentAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "favorite_product_id;")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "account_type", nullable = false)
+    private AccountType type;
+
+    // Solo para cuentas internas (propias)
+    @Column(name = "favorite_product_id")
     private Long favoriteProductId;
+
+    // Solo para cuentas externas
+    @Enumerated(EnumType.STRING)
+    @Column(name = "external_bank_name")
+    private BankName externalBankName;
+
+    @Column(name = "external_account_number")
+    private String externalAccountNumber;
+
+    @Column(name = "external_holder_name")
+    private String externalHolderName;
 
     private String alias;
 

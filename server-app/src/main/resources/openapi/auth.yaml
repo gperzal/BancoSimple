@@ -77,11 +77,11 @@ components:
       properties:
         token:
           type: string
-          example: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHguY2wiLCJpYXQiOjE3NDUyMTIyNTMsImV4cCI6MTc0NTIxNTg1M30.OiqhUx9JkGAuQX4UIPlCZLReoncBWTaTGa22NgsL-fc"
+          example: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHguY2wiLCJpYXQiOjE3NDUyMTIyNTMsImV4cCI6MTc0NTIxNTg1M30.OiqhUx9JkGAuQX4UIPlCZLReoncBWTaTGa22NgsLdEo"
           description: JWT generado para autenticación
         email:
           type: string
-          example:  "test@x.cl",
+          example:  "test@x.cl"
         role:
           type: string
           example: "CLIENT"
