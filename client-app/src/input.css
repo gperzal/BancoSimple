@@ -286,6 +286,33 @@
   @apply hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors;
 }
 
+/* ─── Switch estilizado para shadcn/ui ─── */
+.switch-root {
+  @apply relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out bg-gray-200 dark:bg-gray-700;
+  outline: none;
+}
+
+.switch-root[data-state="checked"] {
+  @apply bg-[var(--color-primary)];
+}
+
+.switch-root:focus {
+  @apply ring-2 ring-[var(--color-primary)] ring-offset-2;
+}
+
+
+.switch-root > span {
+  @apply pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow absolute top-0 left-[2px] transition-transform duration-200;
+  transform: translateX(0);
+}
+
+.switch-root[data-state="checked"] > span {
+  transform: translateX(17px);
+}
+
+.switch-root[aria-disabled="true"] {
+  @apply opacity-50 cursor-not-allowed;
+}
 /* ─────────── Tabs ─────────── */
 
 
@@ -403,6 +430,8 @@
          rounded-lg shadow-xl px-4 py-3;
 }
 
+
+
   /* Mejora de items en popovers tipo Select, Command, etc. */
 [role="option"] {
   padding: 0.5rem 1rem;
@@ -419,6 +448,7 @@
   background-color: var(--color-primary);
   color: #ffffff;
 }
+
 
 
   .animate-fade-in {

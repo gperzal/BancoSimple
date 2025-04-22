@@ -1,13 +1,37 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { UserCog, Search, Filter, UserPlus, ShieldCheck, ShieldAlert, User, UserX, Check, X } from "lucide-react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  UserCog,
+  Search,
+  Filter,
+  UserPlus,
+  ShieldCheck,
+  ShieldAlert,
+  User,
+  UserX,
+  Check,
+  X,
+} from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -15,21 +39,33 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 interface RolesTableProps {
-  searchQuery: string
-  selectedRole: string
-  onSearch: (query: string) => void
-  onRoleFilter: (role: string) => void
+  searchQuery: string;
+  selectedRole: string;
+  onSearch: (query: string) => void;
+  onRoleFilter: (role: string) => void;
 }
 
-export function RolesTable({ searchQuery, selectedRole, onSearch, onRoleFilter }: RolesTableProps) {
-  const [editRolesOpen, setEditRolesOpen] = useState(false)
-  const [selectedUser, setSelectedUser] = useState<any>(null)
-  const [selectedRoles, setSelectedRoles] = useState<string[]>([])
+export function RolesTable({
+  searchQuery,
+  selectedRole,
+  onSearch,
+  onRoleFilter,
+}: RolesTableProps) {
+  const [editRolesOpen, setEditRolesOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<{
+    id: number;
+    name: string;
+    email: string;
+    roles: string[];
+    status: string;
+    lastLogin: string;
+  } | null>(null);
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
 
   // Datos de ejemplo
   const usersData = [
@@ -73,59 +109,86 @@ export function RolesTable({ searchQuery, selectedRole, onSearch, onRoleFilter }
       status: "Bloqueado",
       lastLogin: "Hace 3 días",
     },
-  ]
+  ];
 
   // Roles disponibles en el sistema
   const availableRoles = [
-    { id: "ADMIN", name: "Administrador", description: "Acceso completo al sistema" },
-    { id: "EXECUTIVE", name: "Ejecutivo", description: "Gestión de clientes y operaciones" },
-    { id: "CLIENT", name: "Cliente", description: "Acceso básico a la plataforma" },
-    { id: "PREMIUM", name: "Cliente Premium", description: "Acceso a servicios exclusivos" },
-  ]
+    {
+      id: "ADMIN",
+      name: "Administrador",
+      description: "Acceso completo al sistema",
+    },
+    {
+      id: "EXECUTIVE",
+      name: "Ejecutivo",
+      description: "Gestión de clientes y operaciones",
+    },
+    {
+      id: "CLIENT",
+      name: "Cliente",
+      description: "Acceso básico a la plataforma",
+    },
+    {
+      id: "PREMIUM",
+      name: "Cliente Premium",
+      description: "Acceso a servicios exclusivos",
+    },
+  ];
 
   // Filtrar usuarios según la búsqueda y el rol seleccionado
   const filteredUsers = usersData.filter((user) => {
     const matchesSearch =
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase())
+      user.email.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesRole = selectedRole === "all" || user.roles.includes(selectedRole)
+    const matchesRole =
+      selectedRole === "all" || user.roles.includes(selectedRole);
 
-    return matchesSearch && matchesRole
-  })
+    return matchesSearch && matchesRole;
+  });
 
   // Abrir el diálogo de edición de roles
-  const handleEditRoles = (user: any) => {
-    setSelectedUser(user)
-    setSelectedRoles([...user.roles])
-    setEditRolesOpen(true)
-  }
+  const handleEditRoles = (user: {
+    id: number;
+    name: string;
+    email: string;
+    roles: string[];
+    status: string;
+    lastLogin: string;
+  }) => {
+    setSelectedUser(user);
+    setSelectedRoles([...user.roles]);
+    setEditRolesOpen(true);
+  };
 
   // Manejar cambios en los roles seleccionados
   const handleRoleChange = (roleId: string, checked: boolean) => {
     if (checked) {
-      setSelectedRoles((prev) => [...prev, roleId])
+      setSelectedRoles((prev) => [...prev, roleId]);
     } else {
-      setSelectedRoles((prev) => prev.filter((r) => r !== roleId))
+      setSelectedRoles((prev) => prev.filter((r) => r !== roleId));
     }
-  }
+  };
 
   // Guardar los cambios de roles
   const handleSaveRoles = () => {
     // Aquí iría la lógica para guardar los cambios en la API
-    console.log(`Actualizando roles para ${selectedUser?.name}:`, selectedRoles)
+    console.log(
+      `Actualizando roles para ${selectedUser?.name}:`,
+      selectedRoles
+    );
 
     // Actualizar localmente para la demo
-    const updatedUsers = usersData.map((user) => {
-      if (user.id === selectedUser?.id) {
-        return { ...user, roles: selectedRoles }
-      }
-      return user
-    })
+    // const updatedUsers = usersData.map((user) => {
+    //   if (user.id === selectedUser?.id) {
+    //     return { ...user, roles: selectedRoles }
+    //   }
+    //   return user
+    // })
 
     // Cerrar el diálogo
-    setEditRolesOpen(false)
-  }
+    setEditRolesOpen(false);
+  };
 
   // Renderizar el badge del rol con el color correspondiente
   const getRoleBadge = (role: string) => {
@@ -135,33 +198,33 @@ export function RolesTable({ searchQuery, selectedRole, onSearch, onRoleFilter }
           <Badge className="bg-red-500 text-white flex items-center gap-1">
             <ShieldAlert className="h-3 w-3" /> Admin
           </Badge>
-        )
+        );
       case "EXECUTIVE":
         return (
           <Badge className="bg-amber-500 text-white flex items-center gap-1">
             <UserCog className="h-3 w-3" /> Ejecutivo
           </Badge>
-        )
+        );
       case "PREMIUM":
         return (
           <Badge className="bg-purple-500 text-white flex items-center gap-1">
             <ShieldCheck className="h-3 w-3" /> Premium
           </Badge>
-        )
+        );
       case "CLIENT":
         return (
           <Badge className="bg-blue-500 text-white flex items-center gap-1">
             <User className="h-3 w-3" /> Cliente
           </Badge>
-        )
+        );
       default:
         return (
           <Badge className="bg-gray-500 text-white flex items-center gap-1">
             <User className="h-3 w-3" /> {role}
           </Badge>
-        )
+        );
     }
-  }
+  };
 
   return (
     <Card className="border-primary/20">
@@ -220,8 +283,12 @@ export function RolesTable({ searchQuery, selectedRole, onSearch, onRoleFilter }
             <TableBody>
               {filteredUsers.map((user) => (
                 <TableRow key={user.id} className="table-row-hover">
-                  <TableCell className="table-cell font-medium">{user.name}</TableCell>
-                  <TableCell className="table-cell text-muted-foreground">{user.email}</TableCell>
+                  <TableCell className="table-cell font-medium">
+                    {user.name}
+                  </TableCell>
+                  <TableCell className="table-cell text-muted-foreground">
+                    {user.email}
+                  </TableCell>
                   <TableCell className="table-cell">
                     <div className="flex flex-wrap gap-1">
                       {user.roles.map((role) => (
@@ -235,14 +302,16 @@ export function RolesTable({ searchQuery, selectedRole, onSearch, onRoleFilter }
                         user.status === "Activo"
                           ? "bg-green-500"
                           : user.status === "Inactivo"
-                            ? "bg-yellow-500"
-                            : "bg-red-500"
+                          ? "bg-yellow-500"
+                          : "bg-red-500"
                       } text-white`}
                     >
                       {user.status}
                     </Badge>
                   </TableCell>
-                  <TableCell className="table-cell text-muted-foreground">{user.lastLogin}</TableCell>
+                  <TableCell className="table-cell text-muted-foreground">
+                    {user.lastLogin}
+                  </TableCell>
                   <TableCell className="table-cell">
                     <div className="flex gap-2">
                       <Button
@@ -254,11 +323,19 @@ export function RolesTable({ searchQuery, selectedRole, onSearch, onRoleFilter }
                         Editar Roles
                       </Button>
                       {user.status !== "Bloqueado" ? (
-                        <Button variant="outline" size="sm" className="text-red-500 border-red-500">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-red-500 border-red-500"
+                        >
                           <UserX className="h-4 w-4 mr-1" /> Bloquear
                         </Button>
                       ) : (
-                        <Button variant="outline" size="sm" className="text-green-500 border-green-500">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-green-500 border-green-500"
+                        >
                           <User className="h-4 w-4 mr-1" /> Activar
                         </Button>
                       )}
@@ -279,7 +356,8 @@ export function RolesTable({ searchQuery, selectedRole, onSearch, onRoleFilter }
             <DialogDescription>
               {selectedUser && (
                 <span>
-                  Modificar los roles asignados a <strong>{selectedUser.name}</strong>
+                  Modificar los roles asignados a{" "}
+                  <strong>{selectedUser.name}</strong>
                 </span>
               )}
             </DialogDescription>
@@ -287,11 +365,16 @@ export function RolesTable({ searchQuery, selectedRole, onSearch, onRoleFilter }
 
           <div className="space-y-4 py-4">
             {availableRoles.map((role) => (
-              <div key={role.id} className="flex items-start space-x-3 space-y-0">
+              <div
+                key={role.id}
+                className="flex items-start space-x-3 space-y-0"
+              >
                 <Checkbox
                   id={`role-${role.id}`}
                   checked={selectedRoles.includes(role.id)}
-                  onCheckedChange={(checked) => handleRoleChange(role.id, checked as boolean)}
+                  onCheckedChange={(checked) =>
+                    handleRoleChange(role.id, checked as boolean)
+                  }
                 />
                 <div className="grid gap-1.5 leading-none">
                   <Label
@@ -300,14 +383,20 @@ export function RolesTable({ searchQuery, selectedRole, onSearch, onRoleFilter }
                   >
                     {role.name}
                   </Label>
-                  <p className="text-sm text-muted-foreground">{role.description}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {role.description}
+                  </p>
                 </div>
               </div>
             ))}
           </div>
 
           <DialogFooter className="flex space-x-2 justify-end">
-            <Button variant="outline" className="button-outline-auto" onClick={() => setEditRolesOpen(false)}>
+            <Button
+              variant="outline"
+              className="button-outline-auto"
+              onClick={() => setEditRolesOpen(false)}
+            >
               <X className="h-4 w-4 mr-1" /> Cancelar
             </Button>
             <Button className="button-primary-auto" onClick={handleSaveRoles}>
@@ -317,5 +406,5 @@ export function RolesTable({ searchQuery, selectedRole, onSearch, onRoleFilter }
         </DialogContent>
       </Dialog>
     </Card>
-  )
+  );
 }
