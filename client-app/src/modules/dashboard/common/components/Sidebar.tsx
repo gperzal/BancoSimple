@@ -13,6 +13,7 @@ import {
   Users,
   ShieldAlert,
   UserCheck,
+  Package,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -43,8 +44,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const isPremium = roles.includes("PREMIUM");
 
   const isActive = (path: string) => location.pathname === path;
-  const isPartialActive = (path: string) =>
-    location.pathname.startsWith(path) && path !== "/dashboard";
+
 
   return (
     <>
@@ -126,28 +126,35 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   icon={Repeat}
                   text="Transferencias"
                   collapsed={collapsed}
-                  active={isPartialActive("/dashboard/transactions")}
+                  active={isActive("/dashboard/transactions")}
                 />
                 <SidebarLink
                   to="/dashboard/history"
                   icon={History}
                   text="Historial"
                   collapsed={collapsed}
-                  active={isPartialActive("/dashboard/history")}
+                  active={isActive("/dashboard/history")}
                 />
                 <SidebarLink
                   to="/dashboard/cards"
                   icon={CreditCard}
                   text="Tarjetas"
                   collapsed={collapsed}
-                  active={isPartialActive("/dashboard/cards")}
+                  active={isActive("/dashboard/cards")}
+                />
+                <SidebarLink
+                  to="/dashboard/products"
+                  icon={Package}
+                  text="Productos"
+                  collapsed={collapsed}
+                  active={isActive("/dashboard/products")}
                 />
                 <SidebarLink
                   to="/dashboard/analytics"
                   icon={BarChart2}
                   text="Analítica"
                   collapsed={collapsed}
-                  active={isPartialActive("/dashboard/analytics")}
+                  active={isActive("/dashboard/analytics")}
                 />
               </>
             )}
@@ -158,7 +165,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 icon={ShieldAlert}
                 text="Beneficios Premium"
                 collapsed={collapsed}
-                active={isPartialActive("/dashboard/premium")}
+                active={isActive("/dashboard/premium")}
               />
             )}
 
@@ -168,7 +175,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 icon={UserCheck}
                 text="Atención al Cliente"
                 collapsed={collapsed}
-                active={isPartialActive("/dashboard/executive")}
+                active={isActive("/dashboard/executive")}
               />
             )}
 
@@ -179,14 +186,14 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   icon={ShieldAlert}
                   text="Administración"
                   collapsed={collapsed}
-                  active={isPartialActive("/dashboard/admin")}
+                  active={isActive("/dashboard/admin")}
                 />
                 <SidebarLink
-                  to="/dashboard/admin/users"
+                  to="/dashboard/admin/role"
                   icon={Users}
-                  text="Usuarios"
+                  text="Roles"
                   collapsed={collapsed}
-                  active={isPartialActive("/dashboard/admin/users")}
+                  active={isActive("/dashboard/admin/role")}
                 />
               </>
             )}

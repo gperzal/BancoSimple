@@ -1,7 +1,7 @@
 // modules/dashboard/history/components/HistoryToolbar.tsx
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search } from "lucide-react";
+import { Search, List, ArrowDownCircle, ArrowUpCircle } from "lucide-react";
 
 interface HistoryToolbarProps {
   currentTab: string;
@@ -26,14 +26,17 @@ export default function HistoryToolbar({
         }
         className="w-full md:w-auto"
       >
-        <TabsList className="grid grid-cols-3 w-full md:w-[300px]">
+        <TabsList className="bg-transparent border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] p-1 rounded-xl">
           <TabsTrigger value="all" className="tabs-trigger-primary">
+            <List className="h-4 w-4 mr-2" />
             Todas
           </TabsTrigger>
           <TabsTrigger value="incoming" className="tabs-trigger-primary">
+            <ArrowDownCircle className="h-4 w-4 mr-2" />
             Recibidas
           </TabsTrigger>
           <TabsTrigger value="outgoing" className="tabs-trigger-primary">
+            <ArrowUpCircle className="h-4 w-4 mr-2" />
             Enviadas
           </TabsTrigger>
         </TabsList>

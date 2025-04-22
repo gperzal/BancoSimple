@@ -1,13 +1,6 @@
-// modules/dashboard/cards/components/RecentTransactions.tsx
-
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
 
 export function RecentTransactions() {
   const transactions = [
@@ -39,43 +32,35 @@ export function RecentTransactions() {
       date: "20/03/2025",
       icon: "📱",
     },
-  ];
+  ]
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Transacciones recientes</CardTitle>
+        <CardTitle className="text-xl">Transacciones recientes</CardTitle>
         <CardDescription>Últimos movimientos de tus tarjetas</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           {transactions.map((transaction) => (
-            <div key={transaction.id} className="flex items-center gap-4">
-              <Avatar className="h-9 w-9">
-                <AvatarFallback>{transaction.icon}</AvatarFallback>
+            <div
+              key={transaction.id}
+              className="flex items-center gap-4 p-3 rounded-lg hover:bg-muted/50 transition-colors"
+            >
+              <Avatar className="h-10 w-10 bg-primary/10">
+                <AvatarFallback className="text-lg">{transaction.icon}</AvatarFallback>
               </Avatar>
               <div className="flex-1 space-y-1">
-                <p className="text-sm font-medium leading-none">
-                  {transaction.name}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {transaction.date}
-                </p>
+                <p className="font-medium leading-none">{transaction.name}</p>
+                <p className="text-sm text-muted-foreground">{transaction.date}</p>
               </div>
-              <div
-                className={
-                  transaction.amount > 0
-                    ? "text-green-500 font-medium"
-                    : "text-red-500 font-medium"
-                }
-              >
-                {transaction.amount > 0 ? "+" : "-"}$
-                {Math.abs(transaction.amount).toFixed(2)}
+              <div className={cn("font-medium", transaction.amount > 0 ? "text-green-500" : "text-red-500")}>
+                {transaction.amount > 0 ? "+" : ""}${Math.abs(transaction.amount).toFixed(2)}
               </div>
             </div>
           ))}
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }

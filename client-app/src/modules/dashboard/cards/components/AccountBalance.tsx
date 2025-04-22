@@ -8,7 +8,7 @@ const AccountBalance = () => {
     <Card className="w-full">
       <CardContent>
         <Tabs defaultValue={userData.accounts[0].id} className="w-full ">
-          <TabsList className="grid grid-cols-2 mb-4">
+          <TabsList className="bg-transparent border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] p-1 rounded-xl">
             {userData.accounts.map((account) => (
               <TabsTrigger
                 key={account.id}

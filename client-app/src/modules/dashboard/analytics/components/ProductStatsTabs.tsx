@@ -2,7 +2,7 @@
 
 import { Fragment } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
+import { BarChart, List } from "lucide-react";
 interface Product {
   name: string;
   usuarios: number;
@@ -26,12 +26,14 @@ export const ProductStatsTabs = ({ data }: ProductStatsTabsProps) => {
         </p>
       </div>
 
-      <Tabs defaultValue="details" className="w-full ">
-        <TabsList className="w-full max-w-md grid grid-cols-2  ">
+      <Tabs defaultValue="all" className="w-full">
+        <TabsList className="bg-transparent border border-[var(--color-border-light)] dark:border-[var(--color-border-dark)] p-1 rounded-xl">
           <TabsTrigger value="chart" className="tabs-trigger-primary">
+            <BarChart className="h-4 w-4 mr-2" />
             Gráfico
           </TabsTrigger>
           <TabsTrigger value="details" className="tabs-trigger-primary">
+            <List className="h-4 w-4 mr-2" />
             Detalles
           </TabsTrigger>
         </TabsList>

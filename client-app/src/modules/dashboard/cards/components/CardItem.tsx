@@ -1,4 +1,5 @@
-// modules/dashboard/cards/components/CardItem.tsx
+"use client";
+
 import { cn } from "@/lib/utils";
 import { Eye, EyeOff } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -22,7 +23,7 @@ interface CardItemProps {
   className?: string;
 }
 
-export const CardItem = ({
+export function CardItem({
   name,
   number,
   validFrom,
@@ -31,7 +32,7 @@ export const CardItem = ({
   backgroundUrl,
   logoUrl,
   className,
-}: CardItemProps) => {
+}: CardItemProps) {
   const [showData, setShowData] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [inputCode, setInputCode] = useState("");
@@ -65,14 +66,14 @@ export const CardItem = ({
   return (
     <div
       className={cn(
-        "w-80 sm:w-96 h-56 rounded-xl relative text-white shadow-2xl transition-transform transform sm:hover:scale-105 overflow-hidden",
+        "w-80 max-w-full h-56 rounded-xl relative text-white shadow-2xl transition-transform transform hover:scale-105 overflow-hidden",
         "bg-background",
         className
       )}
     >
       {backgroundUrl && (
         <img
-          src={backgroundUrl}
+          src={backgroundUrl || "/placeholder.svg"}
           className="absolute object-cover w-full h-full rounded-xl z-0"
           alt="Card background"
         />
@@ -88,7 +89,7 @@ export const CardItem = ({
           </div>
           <img
             className="h-12 w-12 sm:h-14 sm:w-14 object-contain"
-            src={logoUrl}
+            src={logoUrl || "/placeholder.svg"}
             alt="Logo"
           />
         </div>
@@ -125,14 +126,14 @@ export const CardItem = ({
             size="icon"
             onClick={handleToggle}
             aria-label="Mostrar datos"
-            className="text-white hover:text-primary"
+            className="text-white hover:text-primary hover:bg-white/20"
           >
             {showData ? <EyeOff size={18} /> : <Eye size={18} />}
           </Button>
         </div>
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="z-[60] bg-background text-foreground">
+          <DialogContent className="popover">
             <DialogHeader>
               <DialogTitle>Ingrese su clave para ver los datos</DialogTitle>
             </DialogHeader>
@@ -142,8 +143,12 @@ export const CardItem = ({
               onChange={(e) => setInputCode(e.target.value)}
               maxLength={6}
               type="password"
+              className="input-primary"
             />
-            <Button onClick={handleValidate} className="mt-2 w-full">
+            <Button
+              onClick={handleValidate}
+              className="button-primary w-full mt-2"
+            >
               Validar
             </Button>
           </DialogContent>
@@ -151,4 +156,4 @@ export const CardItem = ({
       </div>
     </div>
   );
-};
+}

@@ -1,26 +1,45 @@
-// modules/dashboard/cards/components/QuickActions.tsx
-
-import { Button } from "@/components/ui/button";
-import { CreditCard, Lock, AlertTriangle, DollarSign } from "lucide-react";
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Lock, AlertTriangle, DollarSign, PlusCircle } from "lucide-react"
 
 export function QuickActions() {
   return (
-    <div className="grid gap-4">
-      <h3 className="text-lg font-semibold">Acciones rápidas</h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        <Button variant="outline" className="flex gap-2">
-          <Lock size={18} /> Bloquear tarjeta
-        </Button>
-        <Button variant="outline" className="flex gap-2">
-          <AlertTriangle size={18} /> Reportar problema
-        </Button>
-        <Button variant="outline" className="flex gap-2">
-          <DollarSign size={18} /> Realizar pago
-        </Button>
-        <Button variant="outline" className="flex gap-2">
-          <CreditCard size={18} /> Solicitar adicional
-        </Button>
-      </div>
-    </div>
-  );
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-xl">Acciones rápidas</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-2 gap-3">
+          <Button
+            variant="outline"
+            className="button-outline-auto h-auto py-3 flex flex-col gap-2 items-center justify-center"
+          >
+            <Lock className="h-5 w-5 text-primary" />
+            <span>Bloquear tarjeta</span>
+          </Button>
+          <Button
+            variant="outline"
+            className="button-outline-auto h-auto py-3 flex flex-col gap-2 items-center justify-center"
+          >
+            <AlertTriangle className="h-5 w-5 text-amber-500" />
+            <span>Reportar problema</span>
+          </Button>
+          <Button
+            variant="outline"
+            className="button-outline-auto h-auto py-3 flex flex-col gap-2 items-center justify-center"
+          >
+            <DollarSign className="h-5 w-5 text-green-500" />
+            <span>Realizar pago</span>
+          </Button>
+          <Button
+            variant="outline"
+            className="button-outline-auto h-auto py-3 flex flex-col gap-2 items-center justify-center"
+          >
+            <PlusCircle className="h-5 w-5 text-blue-500" />
+            <span>Solicitar adicional</span>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
 }

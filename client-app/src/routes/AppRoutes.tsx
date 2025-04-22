@@ -24,7 +24,9 @@ import AnalyticsPage from "@/modules/dashboard/analytics/page/AnalyticsPage";
 import SettingsPage from "@/modules/dashboard/settings/page/SettingsPage";
 import ClientPremiumDashboardPage from "@/modules/dashboard/client/page/ClientPremiumDashboardPage";
 import AdminDashboardPage from "@/modules/dashboard/admin/page/AdminDashboardPage";
+import AdminRolePage from "@/modules/dashboard/admin/page/AdminRolePage";
 import ExecutiveDashboardPage from "@/modules/dashboard/executive/page/ExecutiveDashboardPage";
+import ProductsPage from "@/modules/dashboard/products/page/ProductsPage";
 
 function RequireAuth({
   children,
@@ -69,6 +71,7 @@ export default function AppRoutes() {
         <Route path="cards" element={<CardsPage />} />
         <Route path="analytics" element={<AnalyticsPage />} />
         <Route path="settings" element={<SettingsPage />} />
+        <Route path="products" element={<ProductsPage />} />
 
         <Route
           path="premium"
@@ -89,15 +92,23 @@ export default function AppRoutes() {
           }
         />
         <Route
-          path="admin/*"
+          path="admin"
           element={
             <RequireAuth roles={["ADMIN"]}>
-              {/* AdminLayout o AdminPage */}
               <AdminDashboardPage />
-              
             </RequireAuth>
           }
         />
+        <Route
+          path="admin/role"
+          element={
+            <RequireAuth roles={["ADMIN"]}>
+              <AdminRolePage />
+            </RequireAuth>
+          }
+        />
+      
+  
       </Route>
 
       {/* Fallback */}
