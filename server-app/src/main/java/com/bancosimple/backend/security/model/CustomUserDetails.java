@@ -16,14 +16,24 @@ public class CustomUserDetails implements UserDetails {
 
     private final User user;
 
+/*
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return user.getUserRoles().stream()
                 .map(userRole -> new SimpleGrantedAuthority("ROLE_" + getRoleName(userRole.getRoleId())))
                 .collect(Collectors.toList());
+
     }
+*/
 
-
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<? extends GrantedAuthority> authorities = user.getUserRoles().stream()
+                .map(userRole -> new SimpleGrantedAuthority("ROLE_" + getRoleName(userRole.getRoleId())))
+                .collect(Collectors.toList());
+        System.out.println("[CustomUserDetails] Authorities asignadas: " + authorities);
+        return authorities;
+    }
 
     @Override
     public String getPassword() {

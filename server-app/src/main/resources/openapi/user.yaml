@@ -282,7 +282,7 @@ components:
           nullable: true
         externalBankName:
           type: string
-          enum: [BANCO_DE_CHILE, BANCOESTADO, SANTANDER, BCI, ITAU, FALABELLA, CENCOSUD, SECURITY, BICE, SCOTIABANK, HSBC, CORPBANCA]
+          enum: [BANCO_DE_CHILE, BANCO_ESTADO, SANTANDER, BCI, ITAU, FALABELLA, CENCOSUD, SECURITY, BICE, SCOTIABANK, HSBC, CORPBANCA]
           nullable: true
         externalAccountNumber:
           type: string

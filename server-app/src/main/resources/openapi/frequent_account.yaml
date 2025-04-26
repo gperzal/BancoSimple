@@ -108,7 +108,7 @@ paths:
                   type: string
                   enum:
                     - BANCO_DE_CHILE
-                    - BANCOESTADO
+                    - BANCOES_TADO
                     - SANTANDER
                     - BCI
                     - ITAU
@@ -119,6 +119,27 @@ paths:
                     - SCOTIABANK
                     - HSBC
                     - CORPBANCA
+
+/api/frequent-accounts/categories:
+  get:
+    summary: Listar categorías de cuenta
+    description: Devuelve el listado de categorías permitidas (CORRIENTE, VISTA, AHORRO, PREPAGO, OTRO).
+    tags: [Cuentas Frecuentes]
+    responses:
+      '200':
+        description: Lista de categorías de cuenta
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                enum:
+                  - CORRIENTE
+                  - VISTA
+                  - AHORRO
+                  - PREPAGO
+                  - OTRO
 
 components:
   schemas:
@@ -137,6 +158,15 @@ components:
           enum:
             - INTERNAL
             - EXTERNAL
+        category:
+          type: string
+          description: Categoría de la cuenta (CORRIENTE, VISTA, AHORRO, PREPAGO, OTRO)
+          enum:
+            - CORRIENTE
+            - VISTA
+            - AHORRO
+            - PREPAGO
+            - OTRO
         favoriteProductId:
           type: integer
           description: ID del producto interno de BancoSimple (requerido si type = INTERNAL)
@@ -146,7 +176,7 @@ components:
           description: Nombre del banco externo (requerido si type = EXTERNAL)
           enum:
             - BANCO_DE_CHILE
-            - BANCOESTADO
+            - BANCO_ESTADO
             - SANTANDER
             - BCI
             - ITAU
@@ -178,3 +208,9 @@ components:
           type: boolean
           description: Estado de la cuenta frecuente
           example: true
+      required:
+        - userId
+        - type
+        - category
+        - alias
+        - active

@@ -22,6 +22,10 @@ public class FrequentAccount {
     @Column(name = "account_type", nullable = false)
     private AccountType type;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name="account_category")
+    private AccountCategory category;
+
     // Solo para cuentas internas (propias)
     @Column(name = "favorite_product_id")
     private Long favoriteProductId;

@@ -2,7 +2,7 @@ package com.bancosimple.backend.features.frequent_account.model;
 
 public enum BankName {
     BANCO_DE_CHILE,
-    BANCOESTADO,
+    BANCO_ESTADO,
     SANTANDER,
     BCI,
     ITAU,

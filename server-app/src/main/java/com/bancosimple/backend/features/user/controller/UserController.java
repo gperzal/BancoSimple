@@ -37,10 +37,4 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<UserAccountDTO> findByDocumentNumber(
-            @RequestParam("rut") String rut
-    ) {
-        return ResponseEntity.ok(userService.findByDocumentNumber(rut));
-    }
 }

@@ -1,10 +1,13 @@
 package com.bancosimple.backend.features.frequent_account.controller;
 
 import com.bancosimple.backend.features.frequent_account.dto.FrequentAccountDTO;
+import com.bancosimple.backend.features.frequent_account.model.AccountCategory;
 import com.bancosimple.backend.features.frequent_account.model.BankName;
 import com.bancosimple.backend.features.frequent_account.service.FrequentAccountService;
+import com.bancosimple.backend.security.model.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -17,9 +20,13 @@ import java.util.stream.Collectors;
 public class FrequentAccountController {
     private final FrequentAccountService service;
 
-    @GetMapping
-    public ResponseEntity<List<FrequentAccountDTO>> findAll() {
-        return ResponseEntity.ok(service.findAll());
+    @GetMapping("/me")
+    public ResponseEntity<List<FrequentAccountDTO>> myAccounts(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        return ResponseEntity.ok(
+                service.findByUserId(userDetails.getUser().getId())
+        );
     }
 
     @GetMapping("/{id}")
@@ -50,8 +57,21 @@ public class FrequentAccountController {
     public ResponseEntity<List<String>> listBanks() {
         return ResponseEntity.ok(
                 Arrays.stream(BankName.values())
-                        .map(Enum::name)
+                        .map(bank -> bank.name().replace("_", " ").toLowerCase())
+                        .map(name -> Arrays.stream(name.split(" "))
+                                .map(w -> w.substring(0, 1).toUpperCase() + w.substring(1))
+                                .collect(Collectors.joining(" "))
+                        )
                         .collect(Collectors.toList())
+        );
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<String>> listCategories() {
+        return ResponseEntity.ok(
+                Arrays.stream(AccountCategory.values())
+                        .map(Enum::name)
+                        .toList()
         );
     }
 }

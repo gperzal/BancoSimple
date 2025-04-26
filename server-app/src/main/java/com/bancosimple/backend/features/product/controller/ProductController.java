@@ -47,7 +47,8 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<ProductDTO> updateStatus(@PathVariable Long id, @RequestParam Integer estadoId) {
-        return ResponseEntity.ok(service.updateStatus(id, estadoId));
+    public ResponseEntity<ProductDTO> updateStatus(@PathVariable Long id, @RequestParam Integer statusId) {
+        return ResponseEntity.ok(service.updateStatus(id, statusId));
     }
+
 }

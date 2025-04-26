@@ -11,5 +11,4 @@ public interface UserService {
     UserDTO update(Long id, UserDTO userDTO);
     void deleteById(Long id);
     UserDTO findByEmail(String email);
-    UserAccountDTO findByDocumentNumber(String documentNumber);
 }

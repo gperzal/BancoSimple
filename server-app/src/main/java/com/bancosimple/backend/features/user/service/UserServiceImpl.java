@@ -8,7 +8,6 @@ import com.bancosimple.backend.features.user.model.User;
 import com.bancosimple.backend.features.user.repository.UserRepository;
 import com.bancosimple.backend.features.frequent_account.dto.FrequentAccountDTO;
 import com.bancosimple.backend.features.frequent_account.model.AccountType;
-import com.bancosimple.backend.features.frequent_account.service.FrequentAccountService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
-    private final FrequentAccountService frequentAccountService;
+
 
     @Override
     public List<UserDTO> findAll() {
@@ -70,34 +69,4 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ApiException("User not found with email: " + email));
     }
 
-    @Override
-    public UserAccountDTO findByDocumentNumber(String documentNumber) {
-        User u = repository.findByDocumentNumber(documentNumber)
-                .orElseThrow(() -> new ApiException("User not found with documentNumber: " + documentNumber));
-
-        // obtener todas las cuentas frecuentes del usuario
-        List<FrequentAccountDTO> favs = frequentAccountService.findAll().stream()
-                .filter(fa -> fa.userId().equals(u.getId()))
-                .toList();
-
-        // mapear a “número de cuenta” según tipo
-        List<String> accountNumbers = favs.stream()
-                .map(fa -> {
-                    if (fa.type() == AccountType.EXTERNAL) {
-                        return fa.externalAccountNumber();
-                    } else {
-                        // para internas usamos el ID de producto como placeholder
-                        return fa.favoriteProductId().toString();
-                    }
-                })
-                .toList();
-
-        return new UserAccountDTO(
-                u.getFirstName(),
-                u.getLastName(),
-                u.getEmail(),
-                u.getDocumentNumber(),
-                accountNumbers
-        );
-    }
 }

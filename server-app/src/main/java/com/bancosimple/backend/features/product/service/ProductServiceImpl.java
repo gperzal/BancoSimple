@@ -38,15 +38,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO update(Long id, ProductDTO dto) {
-        Product product = repository.findById(id)
+        Product existingProduct = repository.findById(id)
                 .orElseThrow(() -> new ApiException("Product not found with id: " + id));
 
-        product.setAlias(dto.alias());
-        product.setBalance(dto.balance());
-        product.setCreditLimit(dto.creditLimit());
-        product.setStatusId(dto.statusId());
+        Product updatedProduct = ProductMapper.toEntity(dto);
+        updatedProduct.setId(existingProduct.getId()); // Preservamos el ID original
 
-        return ProductMapper.toDTO(repository.save(product));
+        return ProductMapper.toDTO(repository.save(updatedProduct));
     }
 
     @Override
@@ -57,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDTO requestProduct(ProductDTO dto) {
         Product product = ProductMapper.toEntity(dto);
-        product.setStatusId(2); // 2 = PENDING
+        product.setStatusId(2); // Estado PENDING
         return ProductMapper.toDTO(repository.save(product));
     }
 

@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -23,21 +25,36 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/swagger-ui.html",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/openapi.yaml"
-                        ).permitAll()
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/productos/**").permitAll()
-                        .requestMatchers("/api/dashboard/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/dashboard/executive/**").hasRole("EXECUTIVE")
-                        .requestMatchers("/api/dashboard/client/**").hasRole("CLIENT")
-                        .anyRequest().authenticated()
+                                .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/openapi.yaml").permitAll()
+                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/products/**").permitAll()
+                                .requestMatchers(
+                                        "/api/dashboard/client/**",
+                                        "/api/frequent-accounts/**",
+                                        "/api/transactions/**",
+                                        "/api/cards/**",
+                                        "/api/points-history/**",
+                                        "/api/loyalty-points/**",
+                                        "/api/contacts/**",
+                                        "/api/status/**",
+                                        "/api/address/**"
+                                ).hasAnyRole("CLIENT", "ADMIN")
+                                .requestMatchers("/api/dashboard/executive/**").hasRole("EXECUTIVE")
+                                .requestMatchers(
+                                        "/api/dashboard/admin/**",
+                                        "/api/roles/**",
+                                        "/api/user-roles/**",
+                                        "/api/user-promotion/**",
+                                        "/api/promotion/**",
+                                        "/api/activity-log/**",
+                                        "/api/backup-log/**"
+                                ).hasRole("ADMIN")
+                                .requestMatchers("/api/user/**").hasAnyRole("EXECUTIVE", "ADMIN")
+                                .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

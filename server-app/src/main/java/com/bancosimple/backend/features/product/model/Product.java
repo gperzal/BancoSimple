@@ -2,40 +2,40 @@ package com.bancosimple.backend.features.product.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity
-@Table(name = "products")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
+@Table(name = "products")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "product_type")
-    private String productType;
+    private ProductType productType;
 
-    @Column(name = "product_number", unique = true)
-    private String productNumber;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "segment")
+    private SegmentType segment;
 
-    private String alias;
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
 
-    @Column(name = "currency")
-    private String currency;
+    @ElementCollection
+    @CollectionTable(name = "product_features", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "feature")
+    private List<String> features;
 
-    @Column(name = "balance")
-    private BigDecimal balance;
-
-    @Column(name = "credit_limit")
-    private BigDecimal creditLimit;
+    private String rate;
 
     @Column(name = "status_id")
     private Integer statusId;

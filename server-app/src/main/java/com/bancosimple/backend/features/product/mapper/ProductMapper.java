@@ -4,33 +4,30 @@ import com.bancosimple.backend.features.product.dto.ProductDTO;
 import com.bancosimple.backend.features.product.model.Product;
 
 public class ProductMapper {
-    public static ProductDTO toDTO(Product p) {
+
+    public static ProductDTO toDTO(Product product) {
         return new ProductDTO(
-                p.getId(),
-                p.getUserId(),
-                p.getProductType(),
-                p.getProductNumber(),
-                p.getAlias(),
-                p.getCurrency(),
-                p.getBalance(),
-                p.getCreditLimit(),
-                p.getStatusId(),
-                p.getCreatedAt()
+                product.getId(),
+                product.getName(),
+                product.getProductType(),
+                product.getSegment(),
+                product.getDescription(),
+                product.getFeatures(),
+                product.getRate(),
+                product.getStatusId()
         );
     }
 
     public static Product toEntity(ProductDTO dto) {
         return Product.builder()
                 .id(dto.id())
-                .userId(dto.userId())
+                .name(dto.name())
                 .productType(dto.productType())
-                .productNumber(dto.productNumber())
-                .alias(dto.alias())
-                .currency(dto.currency())
-                .balance(dto.balance())
-                .creditLimit(dto.creditLimit())
+                .segment(dto.segment())
+                .description(dto.description())
+                .features(dto.features())
+                .rate(dto.rate())
                 .statusId(dto.statusId())
-                .createdAt(dto.createdAt())
                 .build();
     }
 }

@@ -15,4 +15,5 @@ public record TransactionDTO(
         Integer statusId,
         LocalDateTime date,
         String operationType
+
 ) {}

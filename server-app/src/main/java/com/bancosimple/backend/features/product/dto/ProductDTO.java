@@ -1,17 +1,17 @@
 package com.bancosimple.backend.features.product.dto;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import com.bancosimple.backend.features.product.model.ProductType;
+import com.bancosimple.backend.features.product.model.SegmentType;
+
+import java.util.List;
 
 public record ProductDTO(
         Long id,
-        Long userId,
-        String productType,
-        String productNumber,
-        String alias,
-        String currency,
-        BigDecimal balance,
-        BigDecimal creditLimit,
-        Integer statusId,
-        LocalDateTime createdAt
+        String name,
+        ProductType productType,
+        SegmentType segment,
+        String description,
+        List<String> features,
+        String rate,
+        Integer statusId
 ) {}

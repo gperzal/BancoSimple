@@ -5,24 +5,21 @@ import com.bancosimple.backend.features.transaction.model.Transaction;
 
 public class TransactionMapper {
 
-    public static TransactionDTO toDTO(Transaction t, Long referenceProductId) {
-        String operationType = null;
-        if (referenceProductId != null) {
-            operationType = t.getOriginProductId().equals(referenceProductId) ? "sent" : "received";
-        }
+    public static TransactionDTO toDTO(Transaction transaction, Long referenceProductId) {
+        boolean isIncome = referenceProductId != null && referenceProductId.equals(transaction.getDestinationProductId());
 
         return new TransactionDTO(
-                t.getId(),
-                t.getOriginProductId(),
-                t.getDestinationProductId(),
-                t.getAmount(),
-                t.getCurrency(),
-                t.getDescription(),
-                t.getCategory(),
-                t.getExternalReference(),
-                t.getStatusId(),
-                t.getDate(),
-                operationType
+                transaction.getId(),
+                transaction.getOriginProductId(),
+                transaction.getDestinationProductId(),
+                transaction.getAmount(),
+                transaction.getCurrency(),
+                transaction.getDescription(),
+                transaction.getCategory(),
+                transaction.getExternalReference(),
+                transaction.getStatusId(),
+                transaction.getDate(),
+                isIncome ? "INCOME" : "OUTCOME"
         );
     }
 

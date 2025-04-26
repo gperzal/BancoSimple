@@ -9,6 +9,7 @@ import com.bancosimple.backend.features.frequent_account.model.FrequentAccount;
 import com.bancosimple.backend.features.frequent_account.repository.FrequentAccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -17,8 +18,9 @@ public class FrequentAccountServiceImpl implements FrequentAccountService {
     private final FrequentAccountRepository repository;
 
     @Override
-    public List<FrequentAccountDTO> findAll() {
-        return repository.findAll().stream()
+    public List<FrequentAccountDTO> findByUserId(Long userId) {
+        return repository.findAllByUserId(userId)
+                .stream()
                 .map(FrequentAccountMapper::toDTO)
                 .toList();
     }
@@ -32,9 +34,16 @@ public class FrequentAccountServiceImpl implements FrequentAccountService {
 
     @Override
     public FrequentAccountDTO save(FrequentAccountDTO dto) {
+        if (dto.category() == null) {
+            throw new BadRequestException("You must specify a category for the account");
+        }
         if (dto.type() == AccountType.EXTERNAL) {
-            if (dto.externalBankName() == null || dto.externalAccountNumber() == null || dto.externalHolderName() == null) {
-                throw new BadRequestException("External accounts require bank name, account number and holder name");
+            if (dto.externalBankName() == null
+                    || dto.externalAccountNumber() == null
+                    || dto.externalHolderName() == null) {
+                throw new BadRequestException(
+                        "External accounts require bank name, account number and holder name"
+                );
             }
         } else {
             if (dto.favoriteProductId() == null) {
@@ -52,9 +61,11 @@ public class FrequentAccountServiceImpl implements FrequentAccountService {
                 .orElseThrow(() -> new ApiException("FrequentAccount not found with id: " + id));
 
         fa.setType(dto.type());
+        fa.setCategory(dto.category());
         fa.setAlias(dto.alias());
         fa.setActive(dto.active());
-        if (dto.type() == com.bancosimple.backend.features.frequent_account.model.AccountType.EXTERNAL) {
+
+        if (dto.type() == AccountType.EXTERNAL) {
             fa.setExternalBankName(dto.externalBankName());
             fa.setExternalAccountNumber(dto.externalAccountNumber());
             fa.setExternalHolderName(dto.externalHolderName());

@@ -9,6 +9,7 @@ public class FrequentAccountMapper {
                 fa.getId(),
                 fa.getUserId(),
                 fa.getType(),
+                fa.getCategory(),
                 fa.getFavoriteProductId(),
                 fa.getExternalBankName(),
                 fa.getExternalAccountNumber(),
@@ -24,6 +25,7 @@ public class FrequentAccountMapper {
                 .id(dto.id())
                 .userId(dto.userId())
                 .type(dto.type())
+                .category(dto.category())
                 .favoriteProductId(dto.favoriteProductId())
                 .externalBankName(dto.externalBankName())
                 .externalAccountNumber(dto.externalAccountNumber())
