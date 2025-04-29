@@ -39,4 +39,7 @@ public class UserPromotionServiceImpl implements UserPromotionService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
+
+
 }

@@ -66,4 +66,6 @@ public class ProductServiceImpl implements ProductService {
         product.setStatusId(statusId);
         return ProductMapper.toDTO(repository.save(product));
     }
+
+
 }

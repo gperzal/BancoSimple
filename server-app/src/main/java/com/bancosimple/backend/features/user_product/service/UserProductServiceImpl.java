@@ -1,6 +1,9 @@
 package com.bancosimple.backend.features.user_product.service;
 
 import com.bancosimple.backend.exception.ApiException;
+import com.bancosimple.backend.features.product.model.Product;
+import com.bancosimple.backend.features.product.repository.ProductRepository;
+import com.bancosimple.backend.features.user_product.dto.InternalAccountsResponseDTO;
 import com.bancosimple.backend.features.user_product.dto.UserProductDTO;
 import com.bancosimple.backend.features.user_product.mapper.UserProductMapper;
 import com.bancosimple.backend.features.user_product.model.UserProduct;
@@ -15,6 +18,7 @@ import java.util.List;
 public class UserProductServiceImpl implements UserProductService {
 
     private final UserProductRepository repository;
+    private final ProductRepository productRepository;
 
     @Override
     public List<UserProductDTO> findAll() {
@@ -50,5 +54,22 @@ public class UserProductServiceImpl implements UserProductService {
     @Override
     public void deleteById(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public List<InternalAccountsResponseDTO.InternalAccountDTO> findInternalAccountsByUserId(Long userId) {
+        return repository.findByUserId(userId).stream()
+                .map(userProduct -> {
+                    Product product = productRepository.findById(userProduct.getProductId())
+                            .orElseThrow(() -> new ApiException("Product not found for id: " + userProduct.getProductId()));
+
+                    return new InternalAccountsResponseDTO.InternalAccountDTO(
+                            userProduct.getId(),
+                            product.getName(),
+                            product.getProductType().name(),
+                            userProduct.getProductNumber()
+                    );
+                })
+                .toList();
     }
 }

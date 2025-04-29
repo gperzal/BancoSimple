@@ -2,17 +2,15 @@ package com.bancosimple.backend.features.user.service;
 
 import com.bancosimple.backend.exception.ApiException;
 import com.bancosimple.backend.features.user.dto.UserDTO;
-import com.bancosimple.backend.features.user.dto.UserAccountDTO;
 import com.bancosimple.backend.features.user.mapper.UserMapper;
 import com.bancosimple.backend.features.user.model.User;
 import com.bancosimple.backend.features.user.repository.UserRepository;
-import com.bancosimple.backend.features.frequent_account.dto.FrequentAccountDTO;
-import com.bancosimple.backend.features.frequent_account.model.AccountType;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -69,4 +67,16 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ApiException("User not found with email: " + email));
     }
 
+
+    @Override
+    public Optional<UserDTO> findByRutOrEmail(String rut, String email) {
+        if (rut != null) {
+            return repository.findByDocumentNumber(rut)
+                    .map(UserMapper::toDTO);
+        } else if (email != null) {
+            return repository.findByEmail(email)
+                    .map(UserMapper::toDTO);
+        }
+        return Optional.empty();
+    }
 }
