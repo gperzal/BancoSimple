@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,6 +14,7 @@ import AddContactDialog from "@/modules/dashboard/contacts/components/AddContact
 import { ContactCard } from "@/modules/dashboard/contacts/components/ContactCard";
 import { ContactStatsCard } from "@/modules/dashboard/contacts/components/ContactStatsCard";
 import { contacts as mockContacts } from "@/utils/mockData";
+import type { ContactFormData } from "../types/ContactTypes";
 
 interface Contact {
   id: number;
@@ -36,6 +39,10 @@ export function ContactsSection() {
 
   const handleDelete = (id: number) => {
     setContacts((prev) => prev.filter((c) => c.id !== id));
+  };
+
+  const handleSaveContact = (formData: ContactFormData) => {
+    console.log("Saving contact:", formData);
   };
 
   const filteredContacts = contacts.filter(
@@ -107,7 +114,21 @@ export function ContactsSection() {
           setShowAddContact(open);
           if (!open) setContactToEdit(null);
         }}
-        defaultData={contactToEdit ?? undefined}
+        defaultData={
+          contactToEdit
+            ? {
+                id: contactToEdit.id,
+                type: "EXTERNAL",
+                category: "CORRIENTE",
+                alias: contactToEdit.name,
+                externalAccountNumber: contactToEdit.accountNumber,
+                externalHolderName: contactToEdit.name,
+                externalBankName: "OTRO",
+                active: true,
+              }
+            : undefined
+        }
+        onSave={handleSaveContact}
       />
     </div>
   );

@@ -1,5 +1,4 @@
 
-
 import { ContactsSection } from "@/modules/dashboard/contacts/components/ContactsSection";
 
 export default function ContactsPage() {

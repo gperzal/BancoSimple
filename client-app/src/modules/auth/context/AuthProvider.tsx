@@ -1,7 +1,9 @@
-import { ReactNode, useState } from "react";
+// src/context/AuthProvider.tsx
+import { ReactNode, useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
 import * as authService from "../services/authService";
 import { AuthResponse, RegisterData } from "../types/authTypes";
+import { setLogoutCallback } from "../../../services/apiClient";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [auth, setAuth] = useState<AuthResponse | null>(() => {
@@ -32,7 +34,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setAuth(null);
     localStorage.removeItem("auth");
+    window.location.href = "/login"; // o router.push("/login")
   };
+
+  useEffect(() => {
+    // Registramos el logout para que apiClient lo pueda usar
+    setLogoutCallback(logout);
+  }, []);
 
   return (
     <AuthContext.Provider

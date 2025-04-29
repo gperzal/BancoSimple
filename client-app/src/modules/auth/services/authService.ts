@@ -1,13 +1,13 @@
-import axios from "axios";
-
+import api from "@/services/apiClient";
 
 import { AuthResponse, Credentials, RegisterData } from "../types/authTypes";
 
-const API = axios.create({ baseURL: import.meta.env.VITE_API_URL });
+export const login = async (data: Credentials): Promise<AuthResponse> => {
+  const response = await api.post("/auth/login", data);
+  return response.data;
+};
 
-
-export const login = (data: Credentials): Promise<AuthResponse> =>
-  API.post("/auth/login", data).then(res => res.data);
-
-export const register = (data: RegisterData): Promise<AuthResponse> =>
-  API.post("/auth/register", data).then(res => res.data);
+export const register = async (data: RegisterData): Promise<AuthResponse> => {
+  const response = await api.post("/auth/register", data);
+  return response.data;
+};

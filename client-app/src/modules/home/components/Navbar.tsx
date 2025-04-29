@@ -28,10 +28,10 @@ const Navbar = () => {
         <div className="hidden md:flex items-center space-x-8">
           {[
             { to: "/", text: "Inicio" },
-            { to: "/#cuentas", text: "Cuentas" },
-            { to: "/#inversiones", text: "Inversiones" },
-            { to: "/#seguridad", text: "Seguros" },
-            { to: "/#beneficios", text: "Beneficios" },
+            { to: "/accounts", text: "Cuentas" },
+            { to: "/investments", text: "Inversiones" },
+            { to: "/insurance", text: "Seguros" },
+            { to: "/benefits", text: "Beneficios" },
           ].map((link) => (
             <Link
               key={link.text}

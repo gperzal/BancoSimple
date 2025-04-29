@@ -3,9 +3,17 @@ import { ReactNode } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 import Layout from "@/modules/dashboard/common/components/Layout";
+import PublicLayout from "@/modules/common/layouts/PublicLayout"
 
 // Public
 import HomePage from "@/modules/home/pages/HomePage";
+import AccountsPage from "@/modules/accounts/page/AccountsPage"
+import InvestmentsPage from "@/modules/investments/page/InvestmentsPage"
+import InsurancePage from "@/modules/insurance/page/InsurancePage"
+import BenefitsPage from "@/modules/benefits/page/BenefitsPage"
+
+
+
 import LoginPage from "@/modules/auth/pages/LoginPage";
 import RegisterPage from "@/modules/auth/pages/RegisterPage";
 import PasswordRecoveryPage from "@/modules/auth/pages/PasswordRecoveryPage";
@@ -45,8 +53,15 @@ function RequireAuth({
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* Públicas */}
-      <Route path="/" element={<HomePage />} />
+        {/* Públicas con PublicLayout */}
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/accounts" element={<AccountsPage />} />
+        <Route path="/investments" element={<InvestmentsPage />} />
+        <Route path="/insurance" element={<InsurancePage />} />
+        <Route path="/benefits" element={<BenefitsPage />} />
+      </Route>
+
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/recover-password" element={<PasswordRecoveryPage />} />
@@ -107,8 +122,6 @@ export default function AppRoutes() {
             </RequireAuth>
           }
         />
-      
-  
       </Route>
 
       {/* Fallback */}

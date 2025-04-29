@@ -1,22 +1,46 @@
-import { CreditCard, Landmark, Banknote, TrendingUp, Shield, ArrowRight, Star } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import type { ProductCategory } from "@/modules/dashboard/products/types/ProductTypes"
+import { CreditCard, Landmark, Banknote, TrendingUp, Shield, Star, FileText } from "lucide-react"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import type { ProductCategory } from "@/modules/dashboard/products/types/ProductTypes";
+import { ProductTypeEnum } from "@/modules/dashboard/products/types/ProductTypes";
+import { ProductDetailsModal } from "@/modules/dashboard/products/components/ProductDetailsModal";
+import { useState } from "react";
 
-const CATEGORY_ICONS = {
-  accounts: Landmark,
-  cards: CreditCard,
-  loans: Banknote,
-  investments: TrendingUp,
-  insurance: Shield,
-}
+// const CATEGORY_ICONS = {
+//   accounts: Landmark,
+//   cards: CreditCard,
+//   loans: Banknote,
+//   investments: TrendingUp,
+//   insurance: Shield,
+// };
+
+const PRODUCT_TYPE_ICONS = {
+  [ProductTypeEnum.ACCOUNT]: Landmark,
+  [ProductTypeEnum.CARD]: CreditCard,
+  [ProductTypeEnum.LOAN]: Banknote,
+  [ProductTypeEnum.INVESTMENT]: TrendingUp,
+  [ProductTypeEnum.INSURANCE]: Shield,
+};
 
 interface ProductCardProps {
-  product: ProductCategory
+  product: ProductCategory;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const IconComponent = CATEGORY_ICONS[product.category as keyof typeof CATEGORY_ICONS] || CreditCard
+  // const IconComponent =
+  //   CATEGORY_ICONS[product.category as keyof typeof CATEGORY_ICONS] ||
+  //   CreditCard;
+
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const IconComponent = PRODUCT_TYPE_ICONS[product.productType] || CreditCard;
+
+  const openDetailsModal = () => {
+    setIsDetailsModalOpen(true);
+  };
+
+  const closeDetailsModal = () => {
+    setIsDetailsModalOpen(false);
+  };
 
   return (
     <div className="card hover:border-primary/50 hover:shadow-md transition-all">
@@ -25,18 +49,28 @@ export function ProductCard({ product }: ProductCardProps) {
           <IconComponent className="h-5 w-5" />
         </div>
         <div className="flex gap-2">
-          {product.isNew && <Badge className="bg-blue-500 hover:bg-blue-600 text-white">Nuevo</Badge>}
+          {product.isNew && (
+            <Badge className="bg-blue-500 hover:bg-blue-600 text-white">
+              Nuevo
+            </Badge>
+          )}
           {product.isPopular && (
             <Badge className="bg-amber-500 hover:bg-amber-600 text-white flex items-center gap-1">
               <Star className="h-3 w-3 fill-current" /> Popular
             </Badge>
           )}
-          {product.isPromo && <Badge className="bg-green-500 hover:bg-green-600 text-white">Promoción</Badge>}
+          {product.isPromo && (
+            <Badge className="bg-green-500 hover:bg-green-600 text-white">
+              Promoción
+            </Badge>
+          )}
         </div>
       </div>
 
       <h3 className="text-xl font-bold mb-2">{product.name}</h3>
-      <p className="text-muted-foreground text-sm mb-4">{product.description}</p>
+      <p className="text-muted-foreground text-sm mb-4">
+        {product.description}
+      </p>
 
       <div className="space-y-2 mb-4">
         {product.features.map((feature, index) => (
@@ -56,9 +90,19 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       )}
 
-      <Button className="button-primary w-full flex items-center justify-center gap-2">
-        Ver detalles <ArrowRight className="h-4 w-4" />
-      </Button>
+        <Button
+          onClick={openDetailsModal}
+          variant="outline"
+          className="button-outline flex items-center justify-center gap-2"
+        >
+          <FileText className="h-4 w-4" /> Ver detalles
+        </Button>
+
+      <ProductDetailsModal
+        product={product}
+        isOpen={isDetailsModalOpen}
+        onClose={closeDetailsModal}
+      />
     </div>
-  )
+  );
 }
