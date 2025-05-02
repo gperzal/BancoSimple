@@ -1,4 +1,3 @@
-// src/modules/dashboard/contacts/components/InternalContactForm.tsx
 "use client";
 
 import { useState } from "react";
@@ -10,13 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { notifyError, notifyInfo, notifySuccess } from "@/utils/notifications";
-import type {
-  ContactFormData,
-  InternalAccount,
-  UserSearchResult,
-} from "../types/ContactTypes";
+
 import { searchInternalAccountsByRut } from "@/modules/dashboard/contacts/services/contactService";
 import { User } from "lucide-react";
+import { ContactFormData, UserSearchResult, InternalAccountResult, NameToCategoryMap } from "../types/ContactTypes";
 
 interface Props {
   defaultData?: ContactFormData;
@@ -33,7 +29,7 @@ export default function InternalContactForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<UserSearchResult | null>(null);
-  const [selected, setSelected] = useState<InternalAccount | null>(
+  const [selected, setSelected] = useState<InternalAccountResult | null>(
     defaultData?.favoriteProductId
       ? {
           id: defaultData.favoriteProductId,
@@ -48,26 +44,12 @@ export default function InternalContactForm({
   const searchByRut = async (rutVal: string) => {
     setLoading(true);
     setError(null);
+    setResult(null);
+    setSelected(null);
+    setAlias("");
     try {
-      const response = await searchInternalAccountsByRut(rutVal);
-
-      const userSearchResult: UserSearchResult = {
-        firstName: response.fullName.split(" ")[0],
-        lastName: response.fullName.split(" ").slice(1).join(" "),
-        email: response.email,
-        rut: response.rut,
-        internalAccounts: response.internalAccounts.map(
-          (acc: InternalAccount) => ({
-            id: acc.id,
-            name: acc.name,
-            category: acc.category,
-            productNumber: acc.productNumber,
-          })
-        ),
-        externalAccounts: [],
-      };
-
-      setResult(userSearchResult);
+      const response: UserSearchResult = await searchInternalAccountsByRut(rutVal);
+      setResult(response);
       notifyInfo("Cliente encontrado", "Se encontró el cliente");
     } catch (err) {
       console.error("[searchByRut] Error:", err);
@@ -90,10 +72,16 @@ export default function InternalContactForm({
     onSave({
       id: defaultData?.id,
       type: "INTERNAL",
-      category: selected.category,
+      category: NameToCategoryMap[selected.name] ?? "OTRO",
       favoriteProductId: selected.id,
       alias,
-      active: true,
+      rut,
+      userId: defaultData?.userId ?? 0,
+      favorite: defaultData?.favorite ?? true,
+      bankName: "BANCO_SIMPLE",
+      accountNumber: selected.productNumber,
+      holderName: result ? result.fullName : "",
+      addedDate: defaultData?.addedDate ?? new Date().toISOString(),
     });
     notifySuccess("Contacto guardado", "Cuenta interna agregada");
   };
@@ -135,9 +123,7 @@ export default function InternalContactForm({
         <Card>
           <CardHeader>
             <div className="flex justify-between">
-              <CardTitle>
-                {result.firstName} {result.lastName}
-              </CardTitle>
+              <CardTitle>{result.fullName}</CardTitle>
               <Badge className="bg-green-500  text-white flex items-center gap-1">
                 <User className="h-3 w-3" /> Cliente
               </Badge>
@@ -151,9 +137,7 @@ export default function InternalContactForm({
                   (a) => a.id.toString() === v
                 )!;
                 setSelected(acct);
-                setAlias(
-                  `${result.firstName} ${result.lastName} - ${acct.name}`
-                );
+                setAlias(`${result.fullName} - ${acct.name}`);
               }}
             >
               {result.internalAccounts.map((a) => (
@@ -167,8 +151,7 @@ export default function InternalContactForm({
                     className="mt-1"
                   />
                   <div>
-                    <p className="text-sm font-medium">Tipo Cuenta: {a.name}</p>{" "}
-                    {/* <<<<< aquí mostramos el name */}
+                    <p className="text-sm font-medium">Tipo Cuenta: {a.name}</p>
                     <p className="text-sm text-muted-foreground">
                       N° Cuenta: {a.productNumber}
                     </p>

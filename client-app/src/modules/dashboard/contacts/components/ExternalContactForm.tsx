@@ -1,4 +1,3 @@
-// src/modules/dashboard/contacts/components/ExternalContactForm.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -13,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { notifyError, notifySuccess } from "@/utils/notifications";
-import type { ContactFormData } from "../types/ContactTypes";
+import type { ContactFormData, Category } from "../types/ContactTypes";
 import { UserRoundPlus, UserRoundPen } from "lucide-react";
 import { formatBankName } from "@/modules/dashboard/contacts/utils/formatBankName";
 
@@ -34,16 +33,13 @@ export default function ExternalContactForm({
   categories,
   loading,
 }: Props) {
-  // initialize with default or first option
   const [form, setForm] = useState({
-    bankName: defaultData?.externalBankName || "",
-    accountNumber: defaultData?.externalAccountNumber || "",
-    holderName: defaultData?.externalHolderName || "",
+    bankName: defaultData?.bankName || "",
+    accountNumber: defaultData?.accountNumber || "",
+    holderName: defaultData?.holderName || "",
     category: defaultData?.category || "",
     alias: defaultData?.alias || "",
   });
-
-  useEffect(() => {}, [banks, categories]);
 
   useEffect(() => {
     if (!defaultData && !loading) {
@@ -69,12 +65,15 @@ export default function ExternalContactForm({
     onSave({
       id: defaultData?.id,
       type: "EXTERNAL",
-      category: category as "AHORRO" | "CORRIENTE",
-      externalBankName: bankName,
-      externalAccountNumber: accountNumber,
-      externalHolderName: holderName,
+      category: category as Category,
+      bankName,
+      accountNumber,
+      holderName,
       alias,
-      active: true,
+      rut: defaultData?.rut ?? "",
+      favorite: defaultData?.favorite ?? true,
+      userId: defaultData?.userId ?? 0,
+      addedDate: defaultData?.addedDate ?? new Date().toISOString(),
     });
     notifySuccess(
       defaultData ? "Contacto actualizado" : "Contacto creado",
@@ -88,7 +87,9 @@ export default function ExternalContactForm({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <Label htmlFor="bank">Banco</Label>
+          <Label htmlFor="bank" className="mb-2">
+            Banco
+          </Label>
           <Select
             value={form.bankName}
             onValueChange={(v) => change("bankName", v)}
@@ -116,7 +117,9 @@ export default function ExternalContactForm({
           </Select>
         </div>
         <div>
-          <Label htmlFor="category">Tipo de cuenta</Label>
+          <Label htmlFor="category" className="mb-2">
+            Tipo de cuenta
+          </Label>
           <Select
             value={form.category}
             onValueChange={(v) => change("category", v)}
@@ -135,7 +138,7 @@ export default function ExternalContactForm({
               )}
               {categories.map((c) => (
                 <SelectItem key={c} value={c}>
-                  {c.charAt(0) + c.slice(1).toLowerCase()}
+                  {c.charAt(0).toUpperCase() + c.slice(1).toLowerCase()}
                 </SelectItem>
               ))}
             </SelectContent>

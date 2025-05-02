@@ -53,7 +53,7 @@ export function ContactCard({
   };
 
   const handleToggleFavorite = () => {
-    if (!contact.active) {
+    if (!contact.favorite) {
       onToggleFavorite?.(contact.id!, true);
       notifySuccess(
         "Añadido a favoritos",
