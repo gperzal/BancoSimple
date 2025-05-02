@@ -32,10 +32,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      console.warn("[apiClient] Sesión expirada o inválida. Cerrando sesión...");
-      if (logoutCallback) {
-        logoutCallback(); // <<--- usa el logout del AuthProvider
-      }
+      logoutCallback?.(); 
     }
     return Promise.reject(error);
   }

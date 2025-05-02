@@ -7,45 +7,29 @@ export type Category =
   | "PREPAGO"
   | "OTRO";
 
-export interface InternalAccount {
-  id: number;
-  name: string;
-  category: Category;
-  productNumber: string;
-}
-
-export interface ExternalAccount {
-  id: number;
-  bankName: string;
-  category: Category;
-  accountNumber: string;
-  holderName: string;
-}
-
-// Para el listado de cuentas frecuentes
-export interface FrequentAccount {
-  id: number;
-  type: "INTERNAL" | "EXTERNAL";
-  category: Category;
-  alias: string;
-  active: boolean;
-  // INTERNAL only
-  favoriteProductId?: number;
-  // EXTERNAL only
-  externalBankName?: string;
-  externalAccountNumber?: string;
-  externalHolderName?: string;
-}
+  export interface FrequentAccount {
+    id: number;
+    userId: number;
+    type: "INTERNAL" | "EXTERNAL";
+    category: Category;
+    bankName: string;
+    accountNumber: string;
+    holderName: string;
+    rut: string;
+    alias: string;
+    addedDate: string;
+    favorite: boolean;
+  }
 
 export type CreateFrequentAccountData = Omit<FrequentAccount, "id">;
-export type UpdateFrequentAccountData = CreateFrequentAccountData;
 
-/** Data que maneja el formulario de Add/Edit */
 export type ContactFormData = CreateFrequentAccountData & {
   id?: number;
+  favoriteProductId?: number;
 };
 
-/** Resultado al buscar un cliente interno por RUT */
+export type UpdateFrequentAccountData = ContactFormData;
+
 export interface UserSearchResult {
   firstName: string;
   lastName: string;
@@ -54,3 +38,5 @@ export interface UserSearchResult {
   internalAccounts: InternalAccount[];
   externalAccounts: ExternalAccount[];
 }
+
+

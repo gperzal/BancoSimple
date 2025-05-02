@@ -3,10 +3,16 @@ import api from "@/services/apiClient";
 import { ContactFormData } from "@/modules/dashboard/contacts/types/ContactTypes";
 
 // Obtener todas las cuentas frecuentes del usuario
-export const getFrequentAccounts = async (): Promise<ContactFormData[]> => {
-  const response = await api.get("/frequent-accounts/me");
+export async function getFrequentAccountsAll(): Promise<ContactFormData[]> {
+  const response = await api.get("/frequent-accounts/");
   return response.data;
-};
+}
+
+// Obtener todas las cuentas frecuentes favoritas del usuario
+export async function getFrequentAccounts(): Promise<ContactFormData[]> {
+  const response = await api.get("/frequent-accounts/favorite");
+  return response.data;
+}
 
 // Obtener una cuenta frecuente por su ID
 export const getFrequentAccountById = async (id: number): Promise<ContactFormData> => {

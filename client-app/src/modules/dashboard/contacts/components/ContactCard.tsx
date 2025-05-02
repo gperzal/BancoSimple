@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Star, MoreHorizontal, Trash2, Pencil } from "lucide-react";
 import {
@@ -11,19 +11,11 @@ import {
   notifyWarning,
   notifyInfo,
 } from "@/utils/notifications";
-
-interface Contact {
-  id: number;
-  name: string;
-  email: string;
-  accountNumber: string;
-  image: string;
-  favorite: boolean;
-}
+import type { ContactFormData } from "../types/ContactTypes";
 
 interface ContactCardProps {
-  contact: Contact;
-  onEdit?: (contact: Contact) => void;
+  contact: ContactFormData;
+  onEdit?: (contact: ContactFormData) => void;
   onDelete?: (id: number) => void;
   onToggleFavorite?: (id: number, value?: boolean) => void;
 }
@@ -34,20 +26,23 @@ export function ContactCard({
   onDelete,
   onToggleFavorite,
 }: ContactCardProps) {
-  const initials = contact.name
+  if (!contact.id) return null; // seguridad mínima
+
+  const initials = contact.holderName
     .split(" ")
     .map((n) => n[0])
-    .join("");
+    .join("")
+    .toUpperCase();
 
   const handleDelete = () => {
     notifyWarning(
       "¿Eliminar contacto?",
-      `${contact.name} será removido permanentemente de tu lista de contactos.`,
+      `${contact.holderName} será removido permanentemente de tu lista de contactos.`,
       () => {
-        onDelete?.(contact.id);
+        onDelete?.(contact.id!);
         notifySuccess(
           "Contacto eliminado",
-          `${contact.name} fue eliminado correctamente.`
+          `${contact.holderName} fue eliminado correctamente.`
         );
       },
       () => {
@@ -58,21 +53,21 @@ export function ContactCard({
   };
 
   const handleToggleFavorite = () => {
-    if (!contact.favorite) {
-      onToggleFavorite?.(contact.id, true);
+    if (!contact.active) {
+      onToggleFavorite?.(contact.id!, true);
       notifySuccess(
         "Añadido a favoritos",
-        `${contact.name} fue marcado como favorito.`
+        `${contact.alias} fue marcado como favorito.`
       );
     } else {
       notifyWarning(
         "¿Quitar de favoritos?",
-        `${contact.name} será eliminado de tu lista de favoritos.`,
+        `${contact.alias} será eliminado de tu lista de favoritos.`,
         () => {
-          onToggleFavorite?.(contact.id, false);
+          onToggleFavorite?.(contact.id!, false);
           notifySuccess(
             "Removido de favoritos",
-            `${contact.name} fue eliminado de favoritos.`
+            `${contact.alias} fue eliminado de favoritos.`
           );
         },
         () => {
@@ -87,12 +82,14 @@ export function ContactCard({
     <div className="flex items-center justify-between p-3 border rounded-lg">
       <div className="flex items-center gap-3">
         <Avatar>
-          <AvatarImage src={contact.image} />
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
+
         <div>
-          <p className="font-medium">{contact.name}</p>
-          <p className="text-sm text-muted-foreground">{contact.email}</p>
+          <p className="font-medium">{contact.alias}</p>
+          <p className="text-sm text-muted-foreground">
+            {contact.accountNumber}
+          </p>
         </div>
       </div>
       <div className="flex items-center gap-2">

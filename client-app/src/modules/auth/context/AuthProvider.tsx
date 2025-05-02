@@ -4,6 +4,8 @@ import { AuthContext } from "./AuthContext";
 import * as authService from "../services/authService";
 import { AuthResponse, RegisterData } from "../types/authTypes";
 import { setLogoutCallback } from "../../../services/apiClient";
+import { notifySessionExpired } from "@/utils/notifications";
+import { isNetworkError, isUnauthorized } from "@/utils/httpErrors"; // 👈 profesional
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [auth, setAuth] = useState<AuthResponse | null>(() => {
@@ -34,12 +36,41 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setAuth(null);
     localStorage.removeItem("auth");
-    window.location.href = "/login"; // o router.push("/login")
+
+    if (window.location.pathname !== "/login") {
+      window.location.href = "/login";
+    }
   };
 
   useEffect(() => {
-    // Registramos el logout para que apiClient lo pueda usar
     setLogoutCallback(logout);
+
+    const validateSession = async () => {
+      const raw = localStorage.getItem("auth");
+      if (!raw) {
+        notifySessionExpired();
+        setTimeout(() => logout(), 100);
+        return;
+      }
+
+      try {
+        await authService.validate(); // debe lanzar si token vencido o backend reiniciado
+      } catch (error) {
+        if (isUnauthorized(error) || isNetworkError(error)) {
+          notifySessionExpired();
+          setTimeout(() => logout(), 100); // Permitir render del toast
+        } else {
+          console.error(
+            "[AuthProvider] Error inesperado al validar sesión:",
+            error
+          );
+        }
+      }
+    };
+
+    validateSession(); // Al cargar
+    const interval = setInterval(validateSession, 300_000); // Cada 5 minutos
+    return () => clearInterval(interval);
   }, []);
 
   return (

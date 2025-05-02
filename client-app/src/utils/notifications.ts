@@ -17,6 +17,13 @@ export const notifyInfo = (title: string, description?: string) => {
   toast(title, { description });
 };
 
+
+export const notifySessionExpired = () =>
+  toast("Tu sesión ha expirado", {
+    description: "Por seguridad, serás redirigido al login.",
+  });
+
+
 export const notifyWarning = (
   title: string,
   description: string,

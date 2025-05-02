@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Card,
@@ -13,32 +13,59 @@ import { Search, UserPlus } from "lucide-react";
 import AddContactDialog from "@/modules/dashboard/contacts/components/AddContactDialog";
 import { ContactCard } from "@/modules/dashboard/contacts/components/ContactCard";
 import { ContactStatsCard } from "@/modules/dashboard/contacts/components/ContactStatsCard";
-import { contacts as mockContacts } from "@/utils/mockData";
+import {
+  getFrequentAccounts,
+  getFrequentAccountsAll,
+} from "@/modules/dashboard/contacts/services/contactService";
 import type { ContactFormData } from "../types/ContactTypes";
-
-interface Contact {
-  id: number;
-  name: string;
-  email: string;
-  accountNumber: string;
-  favorite: boolean;
-  image: string;
-}
 
 export function ContactsSection() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddContact, setShowAddContact] = useState(false);
-  const [contactToEdit, setContactToEdit] = useState<Contact | null>(null);
-  const [contacts, setContacts] = useState<Contact[]>(mockContacts);
+  const [showAll, setShowAll] = useState(false);
+  const [contactToEdit, setContactToEdit] = useState<ContactFormData | null>(
+    null
+  );
+
+  const [contacts, setContacts] = useState<ContactFormData[]>([]);
+  const [allContacts, setAllContacts] = useState<ContactFormData[]>([]);
+  const [favorites, setFavorites] = useState<ContactFormData[]>([]);
+
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const [all, fav] = await Promise.all([
+          getFrequentAccountsAll(),
+          getFrequentAccounts()
+        ]);
+
+        setAllContacts(all);
+        setFavorites(fav);
+        setContacts(showAll ? all : fav);
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+      }
+    };
+
+    fetchContacts();
+  }, [showAll]);
 
   const handleToggleFavorite = (id: number) => {
     setContacts((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, favorite: !c.favorite } : c))
+    );
+    setAllContacts((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, favorite: !c.favorite } : c))
+    );
+    setFavorites((prev) =>
       prev.map((c) => (c.id === id ? { ...c, favorite: !c.favorite } : c))
     );
   };
 
   const handleDelete = (id: number) => {
     setContacts((prev) => prev.filter((c) => c.id !== id));
+    setAllContacts((prev) => prev.filter((c) => c.id !== id));
+    setFavorites((prev) => prev.filter((c) => c.id !== id));
   };
 
   const handleSaveContact = (formData: ContactFormData) => {
@@ -47,8 +74,8 @@ export function ContactsSection() {
 
   const filteredContacts = contacts.filter(
     (contact) =>
-      contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      contact.email.toLowerCase().includes(searchTerm.toLowerCase())
+      contact.alias.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      contact.accountNumber.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -83,15 +110,29 @@ export function ContactsSection() {
           </div>
         </CardHeader>
         <CardContent>
-          <h3 className="font-medium text-lg mb-2">Todos los Contactos</h3>
+          <div className="flex items-center justify-between mt-2">
+            <h3 className="font-medium text-lg mb-2">
+              {showAll ? "Todos los Contactos" : "Contactos Favoritos"}
+            </h3>
+            <label className="flex items-center gap-2 text-sm cursor-pointer">
+              <input
+                type="checkbox"
+                checked={showAll}
+                onChange={() => setShowAll(!showAll)}
+                className="form-checkbox"
+              />
+              Ver todos
+            </label>
+          </div>
+
           <div className="grid gap-4">
             {filteredContacts.length > 0 ? (
               filteredContacts.map((c) => (
                 <ContactCard
-                  key={c.id}
+                  key={c.id!}
                   contact={c}
                   onEdit={() => setContactToEdit(c)}
-                  onDelete={() => handleDelete(c.id)}
+                  onDelete={() => handleDelete(c.id!)}
                   onToggleFavorite={(id) => handleToggleFavorite(id)}
                 />
               ))
@@ -105,7 +146,10 @@ export function ContactsSection() {
       </Card>
 
       <div className="space-y-6">
-        <ContactStatsCard contacts={contacts} />
+        <ContactStatsCard
+          total={allContacts.length}
+          favorites={favorites.length}
+        />
       </div>
 
       <AddContactDialog
@@ -114,20 +158,7 @@ export function ContactsSection() {
           setShowAddContact(open);
           if (!open) setContactToEdit(null);
         }}
-        defaultData={
-          contactToEdit
-            ? {
-                id: contactToEdit.id,
-                type: "EXTERNAL",
-                category: "CORRIENTE",
-                alias: contactToEdit.name,
-                externalAccountNumber: contactToEdit.accountNumber,
-                externalHolderName: contactToEdit.name,
-                externalBankName: "OTRO",
-                active: true,
-              }
-            : undefined
-        }
+        defaultData={contactToEdit ?? undefined}
         onSave={handleSaveContact}
       />
     </div>
