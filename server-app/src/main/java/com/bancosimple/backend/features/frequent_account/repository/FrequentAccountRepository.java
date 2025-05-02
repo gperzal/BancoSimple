@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface FrequentAccountRepository extends JpaRepository<FrequentAccount, Long> {
+    List<FrequentAccount> findAllByUserIdAndFavoriteTrue(Long userId);
     List<FrequentAccount> findAllByUserId(Long userId);
 }

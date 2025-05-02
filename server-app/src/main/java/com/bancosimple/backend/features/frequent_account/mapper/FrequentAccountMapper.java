@@ -10,13 +10,13 @@ public class FrequentAccountMapper {
                 fa.getUserId(),
                 fa.getType(),
                 fa.getCategory(),
-                fa.getFavoriteProductId(),
-                fa.getExternalBankName(),
-                fa.getExternalAccountNumber(),
-                fa.getExternalHolderName(),
+                fa.getBankName(),
+                fa.getAccountNumber(),
+                fa.getHolderName(),
+                fa.getRut(),
                 fa.getAlias(),
                 fa.getAddedDate(),
-                fa.getActive()
+                fa.getFavorite()
         );
     }
 
@@ -26,13 +26,13 @@ public class FrequentAccountMapper {
                 .userId(dto.userId())
                 .type(dto.type())
                 .category(dto.category())
-                .favoriteProductId(dto.favoriteProductId())
-                .externalBankName(dto.externalBankName())
-                .externalAccountNumber(dto.externalAccountNumber())
-                .externalHolderName(dto.externalHolderName())
+                .bankName(dto.bankName())
+                .accountNumber(dto.accountNumber())
+                .holderName(dto.holderName())
+                .rut(dto.rut())
                 .alias(dto.alias())
                 .addedDate(dto.addedDate())
-                .active(dto.active())
+                .favorite(dto.favorite())
                 .build();
     }
 }

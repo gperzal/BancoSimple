@@ -19,6 +19,14 @@ public class FrequentAccountServiceImpl implements FrequentAccountService {
 
     @Override
     public List<FrequentAccountDTO> findByUserId(Long userId) {
+        return repository.findAllByUserIdAndFavoriteTrue(userId)
+                .stream()
+                .map(FrequentAccountMapper::toDTO)
+                .toList();
+    }
+
+    @Override
+    public List<FrequentAccountDTO> findAllByUserId(Long userId) {
         return repository.findAllByUserId(userId)
                 .stream()
                 .map(FrequentAccountMapper::toDTO)
@@ -32,24 +40,17 @@ public class FrequentAccountServiceImpl implements FrequentAccountService {
                 .orElseThrow(() -> new ApiException("FrequentAccount not found with id: " + id));
     }
 
+
     @Override
     public FrequentAccountDTO save(FrequentAccountDTO dto) {
-        if (dto.category() == null) {
-            throw new BadRequestException("You must specify a category for the account");
+        if (dto.category() == null || dto.accountNumber() == null || dto.holderName() == null || dto.rut() == null) {
+            throw new BadRequestException("All fields are required for saving a frequent account");
         }
-        if (dto.type() == AccountType.EXTERNAL) {
-            if (dto.externalBankName() == null
-                    || dto.externalAccountNumber() == null
-                    || dto.externalHolderName() == null) {
-                throw new BadRequestException(
-                        "External accounts require bank name, account number and holder name"
-                );
-            }
-        } else {
-            if (dto.favoriteProductId() == null) {
-                throw new BadRequestException("Internal accounts require a favoriteProductId");
-            }
+
+        if (dto.type() == AccountType.EXTERNAL && dto.bankName() == null) {
+            throw new BadRequestException("Bank name is required for external accounts");
         }
+
 
         FrequentAccount entity = FrequentAccountMapper.toEntity(dto);
         return FrequentAccountMapper.toDTO(repository.save(entity));
@@ -62,22 +63,24 @@ public class FrequentAccountServiceImpl implements FrequentAccountService {
 
         fa.setType(dto.type());
         fa.setCategory(dto.category());
+        fa.setBankName(dto.bankName());
+        fa.setAccountNumber(dto.accountNumber());
+        fa.setHolderName(dto.holderName());
+        fa.setRut(dto.rut());
         fa.setAlias(dto.alias());
-        fa.setActive(dto.active());
-
-        if (dto.type() == AccountType.EXTERNAL) {
-            fa.setExternalBankName(dto.externalBankName());
-            fa.setExternalAccountNumber(dto.externalAccountNumber());
-            fa.setExternalHolderName(dto.externalHolderName());
-        } else {
-            fa.setFavoriteProductId(dto.favoriteProductId());
-        }
+        fa.setFavorite(dto.favorite());
 
         return FrequentAccountMapper.toDTO(repository.save(fa));
     }
 
     @Override
-    public void deleteById(Long id) {
-        repository.deleteById(id);
+    public void deleteById(Long id, Long currentUserId) {
+        FrequentAccount fa = repository.findById(id)
+                .orElseThrow(() -> new ApiException("FrequentAccount not found with id: " + id));
+
+        if (!fa.getUserId().equals(currentUserId)) {
+            throw new ApiException("You do not have permission to delete this contact");
+        }
+        repository.delete(fa);
     }
 }

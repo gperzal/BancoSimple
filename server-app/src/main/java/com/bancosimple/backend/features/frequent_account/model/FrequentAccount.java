@@ -23,33 +23,36 @@ public class FrequentAccount {
     private AccountType type;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="account_category")
+    @Column(name = "account_category")
     private AccountCategory category;
 
-    // Solo para cuentas internas (propias)
-    @Column(name = "favorite_product_id")
-    private Long favoriteProductId;
-
-    // Solo para cuentas externas
     @Enumerated(EnumType.STRING)
-    @Column(name = "external_bank_name")
-    private BankName externalBankName;
+    @Column(name = "bank_name")
+    private BankName bankName;
 
-    @Column(name = "external_account_number")
-    private String externalAccountNumber;
+    @Column(name = "account_number")
+    private String accountNumber;
 
-    @Column(name = "external_holder_name")
-    private String externalHolderName;
+    @Column(name = "holder_name")
+    private String holderName;
+
+    @Column(name = "rut")
+    private String rut;
 
     private String alias;
 
     @Column(name = "added_date")
     private LocalDateTime addedDate;
 
-    private Boolean active;
+    private Boolean favorite = false;
 
     @PrePersist
     public void prePersist() {
         this.addedDate = LocalDateTime.now();
+
+        if (this.type == AccountType.INTERNAL && this.bankName == null) {
+            this.bankName = BankName.BANCO_SIMPLE;
+        }
+
     }
 }

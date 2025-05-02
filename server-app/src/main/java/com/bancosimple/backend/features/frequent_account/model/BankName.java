@@ -12,5 +12,6 @@ public enum BankName {
     BICE,
     SCOTIABANK,
     HSBC,
-    CORPBANCA
-}
+    CORPBANCA,
+    BANCO_SIMPLE
+    }

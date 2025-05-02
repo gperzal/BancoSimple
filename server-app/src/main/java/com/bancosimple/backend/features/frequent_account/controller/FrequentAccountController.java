@@ -20,7 +20,18 @@ import java.util.stream.Collectors;
 public class FrequentAccountController {
     private final FrequentAccountService service;
 
-    @GetMapping("/me")
+
+    @GetMapping("/")
+    public ResponseEntity<List<FrequentAccountDTO>> allAccounts(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        return ResponseEntity.ok(
+                service.findAllByUserId(userDetails.getUser().getId())
+        );
+    }
+
+
+    @GetMapping("/favorite")
     public ResponseEntity<List<FrequentAccountDTO>> myAccounts(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
@@ -29,29 +40,72 @@ public class FrequentAccountController {
         );
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<FrequentAccountDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<FrequentAccountDTO> save(@RequestBody FrequentAccountDTO dto) {
-        return ResponseEntity.ok(service.save(dto));
+    public ResponseEntity<FrequentAccountDTO> save(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestBody FrequentAccountDTO dto
+    ) {
+        Long currentUserId = userDetails.getUser().getId();
+
+        FrequentAccountDTO enrichedDto = new FrequentAccountDTO(
+                dto.id(),
+                currentUserId,
+                dto.type(),
+                dto.category(),
+                dto.bankName(),
+                dto.accountNumber(),
+                dto.holderName(),
+                dto.rut(),
+                dto.alias(),
+                dto.addedDate(),
+                dto.favorite()
+        );
+
+        return ResponseEntity.ok(service.save(enrichedDto));
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<FrequentAccountDTO> update(
             @PathVariable Long id,
+            @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestBody FrequentAccountDTO dto
     ) {
-        return ResponseEntity.ok(service.update(id, dto));
+        Long currentUserId = userDetails.getUser().getId();
+
+        FrequentAccountDTO enrichedDto = new FrequentAccountDTO(
+                dto.id(),
+                currentUserId,
+                dto.type(),
+                dto.category(),
+                dto.bankName(),
+                dto.accountNumber(),
+                dto.holderName(),
+                dto.rut(),
+                dto.alias(),
+                dto.addedDate(),
+                dto.favorite()
+        );
+
+        return ResponseEntity.ok(service.update(id, enrichedDto));
     }
 
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.deleteById(id);
+    public ResponseEntity<Void> delete(
+            @PathVariable Long id,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        service.deleteById(id, userDetails.getUser().getId());
         return ResponseEntity.noContent().build();
     }
+
 
     @GetMapping("/banks")
     public ResponseEntity<List<String>> listBanks() {

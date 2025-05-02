@@ -27,5 +27,8 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(request));
     }
 
-
+    @GetMapping("/validate")
+    public ResponseEntity<String> validateToken() {
+        return ResponseEntity.ok("Token válido");
+    }
 }

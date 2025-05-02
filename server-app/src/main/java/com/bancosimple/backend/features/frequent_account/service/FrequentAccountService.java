@@ -5,8 +5,9 @@ import java.util.List;
 
 public interface FrequentAccountService {
     List<FrequentAccountDTO> findByUserId(Long userId);
+    List<FrequentAccountDTO> findAllByUserId(Long userId);
     FrequentAccountDTO findById(Long id);
     FrequentAccountDTO save(FrequentAccountDTO dto);
     FrequentAccountDTO update(Long id, FrequentAccountDTO dto);
-    void deleteById(Long id);
+    void deleteById(Long id, Long currentUserId);
 }
